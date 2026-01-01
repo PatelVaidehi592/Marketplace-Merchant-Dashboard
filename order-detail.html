@@ -1,414 +1,638 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Order Details - Order Management</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/order-detail.css" />
-  </head>
-  <body>
-    <div class="container">
-      <!-- Sidebar (Same as order list page) -->
 
-      <!-- Main Content -->
-      <main class="main-content">
-        <!-- Header with Back Button -->
-        <header class="main-header">
-          <div class="header-left">
-            <a href="index.html" class="back-btn">
-              <i class="fas fa-arrow-left"></i> Back to Orders
-            </a>
-            <div>
-              <h1>Order Details</h1>
-              <p id="orderHeaderInfo">Loading order information...</p>
-            </div>
-          </div>
-          <div class="header-right">
-            <div class="header-actions">
-              <button class="btn btn-primary" id="printInvoice">
-                <i class="fas fa-print"></i> Print Invoice
-              </button>
-              <button class="btn btn-success" id="syncOrder">
-                <i class="fas fa-sync-alt"></i> Re-sync Order
-              </button>
-            </div>
-          </div>
-        </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Details - Order Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/order-detail.css" />
+</head>
 
-        <!-- Order Overview -->
-        <div class="order-overview">
-          <div class="overview-card">
-            <div class="order-id-section">
-              <h2 id="orderIdDisplay">Loading...</h2>
-              <div class="order-status-badge">
-                <span class="status-badge" id="orderStatusBadge">Pending</span>
-                <span class="payment-status" id="paymentStatusBadge">Paid</span>
-              </div>
-            </div>
-
-            <div class="order-meta">
-              <div class="meta-item">
-                <i class="fas fa-calendar"></i>
-                <div>
-                  <label>Order Date</label>
-                  <span id="orderDate">Nov 12, 2023</span>
-                </div>
-              </div>
-              <div class="meta-item">
-                <i class="fas fa-truck"></i>
-                <div>
-                  <label>Shipping Method</label>
-                  <span id="shippingMethod">Standard Shipping</span>
-                </div>
-              </div>
-              <div class="meta-item">
-                <i class="fas fa-credit-card"></i>
-                <div>
-                  <label>Payment Method</label>
-                  <span id="paymentMethod">Credit Card</span>
-                </div>
-              </div>
-              <div class="meta-item">
-                <i class="fas fa-indian-rupee-sign"></i>
-                <div>
-                  <label>Total Amount</label>
-                  <span id="orderTotal" class="total-amount">₹1,250.00</span>
-                </div>
-              </div>
-            </div>
+<body>
+  <div class="container">
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header with Back Button -->
+      <header class="main-header">
+        <div class="header-left">
+          <a href="order.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Orders
+          </a>
+          <div>
+            <h1>Order Details</h1>
+            <p id="orderHeaderInfo">Loading order information...</p>
           </div>
         </div>
-
-        <!-- Main Content Grid -->
-        <div class="content-grid">
-          <!-- Left Column -->
-          <div class="left-column">
-            <!-- Customer Details -->
-            <section class="info-section">
-              <div class="section-header">
-                <h3>
-                  <i class="fas fa-user"></i>
-                  Customer Details
-                </h3>
-                <button class="btn btn-light btn-sm" id="editCustomer">
-                  <i class="fas fa-edit"></i> Edit
-                </button>
-              </div>
-              <div class="section-body">
-                <div id="customerDetails">
-                  <p>
-                    <strong>Name:</strong>
-                    <span id="customerName">Loading...</span>
-                  </p>
-                  <p>
-                    <strong>Email:</strong>
-                    <span id="customerEmail">Loading...</span>
-                  </p>
-                  <p>
-                    <strong>Phone:</strong>
-                    <span id="customerPhone">Loading...</span>
-                  </p>
-                  <p>
-                    <strong>Customer ID:</strong>
-                    <span id="customerId">Loading...</span>
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            <!-- Shipping Details -->
-            <section class="info-section">
-              <div class="section-header">
-                <h3>
-                  <i class="fas fa-shipping-fast"></i>
-                  Shipping Details
-                </h3>
-                <button class="btn btn-light btn-sm" id="editShipping">
-                  <i class="fas fa-edit"></i> Edit
-                </button>
-              </div>
-              <div class="section-body">
-                <div id="shippingAddress">
-                  <p>
-                    <strong>Address:</strong>
-                    <span id="shippingAddressText">Loading...</span>
-                  </p>
-                  <p>
-                    <strong>City:</strong>
-                    <span id="shippingCity">Loading...</span>
-                  </p>
-                  <p>
-                    <strong>State:</strong>
-                    <span id="shippingState">Loading...</span>
-                  </p>
-                  <p>
-                    <strong>Pincode:</strong>
-                    <span id="shippingPincode">Loading...</span>
-                  </p>
-                  <p>
-                    <strong>Shipping Status:</strong>
-                    <span id="shippingStatus">Loading...</span>
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            <!-- Billing Details -->
-            <section class="info-section">
-              <div class="section-header">
-                <h3>
-                  <i class="fas fa-file-invoice-dollar"></i>
-                  Billing Details
-                </h3>
-              </div>
-              <div class="section-body">
-                <div id="billingDetails">
-                  <p>
-                    <strong>Billing Address:</strong>
-                    <span id="billingAddress">Same as shipping</span>
-                  </p>
-                  <p>
-                    <strong>GST Number:</strong>
-                    <span id="gstNumber">24AABCU9603R1ZM</span>
-                  </p>
-                  <p>
-                    <strong>Invoice Number:</strong>
-                    <span id="invoiceNumber">INV-2023-1001</span>
-                  </p>
-                </div>
-              </div>
-            </section>
-          </div>
-
-          <!-- Right Column -->
-          <div class="right-column">
-            <!-- Order Items by Vendor -->
-            <section class="info-section">
-              <div class="section-header">
-                <h3>
-                  <i class="fas fa-boxes"></i>
-                  Order Items by Vendor
-                </h3>
-              </div>
-              <div class="section-body">
-                <div id="vendorItemsContainer">
-                  <!-- Vendor items will be loaded here -->
-                </div>
-              </div>
-            </section>
-
-            <!-- Payment Details -->
-            <section class="info-section">
-              <div class="section-header">
-                <h3>
-                  <i class="fas fa-credit-card"></i>
-                  Payment Details
-                </h3>
-              </div>
-              <div class="section-body">
-                <div class="payment-details">
-                  <div class="detail-row">
-                    <span>Transaction ID:</span>
-                    <span id="transactionId">TXN-789012</span>
-                  </div>
-                  <div class="detail-row">
-                    <span>Payment Status:</span>
-                    <span id="paymentStatus">Paid</span>
-                  </div>
-                  <div class="detail-row">
-                    <span>Payment Date:</span>
-                    <span id="paymentDate">Nov 12, 2023 14:30</span>
-                  </div>
-                  <div class="detail-row">
-                    <span>Payment Gateway:</span>
-                    <span id="paymentGateway">Razorpay</span>
-                  </div>
-                  <div class="detail-row total-row">
-                    <span>Amount Paid:</span>
-                    <span id="amountPaid">₹1,250.00</span>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <!-- Tracking Information -->
-            <section class="info-section">
-              <div class="section-header">
-                <h3>
-                  <i class="fas fa-map-marker-alt"></i>
-                  Tracking Information
-                </h3>
-                <button class="btn btn-light btn-sm" id="updateTracking">
-                  <i class="fas fa-edit"></i> Update
-                </button>
-              </div>
-              <div class="section-body">
-                <div id="trackingInfo">
-                  <div class="tracking-timeline">
-                    <div class="tracking-step active">
-                      <div class="step-icon">
-                        <i class="fas fa-shopping-cart"></i>
-                      </div>
-                      <div class="step-content">
-                        <h4>Order Placed</h4>
-                        <p>Nov 12, 2023 10:30 AM</p>
-                      </div>
-                    </div>
-                    <div class="tracking-step active">
-                      <div class="step-icon">
-                        <i class="fas fa-check-circle"></i>
-                      </div>
-                      <div class="step-content">
-                        <h4>Payment Confirmed</h4>
-                        <p>Nov 12, 2023 10:35 AM</p>
-                      </div>
-                    </div>
-                    <div class="tracking-step">
-                      <div class="step-icon">
-                        <i class="fas fa-box"></i>
-                      </div>
-                      <div class="step-content">
-                        <h4>Processing</h4>
-                        <p>Estimated: Nov 13, 2023</p>
-                      </div>
-                    </div>
-                    <div class="tracking-step">
-                      <div class="step-icon">
-                        <i class="fas fa-shipping-fast"></i>
-                      </div>
-                      <div class="step-content">
-                        <h4>Shipped</h4>
-                        <p>Not yet shipped</p>
-                      </div>
-                    </div>
-                    <div class="tracking-step">
-                      <div class="step-icon">
-                        <i class="fas fa-home"></i>
-                      </div>
-                      <div class="step-content">
-                        <h4>Delivered</h4>
-                        <p>Estimated: Nov 16, 2023</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
+        <div class="header-right">
+          <div class="header-actions">
+            <button class="btn btn-primary" id="printInvoice">
+              <i class="fas fa-print"></i> Print Invoice
+            </button>
+            <button class="btn btn-success" id="syncOrder">
+              <i class="fas fa-sync-alt"></i> Re-sync Order
+            </button>
           </div>
         </div>
+      </header>
 
-        <!-- Order Actions -->
-        <div class="order-actions">
-          <div class="actions-section">
-            <h3>Order Actions</h3>
-            <div class="action-buttons">
-              <button class="btn btn-primary" id="updateStatusBtn">
-                <i class="fas fa-sync-alt"></i> Update Status
-              </button>
-              <button class="btn btn-warning" id="cancelOrderBtn">
-                <i class="fas fa-times-circle"></i> Cancel Order
-              </button>
-              <button class="btn btn-danger" id="refundOrderBtn">
-                <i class="fas fa-undo"></i> Refund Order
-              </button>
-              <button class="btn btn-light" id="sendEmailBtn">
-                <i class="fas fa-envelope"></i> Send Email
-              </button>
-            </div>
-          </div>
+      <!-- Order Overview -->
+      <div class="order-overview">
+        <!-- ... existing overview code ... -->
+      </div>
 
-          <!-- Sync History -->
-          <div class="sync-history">
+      <!-- Main Content Grid -->
+      <div class="content-grid">
+        <!-- Left Column -->
+        <div class="left-column">
+          <!-- Customer Details -->
+          <section class="info-section">
             <div class="section-header">
-              <h3>Sync History</h3>
-              <button class="btn btn-light btn-sm" id="viewFullHistory">
-                View Full History
+              <h3>
+                <i class="fas fa-user"></i>
+                Customer Details
+              </h3>
+              <button class="btn btn-light btn-sm edit-section-btn" data-section="customer">
+                <i class="fas fa-edit"></i> Edit
               </button>
             </div>
-            <div class="history-list">
-              <div class="history-item">
-                <div class="history-icon success">
-                  <i class="fas fa-check"></i>
-                </div>
-                <div class="history-content">
-                  <h4>Order synced with marketplace</h4>
-                  <p>Nov 12, 2023 10:30 AM - Successfully synced with Amazon</p>
-                </div>
+            <div class="section-body">
+              <div class="section-display" id="customerDisplay">
+                <p>
+                  <strong>Name:</strong>
+                  <span id="customerName">John Doe</span>
+                </p>
+                <p>
+                  <strong>Email:</strong>
+                  <span id="customerEmail">john@example.com</span>
+                </p>
+                <p>
+                  <strong>Phone:</strong>
+                  <span id="customerPhone">+91 9876543210</span>
+                </p>
+                <p>
+                  <strong>Customer ID:</strong>
+                  <span id="customerId">CUST-1001</span>
+                </p>
               </div>
-              <div class="history-item">
-                <div class="history-icon warning">
-                  <i class="fas fa-exclamation-triangle"></i>
+
+              <!-- Customer Edit Form -->
+              <div class="section-edit-form" id="customerEditForm" style="display: none;">
+                <div class="form-group">
+                  <label>Name</label>
+                  <input type="text" class="form-input" id="editCustomerName" value="John Doe">
                 </div>
-                <div class="history-content">
-                  <h4>Inventory update failed</h4>
-                  <p>Nov 12, 2023 10:25 AM - Product out of stock</p>
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" class="form-input" id="editCustomerEmail" value="john@example.com">
                 </div>
-              </div>
-              <div class="history-item">
-                <div class="history-icon info">
-                  <i class="fas fa-info-circle"></i>
+                <div class="form-group">
+                  <label>Phone</label>
+                  <input type="tel" class="form-input" id="editCustomerPhone" value="+91 9876543210">
                 </div>
-                <div class="history-content">
-                  <h4>Order created</h4>
-                  <p>Nov 12, 2023 10:20 AM - Customer placed order</p>
+                <div class="form-actions">
+                  <button class="btn btn-light cancel-edit-btn" data-section="customer">Cancel</button>
+                  <button class="btn btn-primary save-edit-btn" data-section="customer">Save Changes</button>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </main>
-    </div>
+          </section>
 
-    <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
-      <div class="spinner"></div>
-      <p>Loading order details...</p>
-    </div>
+          <!-- Shipping Details -->
+          <section class="info-section">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-shipping-fast"></i>
+                Shipping Details
+              </h3>
+              <button class="btn btn-light btn-sm edit-section-btn" data-section="shipping">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+            </div>
+            <div class="section-body">
+              <div class="section-display" id="shippingDisplay">
+                <p>
+                  <strong>Address:</strong>
+                  <span id="shippingAddressText">123 Main Street, Apartment 4B</span>
+                </p>
+                <p>
+                  <strong>City:</strong>
+                  <span id="shippingCity">Mumbai</span>
+                </p>
+                <p>
+                  <strong>State:</strong>
+                  <span id="shippingState">Maharashtra</span>
+                </p>
+                <p>
+                  <strong>Pincode:</strong>
+                  <span id="shippingPincode">400001</span>
+                </p>
+                <p>
+                  <strong>Shipping Status:</strong>
+                  <span id="shippingStatus">Processing</span>
+                </p>
+              </div>
 
-    <!-- Status Update Modal -->
-    <div class="modal" id="statusModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>Update Order Status</h3>
-          <button class="close-modal">&times;</button>
+              <!-- Shipping Edit Form -->
+              <div class="section-edit-form" id="shippingEditForm" style="display: none;">
+                <div class="form-group">
+                  <label>Address</label>
+                  <textarea class="form-textarea" id="editShippingAddress"
+                    rows="3">123 Main Street, Apartment 4B</textarea>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>City</label>
+                    <input type="text" class="form-input" id="editShippingCity" value="Mumbai">
+                  </div>
+                  <div class="form-group">
+                    <label>State</label>
+                    <input type="text" class="form-input" id="editShippingState" value="Maharashtra">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Pincode</label>
+                    <input type="text" class="form-input" id="editShippingPincode" value="400001">
+                  </div>
+                  <div class="form-group">
+                    <label>Shipping Status</label>
+                    <select class="form-select" id="editShippingStatus">
+                      <option value="pending">Pending</option>
+                      <option value="processing" selected>Processing</option>
+                      <option value="shipped">Shipped</option>
+                      <option value="delivered">Delivered</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-light cancel-edit-btn" data-section="shipping">Cancel</button>
+                  <button class="btn btn-primary save-edit-btn" data-section="shipping">Save Changes</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Billing Details -->
+          <section class="info-section">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-file-invoice-dollar"></i>
+                Billing Details
+              </h3>
+              <button class="btn btn-light btn-sm edit-section-btn" data-section="billing">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+            </div>
+            <div class="section-body">
+              <div class="section-display" id="billingDisplay">
+                <p>
+                  <strong>Billing Address:</strong>
+                  <span id="billingAddress">123 Main Street, Apartment 4B</span>
+                </p>
+                <p>
+                  <strong>GST Number:</strong>
+                  <span id="gstNumber">24AABCU9603R1ZM</span>
+                </p>
+                <p>
+                  <strong>Invoice Number:</strong>
+                  <span id="invoiceNumber">INV-2023-1001</span>
+                </p>
+              </div>
+
+              <!-- Billing Edit Form -->
+              <div class="section-edit-form" id="billingEditForm" style="display: none;">
+                <div class="form-group">
+                  <label>Billing Address</label>
+                  <textarea class="form-textarea" id="editBillingAddress"
+                    rows="3">123 Main Street, Apartment 4B</textarea>
+                </div>
+                <div class="form-group">
+                  <label>GST Number</label>
+                  <input type="text" class="form-input" id="editGstNumber" value="24AABCU9603R1ZM">
+                </div>
+                <div class="form-group">
+                  <label>Invoice Number</label>
+                  <input type="text" class="form-input" id="editInvoiceNumber" value="INV-2023-1001">
+                </div>
+                <div class="form-checkbox">
+                  <input type="checkbox" id="sameAsShipping" checked>
+                  <label for="sameAsShipping">Same as shipping address</label>
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-light cancel-edit-btn" data-section="billing">Cancel</button>
+                  <button class="btn btn-primary save-edit-btn" data-section="billing">Save Changes</button>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label>Select New Status</label>
-            <select class="form-select" id="newStatusSelect">
-              <option value="pending">Pending</option>
-              <option value="processing">Processing</option>
-              <option value="shipped">Shipped</option>
-              <option value="delivered">Delivered</option>
-              <option value="cancelled">Cancelled</option>
-              <option value="refunded">Refunded</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Notes (Optional)</label>
-            <textarea
-              class="form-textarea"
-              id="statusNotes"
-              placeholder="Add notes about this status change..."
-            ></textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-light" id="cancelStatusUpdate">Cancel</button>
-          <button class="btn btn-primary" id="confirmStatusUpdate">
-            Update Status
-          </button>
+
+        <!-- Right Column -->
+        <div class="right-column">
+          <!-- Order Items by Vendor -->
+          <section class="info-section">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-boxes"></i>
+                Order Items by Vendor
+              </h3>
+            </div>
+            <div class="section-body">
+              <!-- ... existing vendor items ... -->
+            </div>
+          </section>
+
+          <!-- Payment Details -->
+          <section class="info-section">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-credit-card"></i>
+                Payment Details
+              </h3>
+              <button class="btn btn-light btn-sm edit-section-btn" data-section="payment">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+            </div>
+            <div class="section-body">
+              <div class="section-display" id="paymentDisplay">
+                <div class="detail-row">
+                  <span>Transaction ID:</span>
+                  <span id="transactionId">TXN-789012</span>
+                </div>
+                <div class="detail-row">
+                  <span>Payment Status:</span>
+                  <span id="paymentStatus">Paid</span>
+                </div>
+                <div class="detail-row">
+                  <span>Payment Date:</span>
+                  <span id="paymentDate">Nov 12, 2023 14:30</span>
+                </div>
+                <div class="detail-row">
+                  <span>Payment Gateway:</span>
+                  <span id="paymentGateway">Razorpay</span>
+                </div>
+                <div class="detail-row total-row">
+                  <span>Amount Paid:</span>
+                  <span id="amountPaid">₹1,250.00</span>
+                </div>
+              </div>
+
+              <!-- Payment Edit Form -->
+              <div class="section-edit-form" id="paymentEditForm" style="display: none;">
+                <div class="form-group">
+                  <label>Transaction ID</label>
+                  <input type="text" class="form-input" id="editTransactionId" value="TXN-789012">
+                </div>
+                <div class="form-group">
+                  <label>Payment Status</label>
+                  <select class="form-select" id="editPaymentStatus">
+                    <option value="pending">Pending</option>
+                    <option value="paid" selected>Paid</option>
+                    <option value="failed">Failed</option>
+                    <option value="refunded">Refunded</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Payment Gateway</label>
+                  <select class="form-select" id="editPaymentGateway">
+                    <option value="Razorpay">Razorpay</option>
+                    <option value="Stripe">Stripe</option>
+                    <option value="PayPal">PayPal</option>
+                    <option value="Cash on Delivery">Cash on Delivery</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Amount Paid</label>
+                  <input type="text" class="form-input" id="editAmountPaid" value="1250.00">
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-light cancel-edit-btn" data-section="payment">Cancel</button>
+                  <button class="btn btn-primary save-edit-btn" data-section="payment">Save Changes</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Tracking Information -->
+          <section class="info-section">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-map-marker-alt"></i>
+                Tracking Information
+              </h3>
+              <button class="btn btn-light btn-sm edit-section-btn" data-section="tracking">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+            </div>
+            <div class="section-body">
+              <div class="section-display" id="trackingDisplay">
+                <div class="tracking-number-display">
+                  <p>
+                    <strong>Tracking Number:</strong>
+                    <span id="trackingNumberText">ABC123456789</span>
+                    <button class="btn-icon copy-tracking-btn" title="Copy Tracking Number">
+                      <i class="fas fa-copy"></i>
+                    </button>
+                  </p>
+                  <p>
+                    <strong>Courier Service:</strong>
+                    <span id="courierService">BlueDart</span>
+                  </p>
+                  <p>
+                    <strong>Last Updated:</strong>
+                    <span id="trackingLastUpdated">Nov 13, 2023 14:30 PM</span>
+                  </p>
+                </div>
+
+                <!-- Tracking Timeline -->
+                <div class="tracking-timeline">
+                  <!-- ... existing timeline ... -->
+                </div>
+              </div>
+
+              <!-- Tracking Edit Form -->
+              <div class="section-edit-form" id="trackingEditForm" style="display: none;">
+                <div class="form-group">
+                  <label>Tracking Number</label>
+                  <input type="text" class="form-input" id="editTrackingNumber" value="ABC123456789">
+                </div>
+                <div class="form-group">
+                  <label>Courier Service</label>
+                  <select class="form-select" id="editCourierService">
+                    <option value="BlueDart">BlueDart</option>
+                    <option value="DTDC">DTDC</option>
+                    <option value="Delhivery">Delhivery</option>
+                    <option value="FedEx">FedEx</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Tracking Status</label>
+                  <select class="form-select" id="editTrackingStatus">
+                    <option value="pending">Pending</option>
+                    <option value="processing">Processing</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                  </select>
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-light cancel-edit-btn" data-section="tracking">Cancel</button>
+                  <button class="btn btn-primary save-edit-btn" data-section="tracking">Save Changes</button>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
-    </div>
 
-    <script src="js/main.js"></script>
-    <script src="js/order-detail.js"></script>
-  </body>
+      <!-- Order Actions -->
+      <div class="order-actions">
+        <!-- ... existing actions ... -->
+      </div>
+    </main>
+  </div>
+  <script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+      function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+      <i class="fas fa-${type === 'success' ? 'check-circle' :
+            type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+      <span>${message}</span>
+    `;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          notification.classList.add('show');
+        }, 10);
+
+        setTimeout(() => {
+          notification.classList.remove('show');
+          setTimeout(() => {
+            if (notification.parentNode) {
+              notification.parentNode.removeChild(notification);
+            }
+          }, 300);
+        }, 3000);
+      }
+
+      document.querySelectorAll('.edit-section-btn').forEach(button => {
+        button.addEventListener('click', function () {
+          const section = this.getAttribute('data-section');
+          const displayElement = document.getElementById(`${section}Display`);
+          const editElement = document.getElementById(`${section}EditForm`);
+
+          if (displayElement && editElement) {
+            displayElement.style.display = 'none';
+            editElement.style.display = 'block';
+          }
+        });
+      });
+
+      document.querySelectorAll('.cancel-edit-btn').forEach(button => {
+        button.addEventListener('click', function () {
+          const section = this.getAttribute('data-section');
+          const displayElement = document.getElementById(`${section}Display`);
+          const editElement = document.getElementById(`${section}EditForm`);
+
+          if (displayElement && editElement) {
+            displayElement.style.display = 'block';
+            editElement.style.display = 'none';
+          }
+        });
+      });
+
+      document.querySelectorAll('.save-edit-btn').forEach(button => {
+        button.addEventListener('click', function () {
+          const section = this.getAttribute('data-section');
+          saveSectionChanges(section);
+        });
+      });
+
+      document.addEventListener('click', function (e) {
+        if (e.target.closest('.copy-tracking-btn')) {
+          const trackingNumber = document.getElementById('trackingNumberText').textContent;
+          navigator.clipboard.writeText(trackingNumber).then(() => {
+            showNotification('Tracking number copied!', 'success');
+          });
+        }
+      });
+
+      const sameAsShippingCheckbox = document.getElementById('sameAsShipping');
+      if (sameAsShippingCheckbox) {
+        sameAsShippingCheckbox.addEventListener('change', function () {
+          const billingAddressField = document.getElementById('editBillingAddress');
+          if (this.checked) {
+            const shippingAddress = document.getElementById('editShippingAddress').value;
+            billingAddressField.value = shippingAddress;
+          }
+        });
+      }
+
+      function saveSectionChanges(section) {
+        const displayElement = document.getElementById(`${section}Display`);
+        const editElement = document.getElementById(`${section}EditForm`);
+
+        switch (section) {
+          case 'customer':
+            const customerName = document.getElementById('editCustomerName').value;
+            const customerEmail = document.getElementById('editCustomerEmail').value;
+            const customerPhone = document.getElementById('editCustomerPhone').value;
+
+            document.getElementById('customerName').textContent = customerName;
+            document.getElementById('customerEmail').textContent = customerEmail;
+            document.getElementById('customerPhone').textContent = customerPhone;
+            break;
+
+          case 'shipping':
+            const shippingAddress = document.getElementById('editShippingAddress').value;
+            const shippingCity = document.getElementById('editShippingCity').value;
+            const shippingState = document.getElementById('editShippingState').value;
+            const shippingPincode = document.getElementById('editShippingPincode').value;
+            const shippingStatus = document.getElementById('editShippingStatus').value;
+
+            document.getElementById('shippingAddressText').textContent = shippingAddress;
+            document.getElementById('shippingCity').textContent = shippingCity;
+            document.getElementById('shippingState').textContent = shippingState;
+            document.getElementById('shippingPincode').textContent = shippingPincode;
+            document.getElementById('shippingStatus').textContent = shippingStatus;
+            break;
+
+          case 'billing':
+            const billingAddress = document.getElementById('editBillingAddress').value;
+            const gstNumber = document.getElementById('editGstNumber').value;
+            const invoiceNumber = document.getElementById('editInvoiceNumber').value;
+
+            document.getElementById('billingAddress').textContent = billingAddress;
+            document.getElementById('gstNumber').textContent = gstNumber;
+            document.getElementById('invoiceNumber').textContent = invoiceNumber;
+            break;
+
+          case 'payment':
+            const transactionId = document.getElementById('editTransactionId').value;
+            const paymentStatus = document.getElementById('editPaymentStatus').value;
+            const paymentGateway = document.getElementById('editPaymentGateway').value;
+            const amountPaid = document.getElementById('editAmountPaid').value;
+
+            document.getElementById('transactionId').textContent = transactionId;
+            document.getElementById('paymentStatus').textContent = paymentStatus;
+            document.getElementById('paymentGateway').textContent = paymentGateway;
+            document.getElementById('amountPaid').textContent = `₹${amountPaid}`;
+            break;
+
+          case 'tracking':
+            const trackingNumber = document.getElementById('editTrackingNumber').value;
+            const courierService = document.getElementById('editCourierService').value;
+            const trackingStatus = document.getElementById('editTrackingStatus').value;
+
+            document.getElementById('trackingNumberText').textContent = trackingNumber;
+            document.getElementById('courierService').textContent = courierService;
+
+            // Update timestamp
+            const now = new Date();
+            const formattedDate = now.toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric'
+            }) + ' ' + now.toLocaleTimeString('en-US', {
+              hour: '2-digit',
+              minute: '2-digit'
+            });
+            document.getElementById('trackingLastUpdated').textContent = formattedDate;
+
+            updateTrackingTimeline(trackingStatus);
+            break;
+        }
+
+
+        showNotification(`${section.charAt(0).toUpperCase() + section.slice(1)} information updated successfully!`, 'success');
+
+
+        if (displayElement && editElement) {
+          displayElement.style.display = 'block';
+          editElement.style.display = 'none';
+        }
+
+
+      }
+
+
+      function updateTrackingTimeline(status) {
+        const steps = document.querySelectorAll('.tracking-step');
+        steps.forEach(step => step.classList.remove('active'));
+
+        if (status === 'processing') {
+          steps[0].classList.add('active');
+          steps[1].classList.add('active');
+          steps[2].classList.add('active');
+        } else if (status === 'shipped') {
+          steps[0].classList.add('active');
+          steps[1].classList.add('active');
+          steps[2].classList.add('active');
+          steps[3].classList.add('active');
+        } else if (status === 'delivered') {
+          steps.forEach(step => step.classList.add('active'));
+        }
+      }
+
+
+
+      // Function to save to server (example)
+      function saveToServer(section, data) {
+        console.log(`Saving ${section} data:`, data);
+        /*
+        fetch('/api/update-order-details', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            section: section,
+            data: data,
+            orderId: getCurrentOrderId()
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          showNotification('Changes saved successfully!', 'success');
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          showNotification('Failed to save changes', 'error');
+        });
+        */
+      }
+
+      // Function to get current order ID
+      function getCurrentOrderId() {
+        const orderIdElem = document.getElementById('orderIdDisplay');
+        return orderIdElem ? orderIdElem.textContent.replace('Order #', '') : '';
+      }
+    });
+
+    document.querySelectorAll('.save-edit-btn').forEach(button => {
+      button.addEventListener('click', function () {
+        const section = this.getAttribute('data-section');
+
+        const displayElement = document.getElementById(`${section}Display`);
+        const editElement = document.getElementById(`${section}EditForm`);
+
+        if (displayElement && editElement) {
+          displayElement.style.display = 'block';
+          editElement.style.display = 'none';
+
+          showNotification('Changes saved successfully!', 'success');
+        }
+      });
+    });
+  </script>
+</body>
+
 </html>
 <!DOCTYPE html>

@@ -6,11 +6,424 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard - System Overview</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3f37c9;
+      --success: #4cc9f0;
+      --warning: #f72585;
+      --danger: #f72585;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --gray: #6c757d;
+      --light-gray: #e9ecef;
+      --border-radius: 10px;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/dashboard.css" />
+    body {
+      background-color: #f5f7fb;
+      color: var(--dark);
+      line-height: 1.6;
+    }
 
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+
+    .sidebar {
+      width: 260px;
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      padding: 24px 0;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
+      transition: width 0.3s ease;
+      box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .logo {
+      padding: 0 20px 20px;
+      border-bottom: 1px solid var(--light-gray);
+      margin-bottom: 20px;
+    }
+
+    .logo h2 {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .logo span {
+      color: var(--secondary);
+    }
+
+    .nav-links {
+      list-style: none;
+      padding: 0 15px;
+    }
+
+    .nav-links li {
+      margin-bottom: 5px;
+    }
+
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      padding: 12px 15px;
+      color: var(--gray);
+      text-decoration: none;
+      border-radius: var(--border-radius);
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background-color: rgba(67, 97, 238, 0.1);
+      color: var(--primary);
+    }
+
+    .nav-links i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Main Content */
+
+    .main-content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      background-color: white;
+      padding: 15px 25px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+
+    .header-left h1 {
+      font-size: 24px;
+      color: var(--dark);
+    }
+
+    .header-left p {
+      color: var(--gray);
+      font-size: 14px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 15px;
+      background-color: var(--light);
+      border-radius: 30px;
+    }
+
+    .user-profile img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    /* Widget Grid */
+
+    .widgets-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .widget {
+      background-color: white;
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
+    }
+
+    .widget:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .widget-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .widget-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--gray);
+    }
+
+    .widget-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+    }
+
+    .widget-content {
+      margin-top: 10px;
+    }
+
+    .widget-stat {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .widget-subtext {
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    .progress-bar {
+      height: 8px;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      margin-top: 15px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      border-radius: 4px;
+    }
+
+    /* Charts and Lists */
+
+    .dashboard-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .chart-container,
+    .list-container {
+      background-color: white;
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--box-shadow);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-title a {
+      font-size: 14px;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .chart-placeholder {
+      height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f8f9fa;
+      border-radius: var(--border-radius);
+      color: var(--gray);
+      font-weight: 500;
+    }
+
+    .list {
+      list-style: none;
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .list-item:last-child {
+      border-bottom: none;
+    }
+
+    .list-item-info h4 {
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+
+    .list-item-info p {
+      font-size: 13px;
+      color: var(--gray);
+    }
+
+    .status {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-success {
+      background-color: rgba(76, 201, 240, 0.1);
+      color: #4cc9f0;
+    }
+
+    .status-warning {
+      background-color: rgba(247, 37, 133, 0.1);
+      color: #f72585;
+    }
+
+    .status-info {
+      background-color: rgba(67, 97, 238, 0.1);
+      color: var(--primary);
+    }
+
+    /* Quick Actions */
+
+    .quick-actions {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background-color: white;
+      padding: 15px 20px;
+      border-radius: var(--border-radius);
+      text-decoration: none;
+      color: var(--dark);
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .action-btn:hover {
+      background-color: var(--primary);
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    .action-btn i {
+      font-size: 20px;
+    }
+
+    .action-text h4 {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .action-text p {
+      font-size: 13px;
+      color: var(--gray);
+    }
+
+    .action-btn:hover .action-text p {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Responsive */
+
+    @media (max-width: 1200px) {
+      .dashboard-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .sidebar {
+        width: 70px;
+        padding: 20px 0;
+      }
+
+      .logo h2 span,
+      .logo h2:not(:first-child),
+      .nav-links a span {
+        display: none;
+      }
+
+      .logo {
+        text-align: center;
+        padding: 0 0 20px;
+      }
+
+      .main-content {
+        margin-left: 70px;
+      }
+
+      .nav-links {
+        padding: 0 10px;
+      }
+
+      .nav-links a {
+        justify-content: center;
+        padding: 15px 0;
+      }
+
+      .nav-links i {
+        margin-right: 0;
+        font-size: 20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .widgets-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .action-btn {
+        min-width: 100%;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -265,9 +678,280 @@
     </main>
   </div>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Pending Approvals Data
+      const approvalsData = [
+        {
+          type: "Vendor",
+          name: "TechGadgets Inc.",
+          time: "2 hours ago",
+        },
+        {
+          type: "Product",
+          name: "Wireless Earbuds Pro",
+          time: "3 hours ago",
+        },
+        {
+          type: "Vendor",
+          name: "HomeStyle Living",
+          time: "5 hours ago",
+        },
+        {
+          type: "Product",
+          name: "Ergonomic Office Chair",
+          time: "1 day ago",
+        },
+        {
+          type: "Vendor",
+          name: "EcoFriendly Supplies",
+          time: "1 day ago",
+        },
+      ];
 
-  <script src="js/email-notification.js"></script>
+      const syncStatusData = [
+        {
+          service: "Product Database",
+          status: "success",
+          time: "5 mins ago",
+        },
+        {
+          service: "Vendor API",
+          status: "warning",
+          time: "15 mins ago",
+        },
+        {
+          service: "Payment Gateway",
+          status: "success",
+          time: "30 mins ago",
+        },
+        {
+          service: "Inventory System",
+          status: "warning",
+          time: "2 hours ago",
+        },
+        {
+          service: "Shipping Service",
+          status: "success",
+          time: "1 hour ago",
+        },
+      ];
 
+      // Populate Pending Approvals List
+      const approvalsList = document.getElementById("approvalsList");
+      approvalsData.forEach((item) => {
+        const listItem = document.createElement("li");
+        listItem.className = "list-item";
+        listItem.innerHTML = `
+                    <div class="list-item-info">
+                        <h4>${item.name}</h4>
+                        <p>${item.type} • ${item.time}</p>
+                    </div>
+                    <span class="status ${item.type === "Vendor" ? "status-warning" : "status-info"
+          }">${item.type}</span>
+                `;
+        approvalsList.appendChild(listItem);
+      });
+
+      // Populate Sync Status List
+      const syncStatusList = document.getElementById("syncStatusList");
+      syncStatusData.forEach((item) => {
+        const listItem = document.createElement("li");
+        listItem.className = "list-item";
+
+        let statusText, statusClass;
+        if (item.status === "success") {
+          statusText = "Synced";
+          statusClass = "status-success";
+        } else {
+          statusText = "Error";
+          statusClass = "status-warning";
+        }
+
+        listItem.innerHTML = `
+                    <div class="list-item-info">
+                        <h4>${item.service}</h4>
+                        <p>Last sync: ${item.time}</p>
+                    </div>
+                    <span class="status ${statusClass}">${statusText}</span>
+                `;
+        syncStatusList.appendChild(listItem);
+      });
+
+      // Chart Simulation
+      const ordersChart = document.getElementById("ordersChart");
+      const chartData = {
+        today: 342,
+        week: 2184,
+        month: 8920,
+      };
+
+      // Create a simple bar chart visualization
+      ordersChart.innerHTML = "";
+      ordersChart.style.flexDirection = "column";
+      ordersChart.style.padding = "20px";
+
+      const chartBars = document.createElement("div");
+      chartBars.style.display = "flex";
+      chartBars.style.justifyContent = "space-around";
+      chartBars.style.alignItems = "flex-end";
+      chartBars.style.height = "180px";
+      chartBars.style.width = "100%";
+      chartBars.style.marginBottom = "20px";
+
+      // Create bars for each time period
+      const periods = [
+        {
+          label: "Today",
+          value: chartData.today,
+          color: "#4361ee",
+          height: 70,
+        },
+        {
+          label: "This Week",
+          value: chartData.week,
+          color: "#3a86ff",
+          height: 85,
+        },
+        {
+          label: "This Month",
+          value: chartData.month,
+          color: "#8338ec",
+          height: 100,
+        },
+      ];
+
+      periods.forEach((period) => {
+        const barContainer = document.createElement("div");
+        barContainer.style.display = "flex";
+        barContainer.style.flexDirection = "column";
+        barContainer.style.alignItems = "center";
+
+        const bar = document.createElement("div");
+        bar.style.width = "60px";
+        bar.style.height = `${period.height}%`;
+        bar.style.backgroundColor = period.color;
+        bar.style.borderRadius = "5px";
+        bar.style.marginBottom = "10px";
+        bar.style.transition = "height 0.5s ease";
+
+        const barLabel = document.createElement("div");
+        barLabel.textContent = period.label;
+        barLabel.style.fontWeight = "600";
+        barLabel.style.marginBottom = "5px";
+
+        const barValue = document.createElement("div");
+        barValue.textContent = period.value.toLocaleString();
+        barValue.style.fontSize = "14px";
+        barValue.style.color = "#6c757d";
+
+        barContainer.appendChild(barLabel);
+        barContainer.appendChild(bar);
+        barContainer.appendChild(barValue);
+        chartBars.appendChild(barContainer);
+      });
+
+      ordersChart.appendChild(chartBars);
+
+      // Add chart title
+      const chartTitle = document.createElement("div");
+      chartTitle.textContent = "Orders by Time Period";
+      chartTitle.style.fontWeight = "600";
+      chartTitle.style.marginBottom = "10px";
+      chartTitle.style.fontSize = "18px";
+      ordersChart.insertBefore(chartTitle, chartBars);
+
+      // Add some animation to bars
+      setTimeout(() => {
+        const bars = chartBars.querySelectorAll("div > div");
+        bars.forEach((bar, index) => {
+          if (bar.style.backgroundColor) {
+            bar.style.height = periods[index].height + "%";
+          }
+        });
+      }, 300);
+
+      // Quick links functionality
+      const approvalsLink = document.getElementById("approvalsLink");
+      const approvalsAction = document.getElementById("approvalsAction");
+
+      approvalsLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        // Navigate to vendor management page
+        window.location.href = "vendor-management.html";
+      });
+
+      approvalsAction.addEventListener("click", function (e) {
+        e.preventDefault();
+        // Already linked to vendor-management.html
+        // Let the default link action happen
+      });
+
+      // Update stats periodically (simulation)
+      setInterval(() => {
+        // Update orders today with random fluctuation
+        const ordersTodayWidget = document.querySelector(
+          ".widget:nth-child(5) .widget-stat"
+        );
+        const currentOrders = parseInt(
+          ordersTodayWidget.textContent.replace(/,/g, "")
+        );
+        const change = Math.floor(Math.random() * 10) - 3; // -3 to +6
+        const newOrders = Math.max(300, currentOrders + change);
+        ordersTodayWidget.textContent = newOrders.toLocaleString();
+
+        // Update the chart with new data
+        const newChartData = {
+          today: newOrders,
+          week: Math.floor(newOrders * 6.5),
+          month: Math.floor(newOrders * 26),
+        };
+
+        // Update chart bars
+        const bars = chartBars.querySelectorAll("div > div");
+        const newHeights = [70, 85, 100];
+
+        bars.forEach((bar, index) => {
+          if (bar.style.backgroundColor) {
+            // Update the value label
+            const barContainer = bar.parentElement;
+            const valueElement = barContainer.lastChild;
+            if (index === 0)
+              valueElement.textContent = newChartData.today.toLocaleString();
+            if (index === 1)
+              valueElement.textContent = newChartData.week.toLocaleString();
+            if (index === 2)
+              valueElement.textContent = newChartData.month.toLocaleString();
+          }
+        });
+      }, 5000); // Update every 5 seconds
+
+      // Add click handlers to widgets that should navigate to vendor management
+      const vendorWidgets = document.querySelectorAll(".widget");
+      vendorWidgets[0].addEventListener("click", function () {
+        // Total Vendors widget
+        window.location.href = "vendor-management.html";
+      });
+
+      vendorWidgets[1].addEventListener("click", function () {
+        // Active Vendors widget
+        window.location.href = "vendor-management.html?filter=active";
+      });
+
+      vendorWidgets[7].addEventListener("click", function () {
+        // Pending Approvals widget
+        window.location.href = "vendor-management.html?filter=pending";
+      });
+
+      // Handle navigation based on URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const fromPage = urlParams.get("from");
+      if (fromPage === "vendor-management") {
+        // Show a welcome back message or update something
+        console.log("Navigated back from vendor management page");
+      }
+    });
+  </script>
 </body>
 
 </html>

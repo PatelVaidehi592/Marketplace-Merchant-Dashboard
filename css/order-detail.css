@@ -1,5 +1,217 @@
 /* Order Detail Page Specific Styles */
+/* Section Edit Forms */
+.section-edit-form {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
 
+/* Add to your order-detail.css */
+@media print {
+  .sidebar, 
+  .main-header, 
+  .order-actions, 
+  .btn,
+  .edit-section-btn,
+  .section-edit-form,
+  .sync-history,
+  .loading-overlay,
+  .modal {
+    display: none !important;
+  }
+  
+  .container {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .main-content {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .info-section {
+    break-inside: avoid;
+    margin-bottom: 20px;
+    border: 1px solid #ddd !important;
+    padding: 15px !important;
+  }
+  
+  .section-header {
+    background: #f5f5f5 !important;
+    -webkit-print-color-adjust: exact;
+    color: #000 !important;
+  }
+  
+  .order-overview {
+    background: #f9f9f9 !important;
+    -webkit-print-color-adjust: exact;
+    border: 1px solid #ddd !important;
+  }
+  
+  @page {
+    margin: 20mm;
+    size: A4;
+  }
+  
+  body {
+    font-size: 12pt !important;
+    line-height: 1.4 !important;
+    color: #000 !important;
+    background: white !important;
+  }
+  
+  h1, h2, h3, h4 {
+    color: #000 !important;
+  }
+  
+  /* Add print header */
+  body::before {
+    content: "INVOICE - " attr(data-order-id);
+    display: block;
+    text-align: center;
+    font-size: 18pt;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #000;
+  }
+}
+
+.section-edit-form .form-group {
+  margin-bottom: 15px;
+}
+
+.section-edit-form .form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.section-edit-form .form-row .form-group {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.section-edit-form .form-input,
+.section-edit-form .form-select,
+.section-edit-form .form-textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.section-edit-form .form-input:focus,
+.section-edit-form .form-select:focus,
+.section-edit-form .form-textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.section-edit-form .form-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.section-edit-form .form-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 15px 0;
+}
+
+.section-edit-form .form-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+.section-edit-form .form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+/* Tracking specific styles */
+.tracking-number-display p {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tracking-number-display strong {
+  min-width: 140px;
+  display: inline-block;
+}
+
+.btn-icon {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.3s;
+}
+
+.btn-icon:hover {
+  background: #f5f5f5;
+  color: #333;
+}
+
+/* Notification Styles */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: white;
+  border-radius: 8px;
+  padding: 15px 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateX(120%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  max-width: 350px;
+}
+
+.notification.show {
+  transform: translateX(0);
+}
+
+.notification.success {
+  border-left: 4px solid #28a745;
+}
+
+.notification.success i {
+  color: #28a745;
+}
+
+.notification.error {
+  border-left: 4px solid #dc3545;
+}
+
+.notification.error i {
+  color: #dc3545;
+}
+
+.notification.info {
+  border-left: 4px solid #17a2b8;
+}
+
+.notification.info i {
+  color: #17a2b8;
+}
 /* Order Overview */
 .order-overview {
     margin-bottom: 30px;
