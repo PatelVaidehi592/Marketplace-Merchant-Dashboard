@@ -1,0 +1,2350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Product Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3f37c9;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
+      --light: #f8f9fa;
+      --dark: #111827;
+      --gray: #6b7280;
+      --light-gray: #e9ecef;
+      --border: #e5e7eb;
+      --card: #ffffff;
+      --bg: #f5f7fb;
+      --border-radius: 10px;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 260px;
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      padding: 24px 0;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
+      box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .logo {
+      padding: 0 20px 20px;
+      border-bottom: 1px solid var(--light-gray);
+      margin-bottom: 20px;
+    }
+
+    .logo h2 {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .logo span {
+      color: var(--secondary);
+    }
+
+    .nav-links {
+      list-style: none;
+      padding: 0 15px;
+    }
+
+    .nav-links li {
+      margin-bottom: 5px;
+    }
+
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      padding: 12px 15px;
+      color: var(--gray);
+      text-decoration: none;
+      border-radius: var(--border-radius);
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background-color: rgba(67, 97, 238, 0.1);
+      color: var(--primary);
+    }
+
+    .nav-links i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      background-color: white;
+      padding: 15px 25px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      border-left: 4px solid var(--primary);
+    }
+
+    .header-left h1 {
+      font-size: 24px;
+      color: var(--dark);
+    }
+
+    .header-left p {
+      color: var(--gray);
+      font-size: 14px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 15px;
+      background-color: var(--light);
+      border-radius: 30px;
+    }
+
+    .user-profile img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .page-container {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 22px 26px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-header h1 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .page-subtext {
+      color: var(--gray);
+      font-size: 13px;
+    }
+
+    .stats-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 24px;
+      box-shadow: var(--box-shadow);
+      border-top: 4px solid;
+      transition: var(--transition);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-card.primary {
+      border-top-color: var(--primary);
+    }
+
+    .stat-card.success {
+      border-top-color: var(--success);
+    }
+
+    .stat-card.warning {
+      border-top-color: var(--warning);
+    }
+
+    .stat-card.info {
+      border-top-color: var(--info);
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 8px 0;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--gray);
+      font-weight: 500;
+    }
+
+    .stat-trend {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .stat-trend.positive {
+      color: var(--success);
+    }
+
+    .stat-trend.negative {
+      color: var(--danger);
+    }
+
+    .advanced-filters {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 24px;
+      box-shadow: var(--box-shadow);
+      margin-bottom: 30px;
+      border: 1px solid var(--border);
+    }
+
+    .filter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .filter-header h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .filter-toggle {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .filter-group label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gray);
+    }
+
+    .filter-group input,
+    .filter-group select {
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      transition: var(--transition);
+      background: white;
+    }
+
+    .filter-group input:focus,
+    .filter-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+    }
+
+    .filter-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: var(--light);
+      color: var(--dark);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .table-container {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .table-header h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .search-box {
+      position: relative;
+      min-width: 300px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 16px 12px 44px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      transition: var(--transition);
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray);
+    }
+
+    .product-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .product-table thead th {
+      background: #f8fafc;
+      padding: 16px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray);
+      text-align: left;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .product-table tbody tr {
+      background: white;
+      transition: var(--transition);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .product-table tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    .product-table tbody tr.selected {
+      background: #eef3ff;
+    }
+
+    .product-table td {
+      padding: 16px 20px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .product-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .product-image {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      background: var(--light);
+    }
+
+    .product-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-name {
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 4px;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .product-name:hover {
+      color: var(--primary);
+    }
+
+    .product-sku {
+      font-size: 12px;
+      color: var(--gray);
+    }
+
+    .badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .badge.active {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+    }
+
+    .badge.pending {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+
+    .badge.private {
+      background: #e5e7eb;
+      color: #374151;
+      border: 1px solid #d1d5db;
+    }
+
+    .badge.rejected {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .badge.featured {
+      background: #dbeafe;
+      color: #1e40af;
+      border: 1px solid #93c5fd;
+    }
+
+    .price-cell {
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .original-price {
+      font-size: 12px;
+      color: var(--gray);
+      text-decoration: line-through;
+      margin-right: 4px;
+    }
+
+    .action-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .action-btn {
+      padding: 8px 16px;
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+
+    .action-btn:hover {
+      background: var(--light);
+      border-color: var(--primary);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--border);
+      min-width: 180px;
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: var(--transition);
+    }
+
+    .action-dropdown:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--dark);
+      text-decoration: none;
+      transition: var(--transition);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dropdown-item:last-child {
+      border-bottom: none;
+    }
+
+    .dropdown-item:hover {
+      background: #f8fafc;
+      color: var(--primary);
+    }
+
+    .dropdown-item.danger:hover {
+      color: var(--danger);
+    }
+
+    .checkbox-container {
+      display: inline-block;
+      position: relative;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+      opacity: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .checkbox-custom {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      display: inline-block;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .checkbox-container input[type="checkbox"]:checked+.checkbox-custom {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .checkbox-container input[type="checkbox"]:checked+.checkbox-custom::after {
+      content: "✓";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      border-top: 1px solid var(--border);
+      background: white;
+    }
+
+    .pagination-info {
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    .pagination-controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .page-btn {
+      padding: 8px 12px;
+      border: 1.5px solid var(--border);
+      background: white;
+      border-radius: 6px;
+      font-size: 14px;
+      color: var(--dark);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .page-btn:hover:not(:disabled) {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .page-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 800px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--gray);
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .image-preview {
+      width: 120px;
+      height: 120px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 2px dashed var(--border);
+      display: none;
+      margin-top: 10px;
+    }
+
+    .image-preview.visible {
+      display: block;
+    }
+
+    /* Product Detail Page Styles */
+    .product-detail-container {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: var(--box-shadow);
+    }
+
+    .product-detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .product-main-info {
+      flex: 1;
+    }
+
+    .product-main-info h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: var(--dark);
+    }
+
+    .product-sku-large {
+      font-size: 16px;
+      color: var(--gray);
+      margin-bottom: 20px;
+    }
+
+    .product-image-large {
+      width: 300px;
+      height: 300px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+
+    .product-detail-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .detail-section {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .detail-section h3 {
+      margin-bottom: 20px;
+      color: var(--dark);
+      font-size: 18px;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 10px;
+    }
+
+    .detail-row {
+      display: flex;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .detail-label {
+      flex: 1;
+      font-weight: 600;
+      color: var(--gray);
+    }
+
+    .detail-value {
+      flex: 2;
+      color: var(--dark);
+    }
+
+    .status-badge-large {
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .back-button {
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 992px) {
+      .sidebar {
+        width: 70px;
+        padding: 20px 0;
+      }
+
+      .logo h2 span,
+      .logo h2:not(:first-child),
+      .nav-links a span {
+        display: none;
+      }
+
+      .logo {
+        text-align: center;
+        padding: 0 0 20px;
+      }
+
+      .main-content {
+        margin-left: 70px;
+      }
+
+      .nav-links {
+        padding: 0 10px;
+      }
+
+      .nav-links a {
+        justify-content: center;
+        padding: 15px 0;
+      }
+
+      .nav-links i {
+        margin-right: 0;
+        font-size: 20px;
+      }
+
+      .table-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+      }
+
+      .search-box {
+        min-width: 100%;
+      }
+
+      .product-detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .stats-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .product-table {
+        display: block;
+        overflow-x: auto;
+      }
+
+      .pagination {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <main class="main-content">
+      <header>
+        <div class="header-left">
+          <h1 id="pageTitle">Product Management</h1>
+          <p id="pageDescription">
+            Manage your marketplace products, inventory, and visibility
+          </p>
+        </div>
+        <div class="header-right">
+          <a href="Dashboard.html" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+          </a>
+          <div class="user-profile">
+            <img src="https://ui-avatars.com/api/?name=Admin+User&background=4361ee&color=fff" alt="Admin User" />
+            <div>
+              <h4>Admin User</h4>
+              <p>Super Admin</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-container">
+        <div class="page-header">
+          <div>
+            <h1>Product Management</h1>
+            <div class="page-subtext">
+              Manage your marketplace products, inventory, and visibility
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-secondary" onclick="exportProducts()">
+              <i class="fas fa-download"></i> Export
+            </button>
+            <button class="btn btn-primary" onclick="openAddProductModal()">
+              <i class="fas fa-plus"></i> Add Product
+            </button>
+          </div>
+        </div>
+
+        <div class="stats-cards">
+          <div class="stat-card primary">
+            <div class="stat-label">Total Products</div>
+            <div id="totalProducts" class="stat-value">0</div>
+            <div class="stat-trend positive">
+              <i class="fas fa-arrow-up"></i> 8% from last week
+            </div>
+          </div>
+
+          <div class="stat-card success">
+            <div class="stat-label">Active Products</div>
+            <div id="activeProducts" class="stat-value">0</div>
+            <div class="stat-trend positive">
+              <i class="fas fa-arrow-up"></i> 5% from last week
+            </div>
+          </div>
+
+          <div class="stat-card warning">
+            <div class="stat-label">Pending Approval</div>
+            <div id="pendingProducts" class="stat-value">0</div>
+            <div class="stat-trend negative">
+              <i class="fas fa-arrow-down"></i> 12% from yesterday
+            </div>
+          </div>
+
+          <div class="stat-card info">
+            <div class="stat-label">Low Stock</div>
+            <div id="lowStockProducts" class="stat-value">0</div>
+            <div class="stat-trend positive">
+              <i class="fas fa-arrow-down"></i> 3% from yesterday
+            </div>
+          </div>
+        </div>
+
+        <div class="advanced-filters">
+          <div class="filter-header">
+            <h3>Advanced Filters</h3>
+            <button class="filter-toggle" onclick="toggleFilters()">
+              <i class="fas fa-sliders-h"></i> Toggle Filters
+            </button>
+          </div>
+
+          <div class="filter-grid" id="filterGrid">
+            <div class="filter-group">
+              <label><i class="fas fa-search"></i> Search Products</label>
+              <input type="text" placeholder="Search by name, SKU, or description..." id="searchInput" />
+            </div>
+
+            <div class="filter-group">
+              <label><i class="fas fa-store"></i> Vendor</label>
+              <select id="vendorFilter">
+                <option value="">All Vendors</option>
+                <option>Amazon</option>
+                <option>Flipkart</option>
+                <option>Meesho</option>
+                <option>Myntra</option>
+                <option>Ajio</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label><i class="fas fa-tag"></i> Status</label>
+              <select id="statusFilter">
+                <option value="">All Status</option>
+                <option value="active">Active</option>
+                <option value="pending">Pending</option>
+                <option value="private">Private</option>
+                <option value="rejected">Rejected</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label><i class="fas fa-folder"></i> Category</label>
+              <select id="categoryFilter">
+                <option value="">All Categories</option>
+                <option>Electronics</option>
+                <option>Fashion</option>
+                <option>Home & Kitchen</option>
+                <option>Beauty</option>
+                <option>Sports</option>
+                <option>Books</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label><i class="fas fa-mobile-alt"></i> Platform</label>
+              <select id="platformFilter">
+                <option value="">All Platforms</option>
+                <option>Web</option>
+                <option>Android</option>
+                <option>iOS</option>
+                <option>All Platforms</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label><i class="fas fa-calendar"></i> Date Added</label>
+              <select id="dateFilter">
+                <option value="">Any Time</option>
+                <option>Last 24 Hours</option>
+                <option>Last 7 Days</option>
+                <option>Last 30 Days</option>
+                <option>Last Quarter</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label><i class="fas fa-dollar-sign"></i> Price Range</label>
+              <div style="display: flex; gap: 8px">
+                <input type="number" placeholder="Min" id="priceMin" style="flex: 1" />
+                <input type="number" placeholder="Max" id="priceMax" style="flex: 1" />
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <label><i class="fas fa-box"></i> Stock Status</label>
+              <select id="stockFilter">
+                <option value="">All Stock</option>
+                <option>In Stock</option>
+                <option>Low Stock (&lt; 10)</option>
+                <option>Out of Stock</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="filter-actions">
+            <button class="btn btn-primary" onclick="applyFilters()">
+              <i class="fas fa-filter"></i> Apply Filters
+            </button>
+            <button class="btn btn-secondary" onclick="resetFilters()">
+              <i class="fas fa-redo"></i> Reset All
+            </button>
+            <button class="btn btn-success" onclick="saveFilterPreset()">
+              <i class="fas fa-save"></i> Save Preset
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <div class="table-header">
+            <h3>
+              Products
+              <span id="productCount" style="color: var(--gray); font-weight: 400">(0 items)</span>
+            </h3>
+
+            <div class="table-actions">
+              <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search products..." id="tableSearch" />
+              </div>
+
+              <select class="btn btn-secondary" style="padding: 12px 16px" onchange="runBulkAction(this)">
+                <option value="">Bulk Actions</option>
+                <option value="approve">Approve Selected</option>
+                <option value="disable">Disable Selected</option>
+                <option value="delete">Delete Selected</option>
+                <option value="export">Export Selected</option>
+                <option value="featured">Mark as Featured</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="product-table">
+              <thead>
+                <tr>
+                  <th style="width: 50px">
+                    <div class="checkbox-container">
+                      <input type="checkbox" id="selectAll" />
+                      <span class="checkbox-custom"></span>
+                    </div>
+                  </th>
+                  <th style="width: 300px">Product</th>
+                  <th>Vendor</th>
+                  <th>Status</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Platforms</th>
+                  <th>Date Added</th>
+                  <th style="width: 100px">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="productTableBody"></tbody>
+            </table>
+          </div>
+
+          <div class="pagination">
+            <div class="pagination-info">
+              Showing <strong id="showingRange">0-0</strong> of
+              <strong id="totalProductsCount">0</strong> products
+            </div>
+
+            <div class="pagination-controls">
+              <button class="page-btn" id="prevPage" disabled>
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button class="page-btn active">1</button>
+              <button class="page-btn">2</button>
+              <button class="page-btn">3</button>
+              <button class="page-btn">4</button>
+              <button class="page-btn">5</button>
+              <button class="page-btn" id="nextPage">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add/Edit Product Modal -->
+  <div id="productModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Add New Product</h3>
+        <button class="close-modal" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="productForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Product Name *</label>
+              <input type="text" id="productName" required placeholder="Enter product name" />
+            </div>
+
+            <div class="form-group">
+              <label>SKU *</label>
+              <input type="text" id="productSKU" required placeholder="Enter SKU" />
+            </div>
+
+            <div class="form-group">
+              <label>Vendor *</label>
+              <select id="productVendor" required>
+                <option value="">Select Vendor</option>
+                <option>Amazon</option>
+                <option>Flipkart</option>
+                <option>Meesho</option>
+                <option>Myntra</option>
+                <option>Ajio</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Category *</label>
+              <select id="productCategory" required>
+                <option value="">Select Category</option>
+                <option>Electronics</option>
+                <option>Fashion</option>
+                <option>Home & Kitchen</option>
+                <option>Beauty</option>
+                <option>Sports</option>
+                <option>Books</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Price *</label>
+              <input type="number" id="productPrice" step="0.01" required placeholder="0.00" />
+            </div>
+
+            <div class="form-group">
+              <label>Original Price</label>
+              <input type="number" id="productOriginalPrice" step="0.01" placeholder="0.00" />
+            </div>
+
+            <div class="form-group">
+              <label>Stock Quantity *</label>
+              <input type="number" id="productStock" required placeholder="0" />
+            </div>
+
+            <div class="form-group">
+              <label>Status *</label>
+              <select id="productStatus" required>
+                <option value="active">Active</option>
+                <option value="pending">Pending</option>
+                <option value="private">Private</option>
+                <option value="rejected">Rejected</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Platforms *</label>
+              <div style="
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                    padding: 12px 16px;
+                    border: 1.5px solid var(--border);
+                    border-radius: 8px;
+                  ">
+                <label style="display: flex; align-items: center; gap: 6px">
+                  <input type="checkbox" name="platform" value="Web" /> Web
+                </label>
+                <label style="display: flex; align-items: center; gap: 6px">
+                  <input type="checkbox" name="platform" value="Android" />
+                  Android
+                </label>
+                <label style="display: flex; align-items: center; gap: 6px">
+                  <input type="checkbox" name="platform" value="iOS" /> iOS
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Product Image URL</label>
+              <input type="url" id="productImage" placeholder="https://example.com/image.jpg"
+                onchange="previewImage(this.value)" />
+              <img id="imagePreview" class="image-preview" src="" alt="Preview" />
+              <small style="color: var(--gray); font-size: 12px">Leave blank for default image</small>
+            </div>
+
+            <div class="form-group" style="grid-column: 1 / -1">
+              <label>Description</label>
+              <textarea id="productDescription" rows="4" placeholder="Enter product description..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <div style="display: flex; align-items: center; gap: 10px">
+                <input type="checkbox" id="productFeatured" style="width: 18px; height: 18px" />
+                <label for="productFeatured" style="font-weight: 500">Mark as Featured Product</label>
+              </div>
+            </div>
+          </div>
+
+          <input type="hidden" id="productId" />
+
+          <div class="filter-actions">
+            <button type="button" onclick="closeModal()" class="btn btn-secondary">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary" id="modalSubmitBtn">
+              Add Product
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize products array
+    let products = JSON.parse(localStorage.getItem("products")) || [
+      {
+        id: 1,
+        name: "Smart Watch Pro X3",
+        sku: "SW-1001",
+        vendor: "Amazon",
+        status: "active",
+        category: "Electronics",
+        price: 285.8,
+        originalPrice: 299.99,
+        stock: 45,
+        platforms: ["Web", "Android", "iOS"],
+        dateAdded: "2024-03-15",
+        description:
+          "Advanced smart watch with fitness tracking and notifications",
+        image:
+          "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop",
+        isFeatured: true,
+      },
+      {
+        id: 2,
+        name: "Men's Premium T-Shirt",
+        sku: "TS-3342",
+        vendor: "Flipkart",
+        status: "pending",
+        category: "Fashion",
+        price: 29.99,
+        originalPrice: 34.99,
+        stock: 128,
+        platforms: ["Android"],
+        dateAdded: "2024-03-18",
+        description: "100% cotton premium t-shirt for men",
+        image:
+          "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop",
+        isFeatured: false,
+      },
+      {
+        id: 3,
+        name: "Modern Decor Lamp",
+        sku: "LP-8242",
+        vendor: "Meesho",
+        status: "private",
+        category: "Home & Kitchen",
+        price: 89.99,
+        originalPrice: 99.99,
+        stock: 12,
+        platforms: ["iOS"],
+        dateAdded: "2024-03-20",
+        description: "Modern LED lamp for home decoration",
+        image:
+          "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400&h=400&fit=crop",
+        isFeatured: false,
+      },
+      {
+        id: 4,
+        name: "Wireless Earbuds Pro",
+        sku: "WB-5567",
+        vendor: "Amazon",
+        status: "pending",
+        category: "Electronics",
+        price: 129.99,
+        originalPrice: 149.99,
+        stock: 0,
+        platforms: ["Web", "Android", "iOS"],
+        dateAdded: "2024-03-16",
+        description: "Noise cancelling wireless earbuds",
+        image:
+          "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
+        isFeatured: true,
+      },
+      {
+        id: 5,
+        name: "Gaming Console (Used)",
+        sku: "GC-7789",
+        vendor: "Flipkart",
+        status: "rejected",
+        category: "Electronics",
+        price: 399.99,
+        originalPrice: 499.99,
+        stock: 5,
+        platforms: ["Web"],
+        dateAdded: "2024-03-14",
+        description: "Used gaming console in good condition",
+        image:
+          "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&h=400&fit=crop",
+        isFeatured: false,
+      },
+    ];
+
+    let currentProductId = null;
+    const itemsPerPage = 10;
+    let currentPage = 1;
+
+    document.addEventListener("DOMContentLoaded", function () {
+      saveProductsToStorage();
+      updateStats();
+      populateProductTable();
+      setupEventListeners();
+
+      // Check if we're on product detail page
+      if (window.location.pathname.includes("product-detail.html")) {
+        loadProductDetail();
+      }
+    });
+
+    function saveProductsToStorage() {
+      localStorage.setItem("products", JSON.stringify(products));
+    }
+
+    function updateStats() {
+      const total = products.length;
+      const active = products.filter((p) => p.status === "active").length;
+      const pending = products.filter((p) => p.status === "pending").length;
+      const lowStock = products.filter(
+        (p) => p.stock > 0 && p.stock < 10
+      ).length;
+
+      document.getElementById("totalProducts").textContent = total;
+      document.getElementById("activeProducts").textContent = active;
+      document.getElementById("pendingProducts").textContent = pending;
+      document.getElementById("lowStockProducts").textContent = lowStock;
+      document.getElementById(
+        "productCount"
+      ).textContent = `(${total} items)`;
+      document.getElementById("totalProductsCount").textContent = total;
+    }
+
+    function populateProductTable() {
+      const tableBody = document.getElementById("productTableBody");
+      tableBody.innerHTML = "";
+
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const paginatedProducts = products.slice(startIndex, endIndex);
+
+      paginatedProducts.forEach((product) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+                    <td>
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="row-checkbox" data-id="${product.id
+          }">
+                            <span class="checkbox-custom"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="product-cell">
+                            <img src="${product.image || "https://via.placeholder.com/48"
+          }" alt="${product.name}" class="product-image">
+                            <div class="product-info">
+                                <div class="product-name" onclick="viewProduct(${product.id
+          })">
+                                    ${product.name}
+                                    ${product.isFeatured
+            ? '<span class="badge featured" style="margin-left: 8px;">Featured</span>'
+            : ""
+          }
+                                </div>
+                                <div class="product-sku">SKU: ${product.sku
+          }</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${product.vendor}</td>
+                    <td><span class="badge ${product.status}">${product.status.charAt(0).toUpperCase() + product.status.slice(1)
+          }</span></td>
+                    <td>${product.category}</td>
+                    <td class="price-cell">
+                        ${product.originalPrice
+            ? `<span class="original-price">$${product.originalPrice.toFixed(
+              2
+            )}</span>`
+            : ""
+          }
+                        $${product.price.toFixed(2)}
+                    </td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            ${product.stock === 0
+            ? '<span style="color: var(--danger); font-weight: 600;">Out of Stock</span>'
+            : product.stock < 10
+              ? `<span style="color: var(--warning); font-weight: 600;">${product.stock}</span>`
+              : `<span style="color: var(--success); font-weight: 600;">${product.stock}</span>`
+          }
+                            ${product.stock > 0
+            ? '<i class="fas fa-box" style="color: var(--gray);"></i>'
+            : ""
+          }
+                        </div>
+                    </td>
+                    <td>
+                        <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                            ${product.platforms
+            .map(
+              (platform) =>
+                `<span style="padding: 4px 8px; background: var(--light); border-radius: 4px; font-size: 11px;">${platform}</span>`
+            )
+            .join("")}
+                        </div>
+                    </td>
+                    <td>${product.dateAdded}</td>
+                    <td>
+                        <div class="action-dropdown">
+                            <button class="action-btn">
+                                Actions <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="product-detail.html?id=${product.id
+          }" class="dropdown-item">
+                                    <i class="fas fa-eye"></i> View Details
+                                </a>
+                                <a href="#" class="dropdown-item" onclick="editProduct(${product.id
+          })">
+                                    <i class="fas fa-edit"></i> Edit Product
+                                </a>
+                                <a href="#" class="dropdown-item" onclick="toggleStatus(${product.id
+          }, 'active')">
+                                    <i class="fas fa-check"></i> Set Active
+                                </a>
+                                <a href="#" class="dropdown-item" onclick="toggleStatus(${product.id
+          }, 'private')">
+                                    <i class="fas fa-eye-slash"></i> Set Private
+                                </a>
+                                <a href="#" class="dropdown-item danger" onclick="deleteProduct(${product.id
+          })">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                `;
+        tableBody.appendChild(row);
+      });
+
+      updateShowingRange();
+    }
+
+    function updateShowingRange() {
+      const start = (currentPage - 1) * itemsPerPage + 1;
+      const end = Math.min(currentPage * itemsPerPage, products.length);
+      document.getElementById("showingRange").textContent = `${start}-${end}`;
+    }
+
+    function setupEventListeners() {
+      // Product form submission
+      document
+        .getElementById("productForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          saveProduct();
+        });
+
+      // Select all checkbox
+      document
+        .getElementById("selectAll")
+        .addEventListener("change", function (e) {
+          const checkboxes = document.querySelectorAll(".row-checkbox");
+          checkboxes.forEach((checkbox) => {
+            checkbox.checked = e.target.checked;
+            toggleRowSelection(checkbox.closest("tr"), e.target.checked);
+          });
+        });
+
+      // Table search
+      document
+        .getElementById("tableSearch")
+        .addEventListener("input", function (e) {
+          searchProducts(e.target.value);
+        });
+
+      // Filter inputs
+      const filterInputs = [
+        "searchInput",
+        "vendorFilter",
+        "statusFilter",
+        "categoryFilter",
+        "platformFilter",
+        "dateFilter",
+        "priceMin",
+        "priceMax",
+        "stockFilter",
+      ];
+      filterInputs.forEach((id) => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.addEventListener("input", applyFilters);
+        }
+      });
+    }
+
+    function openAddProductModal() {
+      currentProductId = null;
+      document.getElementById("modalTitle").textContent = "Add New Product";
+      document.getElementById("modalSubmitBtn").textContent = "Add Product";
+      document.getElementById("productForm").reset();
+      document.getElementById("imagePreview").classList.remove("visible");
+      document.getElementById("productId").value = "";
+      openModal();
+    }
+
+    function openModal() {
+      document.getElementById("productModal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("productModal").style.display = "none";
+    }
+
+    function previewImage(url) {
+      const preview = document.getElementById("imagePreview");
+      if (url) {
+        preview.src = url;
+        preview.classList.add("visible");
+      } else {
+        preview.classList.remove("visible");
+      }
+    }
+
+    function saveProduct() {
+      const platforms = Array.from(
+        document.querySelectorAll('input[name="platform"]:checked')
+      ).map((cb) => cb.value);
+
+      const productData = {
+        id: currentProductId || Date.now(),
+        name: document.getElementById("productName").value,
+        sku: document.getElementById("productSKU").value,
+        vendor: document.getElementById("productVendor").value,
+        category: document.getElementById("productCategory").value,
+        price: parseFloat(document.getElementById("productPrice").value),
+        originalPrice: document.getElementById("productOriginalPrice").value
+          ? parseFloat(document.getElementById("productOriginalPrice").value)
+          : null,
+        stock: parseInt(document.getElementById("productStock").value),
+        status: document.getElementById("productStatus").value,
+        platforms: platforms,
+        description: document.getElementById("productDescription").value,
+        image: document.getElementById("productImage").value || "",
+        isFeatured: document.getElementById("productFeatured").checked,
+        dateAdded: currentProductId
+          ? products.find((p) => p.id === currentProductId).dateAdded
+          : new Date().toISOString().split("T")[0],
+      };
+
+      if (currentProductId) {
+        // Edit existing product
+        const index = products.findIndex((p) => p.id === currentProductId);
+        if (index !== -1) {
+          products[index] = productData;
+        }
+      } else {
+        // Add new product
+        products.unshift(productData);
+      }
+
+      saveProductsToStorage();
+      updateStats();
+      populateProductTable();
+      closeModal();
+
+      alert(
+        `Product ${currentProductId ? "updated" : "added"} successfully!`
+      );
+    }
+
+    function editProduct(id) {
+      const product = products.find((p) => p.id === id);
+      if (!product) return;
+
+      currentProductId = id;
+      document.getElementById("modalTitle").textContent = "Edit Product";
+      document.getElementById("modalSubmitBtn").textContent =
+        "Update Product";
+      document.getElementById("productId").value = id;
+      document.getElementById("productName").value = product.name;
+      document.getElementById("productSKU").value = product.sku;
+      document.getElementById("productVendor").value = product.vendor;
+      document.getElementById("productCategory").value = product.category;
+      document.getElementById("productPrice").value = product.price;
+      document.getElementById("productOriginalPrice").value =
+        product.originalPrice || "";
+      document.getElementById("productStock").value = product.stock;
+      document.getElementById("productStatus").value = product.status;
+      document.getElementById("productDescription").value =
+        product.description || "";
+      document.getElementById("productImage").value = product.image || "";
+      document.getElementById("productFeatured").checked =
+        product.isFeatured || false;
+
+      // Set platforms
+      document
+        .querySelectorAll('input[name="platform"]')
+        .forEach((checkbox) => {
+          checkbox.checked = product.platforms.includes(checkbox.value);
+        });
+
+      // Preview image
+      if (product.image) {
+        previewImage(product.image);
+      }
+
+      openModal();
+    }
+
+    function viewProduct(id) {
+      window.location.href = `product-detail.html?id=${id}`;
+    }
+
+    function loadProductDetail() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = parseInt(urlParams.get("id"));
+
+      if (!productId) {
+        document.body.innerHTML = `
+                    <div style="padding: 50px; text-align: center;">
+                        <h1>Product Not Found</h1>
+                        <p>The product you're looking for doesn't exist.</p>
+                        <a href="index.html" class="btn btn-primary" style="margin-top: 20px;">
+                            <i class="fas fa-arrow-left"></i> Back to Products
+                        </a>
+                    </div>
+                `;
+        return;
+      }
+
+      const product = products.find((p) => p.id === productId);
+
+      if (!product) {
+        document.body.innerHTML = `
+                    <div style="padding: 50px; text-align: center;">
+                        <h1>Product Not Found</h1>
+                        <p>The product you're looking for doesn't exist.</p>
+                        <a href="index.html" class="btn btn-primary" style="margin-top: 20px;">
+                            <i class="fas fa-arrow-left"></i> Back to Products
+                        </a>
+                    </div>
+                `;
+        return;
+      }
+
+      document.body.innerHTML = `
+                <div class="container">
+                    <aside class="sidebar">
+                        <div class="logo">
+                            <h2>Admin<span>Hub</span></h2>
+                        </div>
+                        <ul class="nav-links">
+                            <li>
+                                <a href="index.html">
+                                    <i class="fas fa-home"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="index.html" class="active">
+                                    <i class="fas fa-box"></i>
+                                    <span>Products</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span>Orders</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fas fa-users"></i>
+                                    <span>Customers</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fas fa-chart-bar"></i>
+                                    <span>Analytics</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fas fa-cog"></i>
+                                    <span>Settings</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </aside>
+
+                    <main class="main-content">
+                        <header>
+                            <div class="header-left">
+                                <h1>Product Details</h1>
+                                <p>View and manage product information</p>
+                            </div>
+                            <div class="header-right">
+                                <a href="index.html" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left"></i> Back to Products
+                                </a>
+                                <div class="user-profile">
+                                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=4361ee&color=fff" alt="Admin User">
+                                    <div>
+                                        <h4>Admin User</h4>
+                                        <p>Super Admin</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </header>
+
+                        <div class="product-detail-container">
+                            <div class="product-detail-header">
+                                <div class="product-main-info">
+                                    <h1>${product.name}</h1>
+                                    <div class="product-sku-large">SKU: ${product.sku
+        }</div>
+                                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                                        <span class="badge ${product.status
+        } status-badge-large">
+                                            ${product.status.toUpperCase()}
+                                        </span>
+                                        ${product.isFeatured
+          ? '<span class="badge featured status-badge-large">FEATURED</span>'
+          : ""
+        }
+                                    </div>
+                                </div>
+                                <img src="${product.image ||
+        "https://via.placeholder.com/300"
+        }" alt="${product.name
+        }" class="product-image-large">
+                            </div>
+
+                            <div class="product-detail-grid">
+                                <div>
+                                    <div class="detail-section">
+                                        <h3>Product Information</h3>
+                                        <div class="detail-row">
+                                            <div class="detail-label">Product Name</div>
+                                            <div class="detail-value">${product.name
+        }</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <div class="detail-label">SKU</div>
+                                            <div class="detail-value">${product.sku
+        }</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <div class="detail-label">Description</div>
+                                            <div class="detail-value">${product.description ||
+        "No description available"
+        }</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <div class="detail-label">Category</div>
+                                            <div class="detail-value">${product.category
+        }</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="detail-section">
+                                        <h3>Pricing & Stock</h3>
+                                        <div class="detail-row">
+                                            <div class="detail-label">Current Price</div>
+                                            <div class="detail-value">$${product.price.toFixed(
+          2
+        )}</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <div class="detail-label">Original Price</div>
+                                            <div class="detail-value">${product.originalPrice
+          ? `$${product.originalPrice.toFixed(
+            2
+          )}`
+          : "N/A"
+        }</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <div class="detail-label">Stock Quantity</div>
+                                            <div class="detail-value">${product.stock
+        } units</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <div class="detail-label">Stock Status</div>
+                                            <div class="detail-value">
+                                                ${product.stock === 0
+          ? '<span style="color: var(--danger); font-weight: 600;">Out of Stock</span>'
+          : product.stock < 10
+            ? `<span style="color: var(--warning); font-weight: 600;">Low Stock (${product.stock} units)</span>`
+            : `<span style="color: var(--success); font-weight: 600;">In Stock (${product.stock} units)</span>`
+        }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="detail-section">
+                                        <h3>Vendor & Platform</h3>
+                                        <div class="detail-row">
+                                            <div class="detail-label">Vendor</div>
+                                            <div class="detail-value">${product.vendor
+        }</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <div class="detail-label">Platforms</div>
+                                            <div class="detail-value">
+                                                ${product.platforms
+          .map(
+            (platform) =>
+              `<span style="padding: 4px 8px; background: var(--light); border-radius: 4px; font-size: 12px; margin-right: 4px;">${platform}</span>`
+          )
+          .join("")}
+                                            </div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <div class="detail-label">Date Added</div>
+                                            <div class="detail-value">${product.dateAdded
+        }</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <div class="detail-label">Status</div>
+                                            <div class="detail-value">
+                                                <span class="badge ${product.status
+        }">
+                                                    ${product.status.toUpperCase()}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="detail-section">
+                                        <h3>Actions</h3>
+                                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                                            <button onclick="editProductFromDetail(${product.id
+        })" class="btn btn-primary">
+                                                <i class="fas fa-edit"></i> Edit Product
+                                            </button>
+                                            <button onclick="toggleStatusFromDetail(${product.id
+        }, '${product.status === "active" ? "private" : "active"
+        }')" class="btn btn-secondary">
+                                                <i class="fas fa-exchange-alt"></i> Toggle Status
+                                            </button>
+                                            <button onclick="deleteProductFromDetail(${product.id
+        })" class="btn btn-danger">
+                                                <i class="fas fa-trash"></i> Delete Product
+                                            </button>
+                                            <a href="index.html" class="btn btn-secondary">
+                                                <i class="fas fa-arrow-left"></i> Back to List
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            `;
+    }
+
+    function editProductFromDetail(id) {
+      window.location.href = `index.html?edit=${id}`;
+    }
+
+    function toggleStatusFromDetail(id, newStatus) {
+      const product = products.find((p) => p.id === id);
+      if (product) {
+        product.status = newStatus;
+        saveProductsToStorage();
+        alert(`Product status changed to ${newStatus}`);
+        loadProductDetail();
+      }
+    }
+
+    function deleteProductFromDetail(id) {
+      if (confirm("Are you sure you want to delete this product?")) {
+        const index = products.findIndex((p) => p.id === id);
+        if (index !== -1) {
+          products.splice(index, 1);
+          saveProductsToStorage();
+          alert("Product deleted successfully");
+          window.location.href = "index.html";
+        }
+      }
+    }
+
+    function toggleRowSelection(row, selected) {
+      if (selected) {
+        row.classList.add("selected");
+      } else {
+        row.classList.remove("selected");
+      }
+    }
+
+    function searchProducts(query) {
+      const rows = document.querySelectorAll("#productTableBody tr");
+      const lowerQuery = query.toLowerCase();
+
+      rows.forEach((row) => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(lowerQuery) ? "" : "none";
+      });
+    }
+
+    function applyFilters() {
+      const vendor = document.getElementById("vendorFilter").value;
+      const status = document.getElementById("statusFilter").value;
+      const category = document.getElementById("categoryFilter").value;
+      const platform = document.getElementById("platformFilter").value;
+      const searchQuery = document
+        .getElementById("searchInput")
+        .value.toLowerCase();
+      const priceMin =
+        parseFloat(document.getElementById("priceMin").value) || 0;
+      const priceMax =
+        parseFloat(document.getElementById("priceMax").value) || Infinity;
+      const stockFilter = document.getElementById("stockFilter").value;
+
+      const filteredProducts = products.filter((product) => {
+        const matchesVendor = !vendor || product.vendor === vendor;
+        const matchesStatus = !status || product.status === status;
+        const matchesCategory = !category || product.category === category;
+        const matchesPlatform =
+          !platform || product.platforms.includes(platform);
+        const matchesSearch =
+          !searchQuery ||
+          product.name.toLowerCase().includes(searchQuery) ||
+          product.sku.toLowerCase().includes(searchQuery) ||
+          (product.description &&
+            product.description.toLowerCase().includes(searchQuery));
+        const matchesPrice =
+          product.price >= priceMin && product.price <= priceMax;
+        const matchesStock =
+          !stockFilter ||
+          (stockFilter === "In Stock" && product.stock > 0) ||
+          (stockFilter === "Low Stock (&lt; 10)" &&
+            product.stock > 0 &&
+            product.stock < 10) ||
+          (stockFilter === "Out of Stock" && product.stock === 0);
+
+        return (
+          matchesVendor &&
+          matchesStatus &&
+          matchesCategory &&
+          matchesPlatform &&
+          matchesSearch &&
+          matchesPrice &&
+          matchesStock
+        );
+      });
+
+      // Update table with filtered products
+      const tableBody = document.getElementById("productTableBody");
+      tableBody.innerHTML = "";
+
+      filteredProducts.forEach((product) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+                    <td>
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="row-checkbox" data-id="${product.id
+          }">
+                            <span class="checkbox-custom"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="product-cell">
+                            <img src="${product.image || "https://via.placeholder.com/48"
+          }" alt="${product.name}" class="product-image">
+                            <div class="product-info">
+                                <div class="product-name" onclick="viewProduct(${product.id
+          })">
+                                    ${product.name}
+                                    ${product.isFeatured
+            ? '<span class="badge featured" style="margin-left: 8px;">Featured</span>'
+            : ""
+          }
+                                </div>
+                                <div class="product-sku">SKU: ${product.sku
+          }</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${product.vendor}</td>
+                    <td><span class="badge ${product.status}">${product.status.charAt(0).toUpperCase() + product.status.slice(1)
+          }</span></td>
+                    <td>${product.category}</td>
+                    <td class="price-cell">
+                        ${product.originalPrice
+            ? `<span class="original-price">$${product.originalPrice.toFixed(
+              2
+            )}</span>`
+            : ""
+          }
+                        $${product.price.toFixed(2)}
+                    </td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            ${product.stock === 0
+            ? '<span style="color: var(--danger); font-weight: 600;">Out of Stock</span>'
+            : product.stock < 10
+              ? `<span style="color: var(--warning); font-weight: 600;">${product.stock}</span>`
+              : `<span style="color: var(--success); font-weight: 600;">${product.stock}</span>`
+          }
+                            ${product.stock > 0
+            ? '<i class="fas fa-box" style="color: var(--gray);"></i>'
+            : ""
+          }
+                        </div>
+                    </td>
+                    <td>
+                        <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                            ${product.platforms
+            .map(
+              (platform) =>
+                `<span style="padding: 4px 8px; background: var(--light); border-radius: 4px; font-size: 11px;">${platform}</span>`
+            )
+            .join("")}
+                        </div>
+                    </td>
+                    <td>${product.dateAdded}</td>
+                    <td>
+                        <div class="action-dropdown">
+                            <button class="action-btn">
+                                Actions <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="product-detail.html?id=${product.id
+          }" class="dropdown-item">
+                                    <i class="fas fa-eye"></i> View Details
+                                </a>
+                                <a href="#" class="dropdown-item" onclick="editProduct(${product.id
+          })">
+                                    <i class="fas fa-edit"></i> Edit Product
+                                </a>
+                                <a href="#" class="dropdown-item" onclick="toggleStatus(${product.id
+          }, 'active')">
+                                    <i class="fas fa-check"></i> Set Active
+                                </a>
+                                <a href="#" class="dropdown-item" onclick="toggleStatus(${product.id
+          }, 'private')">
+                                    <i class="fas fa-eye-slash"></i> Set Private
+                                </a>
+                                <a href="#" class="dropdown-item danger" onclick="deleteProduct(${product.id
+          })">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    function resetFilters() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("vendorFilter").value = "";
+      document.getElementById("statusFilter").value = "";
+      document.getElementById("categoryFilter").value = "";
+      document.getElementById("platformFilter").value = "";
+      document.getElementById("dateFilter").value = "";
+      document.getElementById("priceMin").value = "";
+      document.getElementById("priceMax").value = "";
+      document.getElementById("stockFilter").value = "";
+      document.getElementById("tableSearch").value = "";
+
+      populateProductTable();
+    }
+
+    function toggleFilters() {
+      const filterGrid = document.getElementById("filterGrid");
+      const filterActions = document.querySelector(".filter-actions");
+      const toggleBtn = document.querySelector(".filter-toggle i");
+
+      if (filterGrid.style.display === "none") {
+        filterGrid.style.display = "grid";
+        filterActions.style.display = "flex";
+      } else {
+        filterGrid.style.display = "none";
+        filterActions.style.display = "none";
+      }
+    }
+
+    function runBulkAction(select) {
+      const action = select.value;
+      if (!action) return;
+
+      const selectedRows = Array.from(
+        document.querySelectorAll(".row-checkbox:checked")
+      ).map((cb) => parseInt(cb.dataset.id));
+
+      if (selectedRows.length === 0) {
+        alert("Please select at least one product");
+        select.value = "";
+        return;
+      }
+
+      switch (action) {
+        case "approve":
+          selectedRows.forEach((id) => {
+            const product = products.find((p) => p.id === id);
+            if (product) product.status = "active";
+          });
+          break;
+
+        case "disable":
+          selectedRows.forEach((id) => {
+            const product = products.find((p) => p.id === id);
+            if (product) product.status = "private";
+          });
+          break;
+
+        case "delete":
+          if (
+            confirm(
+              `Are you sure you want to delete ${selectedRows.length} product(s)?`
+            )
+          ) {
+            selectedRows.forEach((id) => {
+              const index = products.findIndex((p) => p.id === id);
+              if (index !== -1) products.splice(index, 1);
+            });
+          }
+          break;
+
+        case "export":
+          alert(`Exporting ${selectedRows.length} products to CSV`);
+          break;
+
+        case "featured":
+          selectedRows.forEach((id) => {
+            const product = products.find((p) => p.id === id);
+            if (product) product.isFeatured = true;
+          });
+          break;
+      }
+
+      saveProductsToStorage();
+      updateStats();
+      populateProductTable();
+      select.value = "";
+    }
+
+    function toggleStatus(id, status) {
+      const product = products.find((p) => p.id === id);
+      if (product) {
+        product.status = status;
+        saveProductsToStorage();
+        updateStats();
+        populateProductTable();
+        alert(`Product ${id} set to ${status}`);
+      }
+    }
+
+    function deleteProduct(id) {
+      if (confirm("Are you sure you want to delete this product?")) {
+        const index = products.findIndex((p) => p.id === id);
+        if (index !== -1) {
+          products.splice(index, 1);
+          saveProductsToStorage();
+          updateStats();
+          populateProductTable();
+          alert("Product deleted successfully");
+        }
+      }
+    }
+
+    function exportProducts() {
+      const csv = convertToCSV(products);
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `products_${new Date().toISOString().split("T")[0]}.csv`;
+      a.click();
+      alert("Exporting all products to CSV file");
+    }
+
+    function convertToCSV(arr) {
+      const array = [Object.keys(arr[0])].concat(arr);
+      return array
+        .map((row) => {
+          return Object.values(row).map((value) => {
+            return typeof value === "string" ? JSON.stringify(value) : value;
+          });
+        })
+        .join("\n");
+    }
+
+    function saveFilterPreset() {
+      const presetName = prompt("Enter a name for this filter preset:");
+      if (presetName) {
+        alert(`Filter preset "${presetName}" saved successfully`);
+      }
+    }
+
+    // Check if we need to edit a product from URL
+    if (window.location.search.includes("edit=")) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const editId = parseInt(urlParams.get("edit"));
+      if (editId) {
+        setTimeout(() => editProduct(editId), 100);
+      }
+    }
+  </script>
+</body>
+
+</html>

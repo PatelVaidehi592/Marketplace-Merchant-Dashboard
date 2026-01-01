@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Vendor Management</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/vendor-management.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Header -->
+        <header>
+          <div class="header-left">
+            <h1 id="pageMainTitle">Vendor Management</h1>
+            <p id="pageSubtitle">
+              Manage all vendors, review applications, and monitor activity
+            </p>
+          </div>
+          <div class="header-right">
+            <div class="user-profile">
+              <img
+                src="https://ui-avatars.com/api/?name=Admin+User&background=4361ee&color=fff"
+                alt="Admin User"
+              />
+              <div>
+                <h4>Admin User</h4>
+                <p>Super Admin</p>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Vendors List Page -->
+        <div class="vendors-list-page active" id="vendorsListPage">
+          <!-- Page Header -->
+          <div class="page-header">
+            <h2 class="page-title">All Vendors</h2>
+            <button class="add-vendor-btn" id="addVendorBtn">
+              <i class="fas fa-plus"></i> Add New Vendor
+            </button>
+          </div>
+
+          <!-- Filters Section -->
+          <div class="filters-section">
+            <div class="filters-header">
+              <h3 class="filters-title">Filter Vendors</h3>
+              <button class="clear-filters" id="clearFilters">
+                <i class="fas fa-times"></i> Clear Filters
+              </button>
+            </div>
+            <div class="filter-grid">
+              <div class="filter-group">
+                <label class="filter-label">Status</label>
+                <select class="filter-select" id="statusFilter">
+                  <option value="all">All Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="approved">Approved</option>
+                  <option value="suspended">Suspended</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label class="filter-label">Platform</label>
+                <select class="filter-select" id="platformFilter">
+                  <option value="all">All Platforms</option>
+                  <option value="shopify">Shopify</option>
+                  <option value="woo">WooCommerce</option>
+                  <option value="wix">Wix</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label class="filter-label">Country</label>
+                <select class="filter-select" id="countryFilter">
+                  <option value="all">All Countries</option>
+                  <option value="us">United States</option>
+                  <option value="uk">United Kingdom</option>
+                  <option value="ca">Canada</option>
+                  <option value="au">Australia</option>
+                  <option value="de">Germany</option>
+                  <option value="fr">France</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label class="filter-label">Search</label>
+                <div class="search-input-wrapper">
+                  <i class="fas fa-search"></i>
+                  <input
+                    type="text"
+                    class="search-input"
+                    id="searchInput"
+                    placeholder="Search by name or email..."
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bulk Actions -->
+          <div class="bulk-actions" id="bulkActions">
+            <div class="selected-count" id="selectedCount">
+              0 vendors selected
+            </div>
+            <button class="bulk-action-btn bulk-approve" id="bulkApprove">
+              <i class="fas fa-check"></i> Approve Selected
+            </button>
+            <button class="bulk-action-btn bulk-suspend" id="bulkSuspend">
+              <i class="fas fa-ban"></i> Suspend Selected
+            </button>
+            <button
+              class="bulk-action-btn"
+              id="clearSelection"
+              style="background-color: #f8f9fa; color: var(--gray)"
+            >
+              <i class="fas fa-times"></i> Clear Selection
+            </button>
+          </div>
+
+          <!-- Vendors Table -->
+          <div class="vendors-table-container">
+            <div class="table-responsive">
+              <table class="vendors-table" id="vendorsTable">
+                <thead>
+                  <tr>
+                    <th class="checkbox-cell">
+                      <div class="custom-checkbox" id="selectAllCheckbox"></div>
+                    </th>
+                    <th>Vendor</th>
+                    <th>Platform</th>
+                    <th>Status</th>
+                    <th>Country</th>
+                    <th>Products</th>
+                    <th>Last Sync</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="vendorsTableBody">
+                  <!-- Table rows will be inserted here by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+              <div class="pagination-info" id="paginationInfo">
+                Showing 1-10 of 124 vendors
+              </div>
+              <div class="pagination-controls">
+                <button class="pagination-btn" id="prevPage" disabled>
+                  <i class="fas fa-chevron-left"></i> Previous
+                </button>
+                <div class="page-numbers" id="pageNumbers">
+                  <!-- Page numbers will be inserted here -->
+                </div>
+                <button class="pagination-btn" id="nextPage">
+                  Next <i class="fas fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vendor Details Page -->
+        <div class="vendor-details-page" id="vendorDetailsPage">
+          <button class="back-btn" id="backToVendorsBtn">
+            <i class="fas fa-arrow-left"></i> Back to Vendors
+          </button>
+
+          <div class="vendor-details-container" id="vendorDetailsContent">
+            <!-- Content will be populated by JavaScript -->
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div id="addVendorModal" class="modal-overlay" style="display: none">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h2>Add New Vendor</h2>
+          <button class="modal-close-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="addVendorForm">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="vendorName">Vendor Name *</label>
+                <input
+                  type="text"
+                  id="vendorName"
+                  required
+                  placeholder="Enter vendor name"
+                />
+              </div>
+              <div class="form-group">
+                <label for="vendorEmail">Email Address *</label>
+                <input
+                  type="email"
+                  id="vendorEmail"
+                  required
+                  placeholder="vendor@example.com"
+                />
+              </div>
+              <div class="form-group">
+                <label for="vendorStoreName">Store Name</label>
+                <input
+                  type="text"
+                  id="vendorStoreName"
+                  placeholder="Enter store name"
+                />
+              </div>
+              <div class="form-group">
+                <label for="vendorCompanyName">Company Name</label>
+                <input
+                  type="text"
+                  id="vendorCompanyName"
+                  placeholder="Enter company name"
+                />
+              </div>
+              <div class="form-group">
+                <label for="vendorBrandName">Brand Name</label>
+                <input
+                  type="text"
+                  id="vendorBrandName"
+                  placeholder="Enter brand name"
+                />
+              </div>
+              <div class="form-group">
+                <label for="vendorPlatform">Platform *</label>
+                <select id="vendorPlatform" required>
+                  <option value="">Select Platform</option>
+                  <option value="shopify">Shopify</option>
+                  <option value="woo">WooCommerce</option>
+                  <option value="wix">Wix</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="vendorCountry">Country *</label>
+                <select id="vendorCountry" required>
+                  <option value="">Select Country</option>
+                  <option value="us">United States</option>
+                  <option value="uk">United Kingdom</option>
+                  <option value="ca">Canada</option>
+                  <option value="au">Australia</option>
+                  <option value="de">Germany</option>
+                  <option value="fr">France</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="vendorSubscriptionPlan">Subscription Plan</label>
+                <select id="vendorSubscriptionPlan">
+                  <option value="">Select Plan</option>
+                  <option value="Basic">Basic</option>
+                  <option value="Standard">Standard</option>
+                  <option value="Pro">Pro</option>
+                  <option value="Enterprise">Enterprise</option>
+                  <option value="Shopify Plus">Shopify Plus</option>
+                  <option value="WooCommerce Pro">WooCommerce Pro</option>
+                  <option value="Wix Business Elite">Wix Business Elite</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="vendorRenewalDate">Renewal Date</label>
+                <input type="date" id="vendorRenewalDate" />
+              </div>
+              <div class="form-group full-width">
+                <label for="vendorWebsite">Website URL</label>
+                <input
+                  type="url"
+                  id="vendorWebsite"
+                  placeholder="https://example.com"
+                />
+              </div>
+              <div class="form-group full-width">
+                <label for="vendorAddress">Address</label>
+                <input
+                  type="text"
+                  id="vendorAddress"
+                  placeholder="Enter full address"
+                />
+              </div>
+              <div class="form-group">
+                <label for="vendorPhone">Phone</label>
+                <input
+                  type="tel"
+                  id="vendorPhone"
+                  placeholder="+1 (555) 123-4567"
+                />
+              </div>
+              <div class="form-group">
+                <label for="vendorDescription">Description</label>
+                <textarea
+                  id="vendorDescription"
+                  rows="3"
+                  placeholder="Brief description about the vendor..."
+                ></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn-secondary modal-cancel-btn">
+                Cancel
+              </button>
+              <button type="submit" class="btn-primary">Add Vendor</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/vendor-management.js"></script>
+  </body>
+</html>
