@@ -1,5 +1,4 @@
-/* Order Detail Page Specific Styles */
-/* Section Edit Forms */
+
 .section-edit-form {
   background: #f9f9f9;
   border: 1px solid #e0e0e0;
@@ -7,6 +6,25 @@
   padding: 20px;
   margin-bottom: 15px;
 }
+
+.payout-status {
+    padding: 10px;
+}
+
+.vendor-actions {
+    padding: -12px;
+    padding-top: 10px;
+}
+
+.vendor-earning {
+    border-bottom: 1px solid var(--light-gray);
+       padding: 10px;
+}
+.warehouse-info {
+    border-bottom: 1px solid var(--light-gray);
+    padding: 10px;
+}
+
 
 /* Add to your order-detail.css */
 @media print {
@@ -50,8 +68,11 @@
     background: #f9f9f9 !important;
     -webkit-print-color-adjust: exact;
     border: 1px solid #ddd !important;
-  }
   
+}
+ 
+
+
   @page {
     margin: 20mm;
     size: A4;

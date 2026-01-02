@@ -10,11 +10,10 @@
   <link rel="stylesheet" href="css/order-detail.css" />
 </head>
 
+
 <body>
   <div class="container">
-    <!-- Main Content -->
     <main class="main-content">
-      <!-- Header with Back Button -->
       <header class="main-header">
         <div class="header-left">
           <a href="order.html" class="back-btn">
@@ -37,16 +36,8 @@
         </div>
       </header>
 
-      <!-- Order Overview -->
-      <div class="order-overview">
-        <!-- ... existing overview code ... -->
-      </div>
-
-      <!-- Main Content Grid -->
       <div class="content-grid">
-        <!-- Left Column -->
         <div class="left-column">
-          <!-- Customer Details -->
           <section class="info-section">
             <div class="section-header">
               <h3>
@@ -77,7 +68,6 @@
                 </p>
               </div>
 
-              <!-- Customer Edit Form -->
               <div class="section-edit-form" id="customerEditForm" style="display: none;">
                 <div class="form-group">
                   <label>Name</label>
@@ -99,7 +89,6 @@
             </div>
           </section>
 
-          <!-- Shipping Details -->
           <section class="info-section">
             <div class="section-header">
               <h3>
@@ -134,7 +123,6 @@
                 </p>
               </div>
 
-              <!-- Shipping Edit Form -->
               <div class="section-edit-form" id="shippingEditForm" style="display: none;">
                 <div class="form-group">
                   <label>Address</label>
@@ -175,7 +163,6 @@
             </div>
           </section>
 
-          <!-- Billing Details -->
           <section class="info-section">
             <div class="section-header">
               <h3>
@@ -202,7 +189,6 @@
                 </p>
               </div>
 
-              <!-- Billing Edit Form -->
               <div class="section-edit-form" id="billingEditForm" style="display: none;">
                 <div class="form-group">
                   <label>Billing Address</label>
@@ -230,22 +216,127 @@
           </section>
         </div>
 
-        <!-- Right Column -->
         <div class="right-column">
-          <!-- Order Items by Vendor -->
           <section class="info-section">
             <div class="section-header">
               <h3>
                 <i class="fas fa-boxes"></i>
                 Order Items by Vendor
               </h3>
+              <button class="btn btn-light btn-sm edit-section-btn" data-section="vendor">
+                <i class="fas fa-edit"></i> Edit
+              </button>
             </div>
             <div class="section-body">
-              <!-- ... existing vendor items ... -->
+              <div class="section-display" id="vendorDisplay">
+                <div class="vendor-card">
+                  <div class="vendor-header">
+                    <div class="vendor-info">
+                      <h4 class="vendor-name">moonlightworkshop</h4>
+                      <span class="vendor-badge">Vendor</span>
+                    </div>
+                    <div class="vendor-status">
+                      <span class="status-badge status-pickup">Pick-Up</span>
+                      <span class="status-badge status-payout">Payouts</span>
+                    </div>
+                  </div>
+
+                  <div class="vendor-details">
+                    <div class="warehouse-info">
+                      <i class="fas fa-warehouse"></i>
+                      <span>No Warehouse</span>
+                    </div>
+
+                    <div class="vendor-earning">
+                      <i class="fas fa-money-bill-wave"></i>
+                      <span>vonoor earning: <strong>10% MCNO</strong></span>
+                    </div>
+
+                    <div class="payout-status">
+                      <i class="fas fa-wallet"></i>
+                      <span>Payout Status: <strong class="status-unpaid">UNPAID</strong></span>
+                    </div>
+                  </div>
+
+                  <div class="vendor-actions">
+                    <button class="btn btn-outline btn-sm">
+                      <i class="fas fa-envelope"></i> Contact Vendor
+                    </button>
+                    <button class="btn btn-outline btn-sm">
+                      <i class="fas fa-file-invoice"></i> View Invoice
+                    </button>
+                    <button class="btn btn-primary btn-sm">
+                      <i class="fas fa-credit-card"></i> Process Payout
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="section-edit-form" id="vendorEditForm" style="display: none;">
+                <div class="edit-vendor-container">
+                  <div class="edit-section">
+                    <h4>Vendor Information</h4>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>Vendor Name</label>
+                        <input type="text" class="form-input" id="editVendorName" value="moonlightworkshop">
+                      </div>
+                      <div class="form-group">
+                        <label>Vendor Type</label>
+                        <select class="form-select" id="editVendorType">
+                          <option value="vendor" selected>Vendor</option>
+                          <option value="supplier">Supplier</option>
+                          <option value="partner">Partner</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>Warehouse Status</label>
+                        <select class="form-select" id="editWarehouseStatus">
+                          <option value="no-warehouse" selected>No Warehouse</option>
+                          <option value="has-warehouse">Has Warehouse</option>
+                          <option value="dropship">Dropship</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label>Commission/Earning</label>
+                        <input type="text" class="form-input" id="editVendorEarning" value="10% MCNO">
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>Payout Status</label>
+                        <select class="form-select" id="editPayoutStatus">
+                          <option value="unpaid" selected>UNPAID</option>
+                          <option value="paid">PAID</option>
+                          <option value="processing">PROCESSING</option>
+                          <option value="failed">FAILED</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label>Vendor Status</label>
+                        <div class="status-options">
+                          <label class="status-option">
+                            <input type="checkbox" id="editPickupStatus" checked> Pick-Up
+                          </label>
+                          <label class="status-option">
+                            <input type="checkbox" id="editPayoutsStatus" checked> Payouts
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-actions">
+                    <button class="btn btn-light cancel-edit-btn" data-section="vendor">Cancel</button>
+                    <button class="btn btn-primary save-edit-btn" data-section="vendor">Save Changes</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
 
-          <!-- Payment Details -->
           <section class="info-section">
             <div class="section-header">
               <h3>
@@ -280,7 +371,6 @@
                 </div>
               </div>
 
-              <!-- Payment Edit Form -->
               <div class="section-edit-form" id="paymentEditForm" style="display: none;">
                 <div class="form-group">
                   <label>Transaction ID</label>
@@ -316,7 +406,6 @@
             </div>
           </section>
 
-          <!-- Tracking Information -->
           <section class="info-section">
             <div class="section-header">
               <h3>
@@ -346,14 +435,8 @@
                     <span id="trackingLastUpdated">Nov 13, 2023 14:30 PM</span>
                   </p>
                 </div>
-
-                <!-- Tracking Timeline -->
-                <div class="tracking-timeline">
-                  <!-- ... existing timeline ... -->
-                </div>
               </div>
 
-              <!-- Tracking Edit Form -->
               <div class="section-edit-form" id="trackingEditForm" style="display: none;">
                 <div class="form-group">
                   <label>Tracking Number</label>
@@ -386,24 +469,18 @@
           </section>
         </div>
       </div>
-
-      <!-- Order Actions -->
-      <div class="order-actions">
-        <!-- ... existing actions ... -->
-      </div>
     </main>
   </div>
   <script>
-
     document.addEventListener('DOMContentLoaded', function () {
       function showNotification(message, type = 'info') {
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         notification.innerHTML = `
-      <i class="fas fa-${type === 'success' ? 'check-circle' :
+          <i class="fas fa-${type === 'success' ? 'check-circle' :
             type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
-      <span>${message}</span>
-    `;
+          <span>${message}</span>
+        `;
 
         document.body.appendChild(notification);
 
@@ -417,8 +494,8 @@
             if (notification.parentNode) {
               notification.parentNode.removeChild(notification);
             }
-          }, 300);
-        }, 3000);
+          }, 3);
+        }, 1000);
       }
 
       document.querySelectorAll('.edit-section-btn').forEach(button => {
@@ -513,6 +590,35 @@
             document.getElementById('invoiceNumber').textContent = invoiceNumber;
             break;
 
+          case 'vendor':
+            const vendorName = document.getElementById('editVendorName').value;
+            const vendorType = document.getElementById('editVendorType').value;
+            const warehouseStatus = document.getElementById('editWarehouseStatus').value;
+            const vendorEarning = document.getElementById('editVendorEarning').value;
+            const payoutStatus = document.getElementById('editPayoutStatus').value;
+            const pickupStatus = document.getElementById('editPickupStatus').checked;
+            const payoutsStatus = document.getElementById('editPayoutsStatus').checked;
+
+            document.querySelector('.vendor-name').textContent = vendorName;
+            document.querySelector('.vendor-badge').textContent = vendorType.charAt(0).toUpperCase() + vendorType.slice(1);
+
+            const warehouseText = warehouseStatus === 'no-warehouse' ? 'No Warehouse' :
+              warehouseStatus === 'has-warehouse' ? 'Has Warehouse' : 'Dropship';
+            document.querySelector('.warehouse-info span').textContent = warehouseText;
+
+            document.querySelector('.vendor-earning span').innerHTML = `vonoor earning: <strong>${vendorEarning}</strong>`;
+
+            const payoutStatusElement = document.querySelector('.payout-status strong');
+            payoutStatusElement.textContent = payoutStatus;
+            payoutStatusElement.className = `status-${payoutStatus.toLowerCase()}`;
+
+            const pickupBadge = document.querySelector('.status-pickup');
+            const payoutsBadge = document.querySelector('.status-payout');
+
+            pickupBadge.style.display = pickupStatus ? 'inline-block' : 'none';
+            payoutsBadge.style.display = payoutsStatus ? 'inline-block' : 'none';
+            break;
+
           case 'payment':
             const transactionId = document.getElementById('editTransactionId').value;
             const paymentStatus = document.getElementById('editPaymentStatus').value;
@@ -533,7 +639,6 @@
             document.getElementById('trackingNumberText').textContent = trackingNumber;
             document.getElementById('courierService').textContent = courierService;
 
-            // Update timestamp
             const now = new Date();
             const formattedDate = now.toLocaleDateString('en-US', {
               month: 'short',
@@ -544,95 +649,18 @@
               minute: '2-digit'
             });
             document.getElementById('trackingLastUpdated').textContent = formattedDate;
-
-            updateTrackingTimeline(trackingStatus);
             break;
         }
 
-
         showNotification(`${section.charAt(0).toUpperCase() + section.slice(1)} information updated successfully!`, 'success');
 
-
         if (displayElement && editElement) {
           displayElement.style.display = 'block';
           editElement.style.display = 'none';
         }
-
-
       }
-
-
-      function updateTrackingTimeline(status) {
-        const steps = document.querySelectorAll('.tracking-step');
-        steps.forEach(step => step.classList.remove('active'));
-
-        if (status === 'processing') {
-          steps[0].classList.add('active');
-          steps[1].classList.add('active');
-          steps[2].classList.add('active');
-        } else if (status === 'shipped') {
-          steps[0].classList.add('active');
-          steps[1].classList.add('active');
-          steps[2].classList.add('active');
-          steps[3].classList.add('active');
-        } else if (status === 'delivered') {
-          steps.forEach(step => step.classList.add('active'));
-        }
-      }
-
-
-
-      // Function to save to server (example)
-      function saveToServer(section, data) {
-        console.log(`Saving ${section} data:`, data);
-        /*
-        fetch('/api/update-order-details', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            section: section,
-            data: data,
-            orderId: getCurrentOrderId()
-          })
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Success:', data);
-          showNotification('Changes saved successfully!', 'success');
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          showNotification('Failed to save changes', 'error');
-        });
-        */
-      }
-
-      // Function to get current order ID
-      function getCurrentOrderId() {
-        const orderIdElem = document.getElementById('orderIdDisplay');
-        return orderIdElem ? orderIdElem.textContent.replace('Order #', '') : '';
-      }
-    });
-
-    document.querySelectorAll('.save-edit-btn').forEach(button => {
-      button.addEventListener('click', function () {
-        const section = this.getAttribute('data-section');
-
-        const displayElement = document.getElementById(`${section}Display`);
-        const editElement = document.getElementById(`${section}EditForm`);
-
-        if (displayElement && editElement) {
-          displayElement.style.display = 'block';
-          editElement.style.display = 'none';
-
-          showNotification('Changes saved successfully!', 'success');
-        }
-      });
     });
   </script>
 </body>
 
 </html>
-<!DOCTYPE html>
