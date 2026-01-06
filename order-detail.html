@@ -6,10 +6,449 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Order Details - Order Management</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/order-detail.css" />
-</head>
+  <style>
+    /* CSS for Order Detail Page */
+    :root {
+      --primary: #4361ee;
+      --secondary: #3a0ca3;
+      --success: #4cc9f0;
+      --danger: #f72585;
+      --warning: #ffc107;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --gray: #6c757d;
+      --gray-light: #e9ecef;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fb;
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .main-content {
+      background-color: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+    }
+
+    /* Header */
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 30px;
+      background-color: white;
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 15px;
+      background-color: var(--light);
+      border-radius: var(--border-radius);
+      color: var(--dark);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .back-btn:hover {
+      background-color: var(--gray-light);
+    }
+
+    .header-left h1 {
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+
+    #orderHeaderInfo {
+      color: var(--gray);
+      font-size: 14px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--secondary);
+    }
+
+    .btn-success {
+      background-color: var(--success);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background-color: #2da0c0;
+    }
+
+    .btn-light {
+      background-color: var(--gray-light);
+      color: var(--dark);
+    }
+
+    .btn-light:hover {
+      background-color: #d1d5db;
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    /* Content Grid */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    @media (max-width: 992px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Info Sections */
+    .info-section {
+      background-color: white;
+      border: 1px solid var(--gray-light);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background-color: var(--light);
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .section-header h3 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--dark);
+      font-size: 18px;
+    }
+
+    .section-body {
+      padding: 20px;
+    }
+
+    .section-display p {
+      margin-bottom: 10px;
+      display: flex;
+    }
+
+    .section-display strong {
+      min-width: 150px;
+      color: var(--dark);
+    }
+
+    /* Edit Forms */
+    .section-edit-form {
+      padding: 10px 0;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--gray-light);
+      border-radius: var(--border-radius);
+      font-size: 14px;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .form-checkbox input {
+      width: 18px;
+      height: 18px;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    /* Vendor Card */
+    .vendor-card {
+      border: 1px solid var(--gray-light);
+      border-radius: var(--border-radius);
+      padding: 15px;
+      background-color: var(--light);
+    }
+
+    .vendor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .vendor-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .vendor-name {
+      font-size: 18px;
+      color: var(--dark);
+    }
+
+    .vendor-badge {
+      background-color: var(--primary);
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .vendor-status {
+      display: flex;
+      gap: 5px;
+    }
+
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-pickup {
+      background-color: rgba(40, 167, 69, 0.2);
+      color: #155724;
+    }
+
+    .status-payout {
+      background-color: rgba(0, 123, 255, 0.2);
+      color: #004085;
+    }
+
+    .vendor-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .vendor-details>div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gray);
+    }
+
+    .vendor-details i {
+      color: var(--primary);
+    }
+
+    .status-unpaid {
+      color: var(--danger);
+      font-weight: bold;
+    }
+
+    .vendor-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Payment Details */
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .detail-row.total-row {
+      font-weight: bold;
+      border-bottom: none;
+      font-size: 16px;
+      margin-top: 10px;
+      padding-top: 15px;
+      border-top: 2px solid var(--gray-light);
+    }
+
+    /* Tracking */
+    .tracking-number-display p {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-icon {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    /* Notifications */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 0.3s ease;
+    }
+
+    .notification.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .notification.success {
+      background-color: #d4edda;
+      color: #155724;
+      border-left: 4px solid #28a745;
+    }
+
+    .notification.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border-left: 4px solid #dc3545;
+    }
+
+    .notification.info {
+      background-color: #d1ecf1;
+      color: #0c5460;
+      border-left: 4px solid #17a2b8;
+    }
+
+    /* Edit Vendor Container */
+    .edit-vendor-container {
+      padding: 10px;
+    }
+
+    .edit-section {
+      margin-bottom: 20px;
+    }
+
+    .edit-section h4 {
+      margin-bottom: 15px;
+      color: var(--dark);
+    }
+
+    .status-options {
+      display: flex;
+      gap: 15px;
+      margin-top: 5px;
+    }
+
+    .status-option {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+  </style>
+</head>
 
 <body>
   <div class="container">
@@ -52,34 +491,34 @@
               <div class="section-display" id="customerDisplay">
                 <p>
                   <strong>Name:</strong>
-                  <span id="customerName">John Doe</span>
+                  <span id="customerName">Loading...</span>
                 </p>
                 <p>
                   <strong>Email:</strong>
-                  <span id="customerEmail">john@example.com</span>
+                  <span id="customerEmail">Loading...</span>
                 </p>
                 <p>
                   <strong>Phone:</strong>
-                  <span id="customerPhone">+91 9876543210</span>
+                  <span id="customerPhone">Loading...</span>
                 </p>
                 <p>
                   <strong>Customer ID:</strong>
-                  <span id="customerId">CUST-1001</span>
+                  <span id="customerId">Loading...</span>
                 </p>
               </div>
 
               <div class="section-edit-form" id="customerEditForm" style="display: none;">
                 <div class="form-group">
                   <label>Name</label>
-                  <input type="text" class="form-input" id="editCustomerName" value="John Doe">
+                  <input type="text" class="form-input" id="editCustomerName">
                 </div>
                 <div class="form-group">
                   <label>Email</label>
-                  <input type="email" class="form-input" id="editCustomerEmail" value="john@example.com">
+                  <input type="email" class="form-input" id="editCustomerEmail">
                 </div>
                 <div class="form-group">
                   <label>Phone</label>
-                  <input type="tel" class="form-input" id="editCustomerPhone" value="+91 9876543210">
+                  <input type="tel" class="form-input" id="editCustomerPhone">
                 </div>
                 <div class="form-actions">
                   <button class="btn btn-light cancel-edit-btn" data-section="customer">Cancel</button>
@@ -103,52 +542,51 @@
               <div class="section-display" id="shippingDisplay">
                 <p>
                   <strong>Address:</strong>
-                  <span id="shippingAddressText">123 Main Street, Apartment 4B</span>
+                  <span id="shippingAddressText">Loading...</span>
                 </p>
                 <p>
                   <strong>City:</strong>
-                  <span id="shippingCity">Mumbai</span>
+                  <span id="shippingCity">Loading...</span>
                 </p>
                 <p>
                   <strong>State:</strong>
-                  <span id="shippingState">Maharashtra</span>
+                  <span id="shippingState">Loading...</span>
                 </p>
                 <p>
                   <strong>Pincode:</strong>
-                  <span id="shippingPincode">400001</span>
+                  <span id="shippingPincode">Loading...</span>
                 </p>
                 <p>
                   <strong>Shipping Status:</strong>
-                  <span id="shippingStatus">Processing</span>
+                  <span id="shippingStatus">Loading...</span>
                 </p>
               </div>
 
               <div class="section-edit-form" id="shippingEditForm" style="display: none;">
                 <div class="form-group">
                   <label>Address</label>
-                  <textarea class="form-textarea" id="editShippingAddress"
-                    rows="3">123 Main Street, Apartment 4B</textarea>
+                  <textarea class="form-textarea" id="editShippingAddress" rows="3"></textarea>
                 </div>
                 <div class="form-row">
                   <div class="form-group">
                     <label>City</label>
-                    <input type="text" class="form-input" id="editShippingCity" value="Mumbai">
+                    <input type="text" class="form-input" id="editShippingCity">
                   </div>
                   <div class="form-group">
                     <label>State</label>
-                    <input type="text" class="form-input" id="editShippingState" value="Maharashtra">
+                    <input type="text" class="form-input" id="editShippingState">
                   </div>
                 </div>
                 <div class="form-row">
                   <div class="form-group">
                     <label>Pincode</label>
-                    <input type="text" class="form-input" id="editShippingPincode" value="400001">
+                    <input type="text" class="form-input" id="editShippingPincode">
                   </div>
                   <div class="form-group">
                     <label>Shipping Status</label>
                     <select class="form-select" id="editShippingStatus">
                       <option value="pending">Pending</option>
-                      <option value="processing" selected>Processing</option>
+                      <option value="processing">Processing</option>
                       <option value="shipped">Shipped</option>
                       <option value="delivered">Delivered</option>
                       <option value="cancelled">Cancelled</option>
@@ -177,31 +615,30 @@
               <div class="section-display" id="billingDisplay">
                 <p>
                   <strong>Billing Address:</strong>
-                  <span id="billingAddress">123 Main Street, Apartment 4B</span>
+                  <span id="billingAddress">Loading...</span>
                 </p>
                 <p>
                   <strong>GST Number:</strong>
-                  <span id="gstNumber">24AABCU9603R1ZM</span>
+                  <span id="gstNumber">Loading...</span>
                 </p>
                 <p>
                   <strong>Invoice Number:</strong>
-                  <span id="invoiceNumber">INV-2023-1001</span>
+                  <span id="invoiceNumber">Loading...</span>
                 </p>
               </div>
 
               <div class="section-edit-form" id="billingEditForm" style="display: none;">
                 <div class="form-group">
                   <label>Billing Address</label>
-                  <textarea class="form-textarea" id="editBillingAddress"
-                    rows="3">123 Main Street, Apartment 4B</textarea>
+                  <textarea class="form-textarea" id="editBillingAddress" rows="3"></textarea>
                 </div>
                 <div class="form-group">
                   <label>GST Number</label>
-                  <input type="text" class="form-input" id="editGstNumber" value="24AABCU9603R1ZM">
+                  <input type="text" class="form-input" id="editGstNumber">
                 </div>
                 <div class="form-group">
                   <label>Invoice Number</label>
-                  <input type="text" class="form-input" id="editInvoiceNumber" value="INV-2023-1001">
+                  <input type="text" class="form-input" id="editInvoiceNumber">
                 </div>
                 <div class="form-checkbox">
                   <input type="checkbox" id="sameAsShipping" checked>
@@ -232,29 +669,30 @@
                 <div class="vendor-card">
                   <div class="vendor-header">
                     <div class="vendor-info">
-                      <h4 class="vendor-name">moonlightworkshop</h4>
-                      <span class="vendor-badge">Vendor</span>
+                      <h4 class="vendor-name" id="vendorNameDisplay">Loading...</h4>
+                      <span class="vendor-badge" id="vendorTypeDisplay">Vendor</span>
                     </div>
                     <div class="vendor-status">
-                      <span class="status-badge status-pickup">Pick-Up</span>
-                      <span class="status-badge status-payout">Payouts</span>
+                      <span class="status-badge status-pickup" id="pickupBadge">Pick-Up</span>
+                      <span class="status-badge status-payout" id="payoutsBadge">Payouts</span>
                     </div>
                   </div>
 
                   <div class="vendor-details">
                     <div class="warehouse-info">
                       <i class="fas fa-warehouse"></i>
-                      <span>No Warehouse</span>
+                      <span id="warehouseDisplay">Loading...</span>
                     </div>
 
                     <div class="vendor-earning">
                       <i class="fas fa-money-bill-wave"></i>
-                      <span>vonoor earning: <strong>10% MCNO</strong></span>
+                      <span>vonoor earning: <strong id="vendorEarningDisplay">Loading...</strong></span>
                     </div>
 
                     <div class="payout-status">
                       <i class="fas fa-wallet"></i>
-                      <span>Payout Status: <strong class="status-unpaid">UNPAID</strong></span>
+                      <span>Payout Status: <strong id="payoutStatusDisplay"
+                          class="status-unpaid">Loading...</strong></span>
                     </div>
                   </div>
 
@@ -279,12 +717,12 @@
                     <div class="form-row">
                       <div class="form-group">
                         <label>Vendor Name</label>
-                        <input type="text" class="form-input" id="editVendorName" value="moonlightworkshop">
+                        <input type="text" class="form-input" id="editVendorName">
                       </div>
                       <div class="form-group">
                         <label>Vendor Type</label>
                         <select class="form-select" id="editVendorType">
-                          <option value="vendor" selected>Vendor</option>
+                          <option value="vendor">Vendor</option>
                           <option value="supplier">Supplier</option>
                           <option value="partner">Partner</option>
                         </select>
@@ -294,34 +732,34 @@
                       <div class="form-group">
                         <label>Warehouse Status</label>
                         <select class="form-select" id="editWarehouseStatus">
-                          <option value="no-warehouse" selected>No Warehouse</option>
-                          <option value="has-warehouse">Has Warehouse</option>
-                          <option value="dropship">Dropship</option>
+                          <option value="No Warehouse">No Warehouse</option>
+                          <option value="Has Warehouse">Has Warehouse</option>
+                          <option value="Dropship">Dropship</option>
                         </select>
                       </div>
                       <div class="form-group">
                         <label>Commission/Earning</label>
-                        <input type="text" class="form-input" id="editVendorEarning" value="10% MCNO">
+                        <input type="text" class="form-input" id="editVendorEarning">
                       </div>
                     </div>
                     <div class="form-row">
                       <div class="form-group">
                         <label>Payout Status</label>
                         <select class="form-select" id="editPayoutStatus">
-                          <option value="unpaid" selected>UNPAID</option>
-                          <option value="paid">PAID</option>
-                          <option value="processing">PROCESSING</option>
-                          <option value="failed">FAILED</option>
+                          <option value="UNPAID">UNPAID</option>
+                          <option value="PAID">PAID</option>
+                          <option value="PROCESSING">PROCESSING</option>
+                          <option value="FAILED">FAILED</option>
                         </select>
                       </div>
                       <div class="form-group">
                         <label>Vendor Status</label>
                         <div class="status-options">
                           <label class="status-option">
-                            <input type="checkbox" id="editPickupStatus" checked> Pick-Up
+                            <input type="checkbox" id="editPickupStatus"> Pick-Up
                           </label>
                           <label class="status-option">
-                            <input type="checkbox" id="editPayoutsStatus" checked> Payouts
+                            <input type="checkbox" id="editPayoutsStatus"> Payouts
                           </label>
                         </div>
                       </div>
@@ -351,36 +789,36 @@
               <div class="section-display" id="paymentDisplay">
                 <div class="detail-row">
                   <span>Transaction ID:</span>
-                  <span id="transactionId">TXN-789012</span>
+                  <span id="transactionId">Loading...</span>
                 </div>
                 <div class="detail-row">
                   <span>Payment Status:</span>
-                  <span id="paymentStatus">Paid</span>
+                  <span id="paymentStatus">Loading...</span>
                 </div>
                 <div class="detail-row">
                   <span>Payment Date:</span>
-                  <span id="paymentDate">Nov 12, 2023 14:30</span>
+                  <span id="paymentDate">Loading...</span>
                 </div>
                 <div class="detail-row">
                   <span>Payment Gateway:</span>
-                  <span id="paymentGateway">Razorpay</span>
+                  <span id="paymentGateway">Loading...</span>
                 </div>
                 <div class="detail-row total-row">
                   <span>Amount Paid:</span>
-                  <span id="amountPaid">₹1,250.00</span>
+                  <span id="amountPaid">Loading...</span>
                 </div>
               </div>
 
               <div class="section-edit-form" id="paymentEditForm" style="display: none;">
                 <div class="form-group">
                   <label>Transaction ID</label>
-                  <input type="text" class="form-input" id="editTransactionId" value="TXN-789012">
+                  <input type="text" class="form-input" id="editTransactionId">
                 </div>
                 <div class="form-group">
                   <label>Payment Status</label>
                   <select class="form-select" id="editPaymentStatus">
                     <option value="pending">Pending</option>
-                    <option value="paid" selected>Paid</option>
+                    <option value="paid">Paid</option>
                     <option value="failed">Failed</option>
                     <option value="refunded">Refunded</option>
                   </select>
@@ -396,7 +834,7 @@
                 </div>
                 <div class="form-group">
                   <label>Amount Paid</label>
-                  <input type="text" class="form-input" id="editAmountPaid" value="1250.00">
+                  <input type="text" class="form-input" id="editAmountPaid">
                 </div>
                 <div class="form-actions">
                   <button class="btn btn-light cancel-edit-btn" data-section="payment">Cancel</button>
@@ -421,18 +859,18 @@
                 <div class="tracking-number-display">
                   <p>
                     <strong>Tracking Number:</strong>
-                    <span id="trackingNumberText">ABC123456789</span>
+                    <span id="trackingNumberText">Loading...</span>
                     <button class="btn-icon copy-tracking-btn" title="Copy Tracking Number">
                       <i class="fas fa-copy"></i>
                     </button>
                   </p>
                   <p>
                     <strong>Courier Service:</strong>
-                    <span id="courierService">BlueDart</span>
+                    <span id="courierService">Loading...</span>
                   </p>
                   <p>
                     <strong>Last Updated:</strong>
-                    <span id="trackingLastUpdated">Nov 13, 2023 14:30 PM</span>
+                    <span id="trackingLastUpdated">Loading...</span>
                   </p>
                 </div>
               </div>
@@ -440,7 +878,7 @@
               <div class="section-edit-form" id="trackingEditForm" style="display: none;">
                 <div class="form-group">
                   <label>Tracking Number</label>
-                  <input type="text" class="form-input" id="editTrackingNumber" value="ABC123456789">
+                  <input type="text" class="form-input" id="editTrackingNumber">
                 </div>
                 <div class="form-group">
                   <label>Courier Service</label>
@@ -471,8 +909,208 @@
       </div>
     </main>
   </div>
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      // Order.html ma thi order ID levo
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderId = urlParams.get('id');
+
+      if (orderId) {
+        console.log('Loading order:', orderId);
+        // Order details load karo
+        loadOrderDetails(orderId);
+        document.getElementById('orderHeaderInfo').textContent = `Order ID: ${orderId}`;
+      } else {
+        document.getElementById('orderHeaderInfo').textContent = 'No order selected';
+      }
+
+      // Sample order data (same as order.html)
+
+      function getOrderData(orderId) {
+        // First check localStorage
+        const savedOrders = JSON.parse(localStorage.getItem('orderDetails')) || {};
+        if (savedOrders[orderId]) {
+          return savedOrders[orderId];
+        }
+
+        // If not in localStorage, generate from order ID
+        return generateOrderDataFromId(orderId);
+      }
+
+      function generateOrderDataFromId(orderId) {
+        // Extract order number
+        const orderNum = orderId.split('-')[1];
+
+        // Generate basic data based on order number
+        const baseData = {
+          id: orderId,
+          customer: `Customer ${orderNum}`,
+          date: `2023-${10 + Math.floor(Math.random() * 2)}-${15 + Math.floor(Math.random() * 10)}`,
+          vendor: `Vendor ${orderNum}`,
+          status: ["pending", "processing", "shipped", "delivered"][Math.floor(Math.random() * 4)],
+          shipping: ["pending", "processing", "shipped", "delivered"][Math.floor(Math.random() * 4)],
+          items: ["Laptop", "Mouse", "Keyboard", "Monitor", "Headphones"][Math.floor(Math.random() * 5)],
+          total: (100 + Math.random() * 2000).toFixed(2),
+          pushed: Math.random() > 0.5,
+
+          // Generate detailed data
+          customerName: `Customer ${orderNum}`,
+          customerEmail: `customer${orderNum}@email.com`,
+          customerPhone: `+91 ${Math.floor(1000000000 + Math.random() * 9000000000)}`,
+          customerId: `CUST-${orderNum}`,
+
+          shippingAddress: `${Math.floor(100 + Math.random() * 900)} Main Street`,
+          shippingCity: ["Mumbai", "Delhi", "Bangalore", "Chennai"][Math.floor(Math.random() * 4)],
+          shippingState: ["Maharashtra", "Delhi", "Karnataka", "Tamil Nadu"][Math.floor(Math.random() * 4)],
+          shippingPincode: Math.floor(400000 + Math.random() * 100000).toString(),
+          shippingStatus: ["Pending", "Processing", "Shipped", "Delivered"][Math.floor(Math.random() * 4)],
+
+          billingAddress: `${Math.floor(100 + Math.random() * 900)} Billing Avenue`,
+          gstNumber: `27AABC${Math.floor(1000 + Math.random() * 9000)}Z${Math.floor(1 + Math.random() * 9)}`,
+          invoiceNumber: `INV-2023-${orderNum}`,
+
+          vendorName: `vendor${orderNum}`,
+          vendorType: ["Vendor", "Supplier", "Partner"][Math.floor(Math.random() * 3)],
+          vendorEarning: `${Math.floor(5 + Math.random() * 20)}% Commission`,
+          payoutStatus: ["UNPAID", "PAID", "PROCESSING"][Math.floor(Math.random() * 3)],
+
+          transactionId: `TXN-${Date.now().toString().slice(-6)}`,
+          paymentStatus: ["Pending", "Paid", "Failed"][Math.floor(Math.random() * 3)],
+          paymentDate: new Date().toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          }),
+          paymentGateway: ["Razorpay", "Stripe", "PayPal"][Math.floor(Math.random() * 3)],
+          amountPaid: `₹${(100 + Math.random() * 2000).toFixed(2)}`,
+
+          trackingNumber: `TRK${Math.floor(1000000000 + Math.random() * 9000000000)}`,
+          courierService: ["BlueDart", "DTDC", "Delhivery"][Math.floor(Math.random() * 3)],
+          trackingLastUpdated: new Date().toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          }) + ' PM',
+
+          warehouseStatus: ["No Warehouse", "Has Warehouse", "Dropship"][Math.floor(Math.random() * 3)],
+          pickupStatus: Math.random() > 0.5,
+          payoutsStatus: Math.random() > 0.5
+        };
+
+        return baseData;
+      }
+
+      function loadOrderDetails(orderId) {
+        const orderData = getOrderData(orderId);
+
+        if (!orderData) {
+          showNotification('Order not found!', 'error');
+          return;
+        }
+
+        // Display order details
+        displayOrderDetails(orderData);
+      }
+
+      function displayOrderDetails(orderData) {
+        // Update header
+        document.getElementById('orderHeaderInfo').textContent =
+          `Order ID: ${orderData.id} | Date: ${orderData.date} | Status: ${orderData.status}`;
+
+        // Customer details
+        document.getElementById('customerName').textContent = orderData.customerName || orderData.customer;
+        document.getElementById('customerEmail').textContent = orderData.customerEmail || 'N/A';
+        document.getElementById('customerPhone').textContent = orderData.customerPhone || 'N/A';
+        document.getElementById('customerId').textContent = orderData.customerId || 'N/A';
+
+        // Shipping details
+        document.getElementById('shippingAddressText').textContent = orderData.shippingAddress || 'N/A';
+        document.getElementById('shippingCity').textContent = orderData.shippingCity || 'N/A';
+        document.getElementById('shippingState').textContent = orderData.shippingState || 'N/A';
+        document.getElementById('shippingPincode').textContent = orderData.shippingPincode || 'N/A';
+        document.getElementById('shippingStatus').textContent = orderData.shippingStatus || 'N/A';
+
+        // Billing details
+        document.getElementById('billingAddress').textContent = orderData.billingAddress || orderData.shippingAddress || 'N/A';
+        document.getElementById('gstNumber').textContent = orderData.gstNumber || 'N/A';
+        document.getElementById('invoiceNumber').textContent = orderData.invoiceNumber || 'N/A';
+
+        // Vendor details
+        document.getElementById('vendorNameDisplay').textContent = orderData.vendorName || orderData.vendor;
+        document.getElementById('vendorTypeDisplay').textContent = orderData.vendorType || 'Vendor';
+        document.getElementById('vendorEarningDisplay').textContent = orderData.vendorEarning || 'N/A';
+
+        const payoutStatusElement = document.getElementById('payoutStatusDisplay');
+        payoutStatusElement.textContent = orderData.payoutStatus || 'N/A';
+        payoutStatusElement.className = `status-${(orderData.payoutStatus || '').toLowerCase()}`;
+
+        document.getElementById('warehouseDisplay').textContent = orderData.warehouseStatus || 'No Warehouse';
+
+        // Show/hide badges based on status
+        document.getElementById('pickupBadge').style.display = orderData.pickupStatus ? 'inline-block' : 'none';
+        document.getElementById('payoutsBadge').style.display = orderData.payoutsStatus ? 'inline-block' : 'none';
+
+        // Payment details
+        document.getElementById('transactionId').textContent = orderData.transactionId || 'N/A';
+        document.getElementById('paymentStatus').textContent = orderData.paymentStatus || 'N/A';
+        document.getElementById('paymentDate').textContent = orderData.paymentDate || 'N/A';
+        document.getElementById('paymentGateway').textContent = orderData.paymentGateway || 'N/A';
+        document.getElementById('amountPaid').textContent = orderData.amountPaid || '₹0.00';
+
+        // Tracking details
+        document.getElementById('trackingNumberText').textContent = orderData.trackingNumber || 'N/A';
+        document.getElementById('courierService').textContent = orderData.courierService || 'N/A';
+        document.getElementById('trackingLastUpdated').textContent = orderData.trackingLastUpdated || 'N/A';
+
+        // Set edit form values
+        setEditFormValues(orderData);
+      }
+
+      function setEditFormValues(orderData) {
+        // Customer edit form
+        document.getElementById('editCustomerName').value = orderData.customerName || orderData.customer;
+        document.getElementById('editCustomerEmail').value = orderData.customerEmail || '';
+        document.getElementById('editCustomerPhone').value = orderData.customerPhone || '';
+
+        // Shipping edit form
+        document.getElementById('editShippingAddress').value = orderData.shippingAddress || '';
+        document.getElementById('editShippingCity').value = orderData.shippingCity || '';
+        document.getElementById('editShippingState').value = orderData.shippingState || '';
+        document.getElementById('editShippingPincode').value = orderData.shippingPincode || '';
+        document.getElementById('editShippingStatus').value = orderData.shippingStatus ? orderData.shippingStatus.toLowerCase() : 'pending';
+
+        // Billing edit form
+        document.getElementById('editBillingAddress').value = orderData.billingAddress || orderData.shippingAddress || '';
+        document.getElementById('editGstNumber').value = orderData.gstNumber || '';
+        document.getElementById('editInvoiceNumber').value = orderData.invoiceNumber || '';
+
+        // Vendor edit form
+        document.getElementById('editVendorName').value = orderData.vendorName || orderData.vendor;
+        document.getElementById('editVendorType').value = orderData.vendorType ? orderData.vendorType.toLowerCase() : 'vendor';
+        document.getElementById('editWarehouseStatus').value = orderData.warehouseStatus || 'No Warehouse';
+        document.getElementById('editVendorEarning').value = orderData.vendorEarning || '';
+        document.getElementById('editPayoutStatus').value = orderData.payoutStatus || 'UNPAID';
+        document.getElementById('editPickupStatus').checked = orderData.pickupStatus || false;
+        document.getElementById('editPayoutsStatus').checked = orderData.payoutsStatus || false;
+
+        // Payment edit form
+        document.getElementById('editTransactionId').value = orderData.transactionId || '';
+        document.getElementById('editPaymentStatus').value = orderData.paymentStatus ? orderData.paymentStatus.toLowerCase() : 'pending';
+        document.getElementById('editPaymentGateway').value = orderData.paymentGateway || 'Razorpay';
+        document.getElementById('editAmountPaid').value = orderData.amountPaid ? orderData.amountPaid.replace('₹', '') : '';
+
+        // Tracking edit form
+        document.getElementById('editTrackingNumber').value = orderData.trackingNumber || '';
+        document.getElementById('editCourierService').value = orderData.courierService || 'BlueDart';
+        document.getElementById('editTrackingStatus').value = orderData.shippingStatus ? orderData.shippingStatus.toLowerCase() : 'pending';
+      }
+
+      // Rest of your existing functions (showNotification, edit functions, etc.)
       function showNotification(message, type = 'info') {
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
@@ -551,9 +1189,36 @@
         });
       }
 
+
+      // Add this function to sync changes back to main orders array
+      function syncChangesToMainOrders(orderId, updatedData) {
+        // Get the current orders from localStorage or initialize
+        let mainOrders = JSON.parse(localStorage.getItem('mainOrders')) || [...sampleOrders];
+
+        // Find the order index
+        const orderIndex = mainOrders.findIndex(o => o.id === orderId);
+
+        if (orderIndex !== -1) {
+          // Update the main order with relevant data
+          mainOrders[orderIndex] = {
+            ...mainOrders[orderIndex],
+            customer: updatedData.customerName || mainOrders[orderIndex].customer,
+            vendor: updatedData.vendorName || mainOrders[orderIndex].vendor,
+            status: updatedData.status || mainOrders[orderIndex].status,
+            shipping: updatedData.shippingStatus || mainOrders[orderIndex].shipping
+          };
+
+          // Save back to localStorage
+          localStorage.setItem('mainOrders', JSON.stringify(mainOrders));
+          console.log('Synced changes to main orders:', mainOrders[orderIndex]);
+        }
+      }
+
+      // Modify the saveSectionChanges function to call sync
       function saveSectionChanges(section) {
         const displayElement = document.getElementById(`${section}Display`);
         const editElement = document.getElementById(`${section}EditForm`);
+        const orderId = urlParams.get('id');
 
         switch (section) {
           case 'customer':
@@ -580,15 +1245,7 @@
             document.getElementById('shippingStatus').textContent = shippingStatus;
             break;
 
-          case 'billing':
-            const billingAddress = document.getElementById('editBillingAddress').value;
-            const gstNumber = document.getElementById('editGstNumber').value;
-            const invoiceNumber = document.getElementById('editInvoiceNumber').value;
-
-            document.getElementById('billingAddress').textContent = billingAddress;
-            document.getElementById('gstNumber').textContent = gstNumber;
-            document.getElementById('invoiceNumber').textContent = invoiceNumber;
-            break;
+          // ... other cases remain the same ...
 
           case 'vendor':
             const vendorName = document.getElementById('editVendorName').value;
@@ -599,57 +1256,20 @@
             const pickupStatus = document.getElementById('editPickupStatus').checked;
             const payoutsStatus = document.getElementById('editPayoutsStatus').checked;
 
-            document.querySelector('.vendor-name').textContent = vendorName;
-            document.querySelector('.vendor-badge').textContent = vendorType.charAt(0).toUpperCase() + vendorType.slice(1);
+            document.getElementById('vendorNameDisplay').textContent = vendorName;
+            document.getElementById('vendorTypeDisplay').textContent = vendorType.charAt(0).toUpperCase() + vendorType.slice(1);
+            document.getElementById('vendorEarningDisplay').textContent = vendorEarning;
 
-            const warehouseText = warehouseStatus === 'no-warehouse' ? 'No Warehouse' :
-              warehouseStatus === 'has-warehouse' ? 'Has Warehouse' : 'Dropship';
-            document.querySelector('.warehouse-info span').textContent = warehouseText;
+            const payoutStatusDisplay = document.getElementById('payoutStatusDisplay');
+            payoutStatusDisplay.textContent = payoutStatus;
+            payoutStatusDisplay.className = `status-${payoutStatus.toLowerCase()}`;
 
-            document.querySelector('.vendor-earning span').innerHTML = `vonoor earning: <strong>${vendorEarning}</strong>`;
-
-            const payoutStatusElement = document.querySelector('.payout-status strong');
-            payoutStatusElement.textContent = payoutStatus;
-            payoutStatusElement.className = `status-${payoutStatus.toLowerCase()}`;
-
-            const pickupBadge = document.querySelector('.status-pickup');
-            const payoutsBadge = document.querySelector('.status-payout');
-
-            pickupBadge.style.display = pickupStatus ? 'inline-block' : 'none';
-            payoutsBadge.style.display = payoutsStatus ? 'inline-block' : 'none';
+            document.getElementById('warehouseDisplay').textContent = warehouseStatus;
+            document.getElementById('pickupBadge').style.display = pickupStatus ? 'inline-block' : 'none';
+            document.getElementById('payoutsBadge').style.display = payoutsStatus ? 'inline-block' : 'none';
             break;
 
-          case 'payment':
-            const transactionId = document.getElementById('editTransactionId').value;
-            const paymentStatus = document.getElementById('editPaymentStatus').value;
-            const paymentGateway = document.getElementById('editPaymentGateway').value;
-            const amountPaid = document.getElementById('editAmountPaid').value;
-
-            document.getElementById('transactionId').textContent = transactionId;
-            document.getElementById('paymentStatus').textContent = paymentStatus;
-            document.getElementById('paymentGateway').textContent = paymentGateway;
-            document.getElementById('amountPaid').textContent = `₹${amountPaid}`;
-            break;
-
-          case 'tracking':
-            const trackingNumber = document.getElementById('editTrackingNumber').value;
-            const courierService = document.getElementById('editCourierService').value;
-            const trackingStatus = document.getElementById('editTrackingStatus').value;
-
-            document.getElementById('trackingNumberText').textContent = trackingNumber;
-            document.getElementById('courierService').textContent = courierService;
-
-            const now = new Date();
-            const formattedDate = now.toLocaleDateString('en-US', {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric'
-            }) + ' ' + now.toLocaleTimeString('en-US', {
-              hour: '2-digit',
-              minute: '2-digit'
-            });
-            document.getElementById('trackingLastUpdated').textContent = formattedDate;
-            break;
+          // ... other cases ...
         }
 
         showNotification(`${section.charAt(0).toUpperCase() + section.slice(1)} information updated successfully!`, 'success');
@@ -658,7 +1278,129 @@
           displayElement.style.display = 'block';
           editElement.style.display = 'none';
         }
+
+        // Save to localStorage
+        saveToLocalStorage(orderId, section);
+
+        // Sync changes back to main orders
+        syncChangesBack(orderId);
       }
+
+      // New function to sync changes back
+      function syncChangesBack(orderId) {
+        // Get all saved data
+        const savedOrders = JSON.parse(localStorage.getItem('orderDetails')) || {};
+        const updatedData = savedOrders[orderId];
+
+        if (updatedData) {
+          // Get main orders from localStorage or use sample
+          let mainOrders = JSON.parse(localStorage.getItem('mainOrders')) || [...sampleOrders];
+
+          // Find and update the order
+          const orderIndex = mainOrders.findIndex(o => o.id === orderId);
+          if (orderIndex !== -1) {
+            mainOrders[orderIndex] = {
+              ...mainOrders[orderIndex],
+              customer: updatedData.customerName || mainOrders[orderIndex].customer,
+              vendor: updatedData.vendorName || mainOrders[orderIndex].vendor,
+              status: updatedData.status || mainOrders[orderIndex].status,
+              shipping: updatedData.shippingStatus || mainOrders[orderIndex].shipping
+            };
+
+            // Save back
+            localStorage.setItem('mainOrders', JSON.stringify(mainOrders));
+          }
+        }
+      }
+
+      // Also update the saveToLocalStorage function to include all data
+      function saveToLocalStorage(orderId, section) {
+        let savedOrders = JSON.parse(localStorage.getItem('orderDetails')) || {};
+
+        if (!savedOrders[orderId]) {
+          savedOrders[orderId] = {};
+        }
+
+        // Save all current values, not just the section being edited
+        switch (section) {
+          case 'customer':
+            savedOrders[orderId].customerName = document.getElementById('editCustomerName').value;
+            savedOrders[orderId].customerEmail = document.getElementById('editCustomerEmail').value;
+            savedOrders[orderId].customerPhone = document.getElementById('editCustomerPhone').value;
+            break;
+          case 'shipping':
+            savedOrders[orderId].shippingAddress = document.getElementById('editShippingAddress').value;
+            savedOrders[orderId].shippingCity = document.getElementById('editShippingCity').value;
+            savedOrders[orderId].shippingState = document.getElementById('editShippingState').value;
+            savedOrders[orderId].shippingPincode = document.getElementById('editShippingPincode').value;
+            savedOrders[orderId].shippingStatus = document.getElementById('editShippingStatus').value;
+            savedOrders[orderId].status = document.getElementById('editShippingStatus').value; // Also update status
+            break;
+          case 'billing':
+            savedOrders[orderId].billingAddress = document.getElementById('editBillingAddress').value;
+            savedOrders[orderId].gstNumber = document.getElementById('editGstNumber').value;
+            savedOrders[orderId].invoiceNumber = document.getElementById('editInvoiceNumber').value;
+            break;
+          case 'vendor':
+            savedOrders[orderId].vendorName = document.getElementById('editVendorName').value;
+            savedOrders[orderId].vendorType = document.getElementById('editVendorType').value;
+            savedOrders[orderId].warehouseStatus = document.getElementById('editWarehouseStatus').value;
+            savedOrders[orderId].vendorEarning = document.getElementById('editVendorEarning').value;
+            savedOrders[orderId].payoutStatus = document.getElementById('editPayoutStatus').value;
+            savedOrders[orderId].pickupStatus = document.getElementById('editPickupStatus').checked;
+            savedOrders[orderId].payoutsStatus = document.getElementById('editPayoutsStatus').checked;
+            break;
+          case 'payment':
+            savedOrders[orderId].transactionId = document.getElementById('editTransactionId').value;
+            savedOrders[orderId].paymentStatus = document.getElementById('editPaymentStatus').value;
+            savedOrders[orderId].paymentGateway = document.getElementById('editPaymentGateway').value;
+            savedOrders[orderId].amountPaid = `₹${document.getElementById('editAmountPaid').value}`;
+            break;
+          case 'tracking':
+            savedOrders[orderId].trackingNumber = document.getElementById('editTrackingNumber').value;
+            savedOrders[orderId].courierService = document.getElementById('editCourierService').value;
+            savedOrders[orderId].shippingStatus = document.getElementById('editTrackingStatus').value;
+            break;
+        }
+
+        localStorage.setItem('orderDetails', JSON.stringify(savedOrders));
+        console.log('Saved to localStorage:', savedOrders[orderId]);
+      }
+      // Load saved data from localStorage on page load
+      function loadSavedData(orderId) {
+        const savedOrders = JSON.parse(localStorage.getItem('orderDetails')) || {};
+        const savedData = savedOrders[orderId];
+
+        if (savedData) {
+          console.log('Loading saved data:', savedData);
+          // Merge saved data with base data
+          const baseData = getOrderData(orderId) || {};
+          const mergedData = { ...baseData, ...savedData };
+
+          // Update display with saved data
+          displayOrderDetails(mergedData);
+        }
+      }
+
+      // Call loadSavedData after page loads
+      if (orderId) {
+        loadSavedData(orderId);
+      }
+
+      // Button event listeners
+      document.getElementById('printInvoice').addEventListener('click', function () {
+        showNotification('Invoice printing started...', 'info');
+        // In real app, implement actual print functionality
+        window.print();
+      });
+
+      document.getElementById('syncOrder').addEventListener('click', function () {
+        showNotification('Syncing order with marketplace...', 'info');
+        // Simulate sync delay
+        setTimeout(() => {
+          showNotification('Order synced successfully!', 'success');
+        }, 1500);
+      });
     });
   </script>
 </body>

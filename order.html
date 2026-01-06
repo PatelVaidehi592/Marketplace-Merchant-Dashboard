@@ -239,10 +239,12 @@
       background-color: white;
       border-radius: var(--border-radius);
       padding: 20px;
+      display: flex;
       box-shadow: var(--box-shadow);
       cursor: pointer;
       transition: var(--transition);
       border-left: 4px solid var(--primary);
+      gap: 32px;
     }
 
     .stat-card:hover {
@@ -444,7 +446,6 @@
     .action-buttons {
       display: flex;
       gap: 5px;
-      flex-wrap: wrap;
     }
 
     .action-btn {
@@ -1324,93 +1325,6 @@
     }
 
     // Render orders to the table
-    function renderOrders() {
-      // Calculate pagination
-      const startIndex = (currentPage - 1) * ordersPerPage;
-      const endIndex = startIndex + ordersPerPage;
-      const pageOrders = filteredOrders.slice(startIndex, endIndex);
-
-      // Clear table body
-      ordersTableBody.innerHTML = "";
-
-      // Populate table with orders
-      pageOrders.forEach((order) => {
-        const row = document.createElement("tr");
-        row.dataset.id = order.id;
-
-        // Determine status badge class
-        const statusClass = `status-${order.status}`;
-        const shippingClass = `status-${order.shipping}`;
-
-        // Determine if order is already pushed
-        const isPushed = order.pushed;
-        const pushButtonText = isPushed ? "Pushed" : "Push to Vendor";
-        const pushButtonClass = isPushed ? "btn-pushed" : "btn-push";
-        const pushButtonDisabled = isPushed ? "disabled" : "";
-
-        // Create checkbox for bulk selection
-        const isSelected = selectedOrders.has(order.id);
-
-        row.innerHTML = `
-                    <td>
-                        <input type="checkbox" class="bulk-checkbox order-checkbox" data-id="${order.id
-          }" ${isSelected ? "checked" : ""}>
-                    </td>
-                    <td><strong>${order.id}</strong></td>
-                    <td>${order.customer}</td>
-                    <td>${formatDate(order.date)}</td>
-                    <td>${order.vendor}</td>
-                    <td><span class="status-badge ${statusClass}">${capitalizeFirstLetter(
-            order.status
-          )}</span></td>
-                    <td><span class="status-badge ${shippingClass}">${capitalizeFirstLetter(
-            order.shipping
-          )}</span></td>
-                    <td>${order.items}</td>
-                    <td><strong>$${order.total.toFixed(2)}</strong></td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="action-btn view" onclick="viewOrder('${order.id
-          }')" title="View">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="action-btn edit" onclick="editOrder('${order.id
-          }')" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="action-btn delete" onclick="deleteOrder('${order.id
-          }')" title="Delete">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                            <button class="push-btn ${pushButtonClass}" onclick="pushToVendor('${order.id
-          }')" ${pushButtonDisabled} title="${isPushed ? "Already pushed to vendor" : "Push this order to vendor"
-          }">
-                                <i class="fas fa-paper-plane"></i> ${pushButtonText}
-                            </button>
-                        </div>
-                    </td>
-                `;
-
-        ordersTableBody.appendChild(row);
-      });
-
-      // Add event listeners to checkboxes
-      document.querySelectorAll(".order-checkbox").forEach((checkbox) => {
-        checkbox.addEventListener("change", function () {
-          const orderId = this.dataset.id;
-          if (this.checked) {
-            selectedOrders.add(orderId);
-          } else {
-            selectedOrders.delete(orderId);
-            selectAllCheckbox.checked = false;
-          }
-          updateBulkActionsBar();
-        });
-      });
-
-      // Update select all checkbox state
-      updateSelectAllCheckbox();
-    }
 
     // Format date for display
     function formatDate(dateString) {
@@ -1619,20 +1533,6 @@
       orderModal.classList.add("show");
     }
 
-    // View order details
-    function viewOrder(orderId) {
-      const order = orders.find((o) => o.id === orderId);
-      if (!order) return;
-
-      alert(
-        `Order Details:\n\nID: ${order.id}\nCustomer: ${order.customer
-        }\nDate: ${order.date}\nVendor: ${order.vendor}\nStatus: ${order.status
-        }\nShipping: ${order.shipping}\nItems: ${order.items
-        }\nTotal: $${order.total.toFixed(2)}\nPushed to Vendor: ${order.pushed ? "Yes" : "No"
-        }`
-      );
-    }
-
     // Delete order
     function deleteOrder(orderId) {
       if (confirm("Are you sure you want to delete this order?")) {
@@ -1651,6 +1551,121 @@
     }
 
     // Save order (create or update)
+    // Add this function to load order data from localStorage
+    function loadOrderFromStorage(orderId) {
+      const savedOrders = JSON.parse(localStorage.getItem('orderDetails')) || {};
+      return savedOrders[orderId] || null;
+    }
+
+    // Update the renderOrders function to use saved data
+    function renderOrders() {
+      // Calculate pagination
+      const startIndex = (currentPage - 1) * ordersPerPage;
+      const endIndex = startIndex + ordersPerPage;
+      const pageOrders = filteredOrders.slice(startIndex, endIndex);
+
+      // Clear table body
+      ordersTableBody.innerHTML = "";
+
+      // Populate table with orders
+      pageOrders.forEach((order) => {
+        const row = document.createElement("tr");
+        row.dataset.id = order.id;
+
+        // Load saved data for this order
+        const savedData = loadOrderFromStorage(order.id);
+
+        // Use saved data if available, otherwise use default
+        const displayCustomer = savedData?.customerName || order.customer;
+        const displayStatus = savedData?.status || order.status;
+        const displayShipping = savedData?.shippingStatus || order.shipping;
+        const displayVendor = savedData?.vendorName || order.vendor;
+
+        // Determine status badge class
+        const statusClass = `status-${displayStatus.toLowerCase()}`;
+        const shippingClass = `status-${displayShipping.toLowerCase()}`;
+
+        // Determine if order is already pushed
+        const isPushed = order.pushed;
+        const pushButtonText = isPushed ? "Pushed" : "Push to Vendor";
+        const pushButtonClass = isPushed ? "btn-pushed" : "btn-push";
+        const pushButtonDisabled = isPushed ? "disabled" : "";
+
+        // Create checkbox for bulk selection
+        const isSelected = selectedOrders.has(order.id);
+
+        row.innerHTML = `
+            <td>
+                <input type="checkbox" class="bulk-checkbox order-checkbox" data-id="${order.id}" ${isSelected ? "checked" : ""}>
+            </td>
+            <td><strong>${order.id}</strong></td>
+            <td>${displayCustomer}</td>
+            <td>${formatDate(order.date)}</td>
+            <td>${displayVendor}</td>
+            <td><span class="status-badge ${statusClass}">${capitalizeFirstLetter(displayStatus)}</span></td>
+            <td><span class="status-badge ${shippingClass}">${capitalizeFirstLetter(displayShipping)}</span></td>
+            <td>${order.items}</td>
+            <td><strong>$${order.total.toFixed(2)}</strong></td>
+            <td>
+                <div class="action-buttons">
+                    <a href="order-detail.html?id=${order.id}" class="action-btn view" title="View" onclick="saveOrderData('${order.id}')">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    
+                    <button class="action-btn delete" onclick="deleteOrder('${order.id}')" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="push-btn ${pushButtonClass}" onclick="pushToVendor('${order.id}')" ${pushButtonDisabled} title="${isPushed ? 'Already pushed to vendor' : 'Push this order to vendor'}">
+                        <i class="fas fa-paper-plane"></i> ${pushButtonText}
+                    </button>
+                </div>
+            </td>
+        `;
+
+        ordersTableBody.appendChild(row);
+      });
+
+      // Add event listeners to checkboxes
+      document.querySelectorAll(".order-checkbox").forEach((checkbox) => {
+        checkbox.addEventListener("change", function () {
+          const orderId = this.dataset.id;
+          if (this.checked) {
+            selectedOrders.add(orderId);
+          } else {
+            selectedOrders.delete(orderId);
+            selectAllCheckbox.checked = false;
+          }
+          updateBulkActionsBar();
+        });
+      });
+
+      // Update select all checkbox state
+      updateSelectAllCheckbox();
+    }
+
+    // Update the editOrder function to use saved data
+    function editOrder(orderId) {
+      // Load saved data first
+      const savedData = loadOrderFromStorage(orderId);
+      const order = savedData || orders.find((o) => o.id === orderId);
+
+      if (!order) return;
+
+      document.getElementById(
+        "modalTitle"
+      ).textContent = `Edit Order ${orderId}`;
+      document.getElementById("orderCustomer").value = order.customerName || order.customer;
+      document.getElementById("orderVendor").value = order.vendorName || order.vendor;
+      document.getElementById("orderStatus").value = order.status;
+      document.getElementById("orderShipping").value = order.shippingStatus || order.shipping;
+      document.getElementById("orderItems").value = order.items;
+      document.getElementById("orderTotal").value = order.total;
+
+      editingOrderId = orderId;
+      orderModal.classList.add("show");
+    }
+
+    // Update the saveOrder function to also save to localStorage
     function saveOrder() {
       const customer = document.getElementById("orderCustomer").value;
       const vendor = document.getElementById("orderVendor").value;
@@ -1679,6 +1694,21 @@
             items,
             total,
           };
+
+          // Also update in localStorage if exists
+          let savedOrders = JSON.parse(localStorage.getItem('orderDetails')) || {};
+          if (savedOrders[editingOrderId]) {
+            savedOrders[editingOrderId] = {
+              ...savedOrders[editingOrderId],
+              customerName: customer,
+              vendorName: vendor,
+              status: status,
+              shippingStatus: shipping,
+              items: items,
+              total: total
+            };
+            localStorage.setItem('orderDetails', JSON.stringify(savedOrders));
+          }
         }
         showNotification("Order updated successfully!", "success");
       } else {
@@ -1693,7 +1723,7 @@
           shipping,
           items,
           total,
-          pushed: false, // New orders are not pushed by default
+          pushed: false,
         };
         orders.unshift(newOrder);
         showNotification("Order created successfully!", "success");
@@ -1704,6 +1734,43 @@
       updateStats();
     }
 
+    // Add this function to update order in main orders array from saved data
+    function updateOrderFromSavedData() {
+      const savedOrders = JSON.parse(localStorage.getItem('orderDetails')) || {};
+
+      Object.keys(savedOrders).forEach(orderId => {
+        const savedData = savedOrders[orderId];
+        const orderIndex = orders.findIndex(o => o.id === orderId);
+
+        if (orderIndex !== -1 && savedData) {
+          // Update the main orders array with saved data
+          orders[orderIndex] = {
+            ...orders[orderIndex],
+            customer: savedData.customerName || orders[orderIndex].customer,
+            vendor: savedData.vendorName || orders[orderIndex].vendor,
+            status: savedData.status || orders[orderIndex].status,
+            shipping: savedData.shippingStatus || orders[orderIndex].shipping
+          };
+        }
+      });
+    }
+
+    // Call this function when loading orders
+    function initializeOrders() {
+      // First update orders from saved data
+      updateOrderFromSavedData();
+
+      // Then update stats and render
+      updateStats();
+      renderOrders();
+      updatePagination();
+    }
+
+    // Update the DOMContentLoaded event listener
+    document.addEventListener("DOMContentLoaded", function () {
+      initializeEventListeners();
+      initializeOrders(); // Changed from updateStats() and renderOrders()
+    });
     // Push single order to vendor
     function pushToVendor(orderId) {
       const order = orders.find((o) => o.id === orderId);
@@ -1735,6 +1802,31 @@
         simulatePushToVendorAPI(orderId, order.vendor);
       }
     }
+
+    // Add this function to refresh orders from saved data
+    function refreshOrdersFromSaved() {
+      showLoading();
+
+      setTimeout(() => {
+        // Reload orders from localStorage to get latest updates
+        const savedMainOrders = JSON.parse(localStorage.getItem('mainOrders'));
+        if (savedMainOrders) {
+          orders = savedMainOrders;
+          filteredOrders = [...orders];
+        }
+
+        // Also update from individual order details
+        updateOrderFromSavedData();
+
+        renderOrders();
+        updateStats();
+        hideLoading();
+        showNotification("Orders refreshed with latest data!", "success");
+      }, 500);
+    }
+
+    // Update the refreshOrders function
+    document.getElementById("refreshOrdersBtn").addEventListener("click", refreshOrdersFromSaved);
 
     // Bulk push selected orders to vendor
     function bulkPushToVendor() {
@@ -1979,6 +2071,164 @@
             }
         `;
     document.head.appendChild(style);
+
+    // ============ ORDER DETAILS FUNCTIONS ============
+
+    // New function add karo order.html ma
+    function saveOrderData(orderId) {
+      const order = orders.find(o => o.id === orderId);
+      if (order) {
+        // Generate detailed data
+        const detailedData = getOrderDetails(orderId);
+
+        // Save to localStorage
+        let savedOrders = JSON.parse(localStorage.getItem('orderDetails')) || {};
+        savedOrders[orderId] = detailedData;
+        localStorage.setItem('orderDetails', JSON.stringify(savedOrders));
+
+        console.log('Saved order data for:', orderId, detailedData);
+      }
+    }
+
+    // Order.html ma function add karo (line 650 par chhe, aama add karo)
+    function getOrderDetails(orderId) {
+      // Order.html ma thi order data levo
+      const order = orders.find(o => o.id === orderId);
+
+      if (!order) return null;
+
+      // Generate detailed data based on basic order data
+      const detailedData = {
+        ...order,
+        // Generate customer details
+        customerName: order.customer,
+        customerEmail: `${order.customer.toLowerCase().replace(' ', '.')}@email.com`,
+        customerPhone: "+91 " + Math.floor(1000000000 + Math.random() * 9000000000).toString().slice(0, 10),
+        customerId: `CUST-${order.id.split('-')[1]}`,
+
+        // Generate shipping details
+        shippingAddress: getRandomAddress(),
+        shippingCity: getRandomCity(),
+        shippingState: getRandomState(),
+        shippingPincode: getRandomPincode(),
+        shippingStatus: capitalizeFirstLetter(order.shipping),
+
+        // Billing same as shipping
+        billingAddress: getRandomAddress(),
+        gstNumber: generateGSTNumber(),
+        invoiceNumber: `INV-${order.date.replace(/-/g, '')}-${order.id.split('-')[1]}`,
+
+        // Vendor details
+        vendorName: order.vendor.toLowerCase().replace(/[^a-z]/g, '') + 'vendor',
+        vendorType: getRandomVendorType(),
+        vendorEarning: getRandomEarning(),
+        payoutStatus: getRandomPayoutStatus(),
+
+        // Payment details
+        transactionId: `TXN-${Date.now().toString().slice(-6)}`,
+        paymentStatus: order.status === 'pending' ? 'Pending' : 'Paid',
+        paymentDate: new Date(order.date).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        }),
+        paymentGateway: getRandomPaymentGateway(),
+        amountPaid: `₹${order.total.toFixed(2)}`,
+
+        // Tracking details
+        trackingNumber: generateTrackingNumber(),
+        courierService: getRandomCourier(),
+        trackingLastUpdated: new Date().toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        }) + ' PM',
+
+        warehouseStatus: getRandomWarehouseStatus(),
+        pickupStatus: Math.random() > 0.5,
+        payoutsStatus: Math.random() > 0.5
+      };
+
+      return detailedData;
+    }
+
+    // Helper functions
+    function getRandomAddress() {
+      const addresses = [
+        "123 Main Street, Apartment 4B",
+        "456 Oak Avenue, Suite 12",
+        "789 Pine Road, Floor 3",
+        "101 Maple Lane, Building A",
+        "202 Cedar Street, Unit 5"
+      ];
+      return addresses[Math.floor(Math.random() * addresses.length)];
+    }
+
+    function getRandomCity() {
+      const cities = ["Mumbai", "Delhi", "Bangalore", "Chennai", "Kolkata"];
+      return cities[Math.floor(Math.random() * cities.length)];
+    }
+
+    function getRandomState() {
+      const states = ["Maharashtra", "Delhi", "Karnataka", "Tamil Nadu", "West Bengal"];
+      return states[Math.floor(Math.random() * states.length)];
+    }
+
+    function getRandomPincode() {
+      return Math.floor(400000 + Math.random() * 100000).toString();
+    }
+
+    function generateGSTNumber() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let gst = '';
+      for (let i = 0; i < 15; i++) {
+        gst += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return gst;
+    }
+
+    function getRandomVendorType() {
+      const types = ["Vendor", "Supplier", "Partner", "Reseller"];
+      return types[Math.floor(Math.random() * types.length)];
+    }
+
+    function getRandomEarning() {
+      const earnings = ["10% MCNO", "15% Fixed", "20% Commission", "12% + GST", "8% Net"];
+      return earnings[Math.floor(Math.random() * earnings.length)];
+    }
+
+    function getRandomPayoutStatus() {
+      const statuses = ["UNPAID", "PAID", "PROCESSING", "FAILED"];
+      return statuses[Math.floor(Math.random() * statuses.length)];
+    }
+
+    function getRandomPaymentGateway() {
+      const gateways = ["Razorpay", "Stripe", "PayPal", "Cash on Delivery"];
+      return gateways[Math.floor(Math.random() * gateways.length)];
+    }
+
+    function generateTrackingNumber() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let tracking = '';
+      for (let i = 0; i < 12; i++) {
+        tracking += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return tracking;
+    }
+
+    function getRandomCourier() {
+      const couriers = ["BlueDart", "DTDC", "Delhivery", "FedEx", "Amazon Logistics"];
+      return couriers[Math.floor(Math.random() * couriers.length)];
+    }
+
+    function getRandomWarehouseStatus() {
+      const statuses = ["No Warehouse", "Has Warehouse", "Dropship", "Third Party"];
+      return statuses[Math.floor(Math.random() * statuses.length)];
+    }
   </script>
 </body>
 

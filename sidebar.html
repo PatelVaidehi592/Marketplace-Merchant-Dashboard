@@ -89,7 +89,7 @@
     .has-dropdown .dropdown-menu {
       display: none;
       list-style: none;
-      background: rgba(0, 0, 0, 0.25);
+      background: transparent;
       border-radius: 0 0 var(--radius) var(--radius);
       margin-top: 5px;
     }
@@ -212,7 +212,7 @@
         </a>
         <ul class="dropdown-menu">
           <li><a href="vendor-management.html">Vendor List</a></li>
-          <li><a href="vendor-detail.html">Vendor Detail</a></li>
+          <li><a href="vendor-details.html">Vendor Detail</a></li>
           <li>
             <a href="all-sync.html">Vendor Sync Settings</a>
           </li>
@@ -228,29 +228,65 @@
         <ul class="dropdown-menu">
           <li><a href="product-list.html">Product List</a></li>
           <li><a href="product-detail.html">Product Detail</a></li>
+          <li><a href="add_product.html">Add Product</a></li>
+          <li><a href="approve-product.html">Approve Product</a></li>
+
         </ul>
       </li>
 
       <li class="has-dropdown">
         <a href="javascript:void(0)" class="dropdown-toggle">
-          <i class="fas fa-money-check-dollar"></i> Order Management
+          <i class="fas fa-shopping-cart"></i> Order Management
           <i class="fas fa-chevron-down arrow"></i>
         </a>
         <ul class="dropdown-menu">
-          <li><a href="order.html">Orders-data</a></li>
-          <li><a href="order-detail.html">order-info</a></li>
+          <li><a href="order.html">All Orders</a></li>
+          <li><a href="order-detail.html">Order Details</a></li>
+          <li><a href="Return Orders.html">Return Orders</a></li>
         </ul>
       </li>
 
       <li class="menu-item has-dropdown" id="reportsMenu">
         <a href="javascript:void(0)" class="dropdown-toggle">
-          <i class="fas fa-file-alt"></i>
+          <i class="fas fa-envelope"></i>
           <span>Notifications & Logs</span>
           <i class="fas fa-chevron-down arrow"></i>
         </a>
         <ul class="dropdown-menu">
           <li>
             <a href="email-notification.html">Email & Notification Settings</a>
+          </li>
+        </ul>
+      </li>
+
+
+      <li class="menu-item has-dropdown" id="reportsMenu">
+        <a href="javascript:void(0)" class="dropdown-toggle">
+          <i class="fas fa-file-alt"></i>
+          <span>sync-product-new</span>
+          <i class="fas fa-chevron-down arrow"></i>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="new.html">sync-product-new</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="payout.html">
+          <i class="fas fa-exchange-alt"></i> PayOut
+        </a>
+      </li>
+
+      <li class="menu-item has-dropdown" id="settingsMenu">
+        <a href="javascript:void(0)" class="dropdown-toggle">
+          <i class="fas fa-cog"></i>
+          <span>Settings</span>
+          <i class="fas fa-chevron-down arrow"></i>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="Vendor Registration.html">Vendor Registration</a>
           </li>
         </ul>
       </li>

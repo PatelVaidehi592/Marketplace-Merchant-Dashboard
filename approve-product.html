@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard - Product Management</title>
+  <title>Admin Dashboard - Approved Products</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     /* All your existing CSS remains exactly the same */
@@ -62,7 +62,7 @@
       padding: 15px 25px;
       border-radius: var(--border-radius);
       box-shadow: var(--box-shadow);
-      border-left: 4px solid var(--primary);
+      border-left: 4px solid var(--success);
     }
 
     .header-left h1 {
@@ -794,6 +794,23 @@
       cursor: not-allowed;
     }
 
+    .approve-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(16, 185, 129, 0.1);
+      color: #166534;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .approve-indicator i {
+      color: #10b981;
+    }
+
     @media (max-width: 992px) {
       .table-header {
         flex-direction: column;
@@ -881,10 +898,13 @@
     <main class="main-content">
       <header>
         <div class="header-left">
-          <h1>Product Management</h1>
-          <p>Manage your marketplace products, inventory, and visibility</p>
+          <h1>Approved Products</h1>
+          <p>View and manage all approved/active products in your marketplace</p>
         </div>
         <div class="header-right">
+          <button class="btn btn-secondary" onclick="window.location.href='index.html'">
+            <i class="fas fa-arrow-left"></i> Back to All Products
+          </button>
           <div class="user-profile">
             <img src="https://ui-avatars.com/api/?name=Admin+User&background=4361ee&color=fff" alt="Admin User" />
             <div>
@@ -898,50 +918,55 @@
       <div class="page-container">
         <div class="page-header">
           <div>
-            <h1>Product Management</h1>
+            <h1>
+              Approved Products
+              <span class="approve-indicator">
+                <i class="fas fa-check-circle"></i> All Active
+              </span>
+            </h1>
             <div class="page-subtext">
-              Manage your marketplace products, inventory, and visibility
+              Showing only products with "Active" status. These products are visible to customers.
             </div>
           </div>
           <div>
             <button class="btn btn-secondary" onclick="exportToCSV()">
               <i class="fas fa-download"></i> Export CSV
             </button>
-            <button class="btn btn-primary" onclick="window.location.href='add_product.html'">
-              <i class="fas fa-plus"></i> Add Product
+            <button class="btn btn-success" onclick="window.location.href='add_product.html'">
+              <i class="fas fa-plus"></i> Add New Product
             </button>
           </div>
         </div>
 
         <div class="stats-cards">
-          <div class="stat-card primary">
-            <div class="stat-label">Total Products</div>
-            <div class="stat-value" id="totalProducts">0</div>
-            <div class="stat-trend positive" id="totalTrend">
-              <i class="fas fa-arrow-up"></i> <span id="totalChange">0%</span> from last week
-            </div>
-          </div>
-
           <div class="stat-card success">
-            <div class="stat-label">Active Products</div>
-            <div class="stat-value" id="activeProducts">0</div>
-            <div class="stat-trend positive" id="activeTrend">
-              <i class="fas fa-arrow-up"></i> <span id="activeChange">0%</span> from last week
+            <div class="stat-label">Total Approved Products</div>
+            <div class="stat-value" id="totalApproved">0</div>
+            <div class="stat-trend positive" id="approvedTrend">
+              <i class="fas fa-arrow-up"></i> <span id="approvedChange">0%</span> from last week
             </div>
           </div>
 
-          <div class="stat-card warning">
-            <div class="stat-label">Pending Approval</div>
-            <div class="stat-value" id="pendingProducts">0</div>
-            <div class="stat-trend negative" id="pendingTrend">
-              <i class="fas fa-arrow-down"></i> <span id="pendingChange">0%</span> from yesterday
+          <div class="stat-card primary">
+            <div class="stat-label">Featured Products</div>
+            <div class="stat-value" id="featuredApproved">0</div>
+            <div class="stat-trend positive" id="featuredTrend">
+              <i class="fas fa-arrow-up"></i> <span id="featuredChange">0%</span> from last month
             </div>
           </div>
 
           <div class="stat-card info">
+            <div class="stat-label">In Stock Products</div>
+            <div class="stat-value" id="inStockApproved">0</div>
+            <div class="stat-trend positive" id="stockTrend">
+              <i class="fas fa-arrow-up"></i> <span id="stockChange">0%</span> from yesterday
+            </div>
+          </div>
+
+          <div class="stat-card warning">
             <div class="stat-label">Low Stock (&lt; 10)</div>
-            <div class="stat-value" id="lowStockProducts">0</div>
-            <div class="stat-trend positive" id="lowStockTrend">
+            <div class="stat-value" id="lowStockApproved">0</div>
+            <div class="stat-trend negative" id="lowStockTrend">
               <i class="fas fa-arrow-down"></i> <span id="lowStockChange">0%</span> from yesterday
             </div>
           </div>
@@ -949,7 +974,7 @@
 
         <div class="advanced-filters">
           <div class="filter-header">
-            <h3>Advanced Filters</h3>
+            <h3>Filter Approved Products</h3>
             <button class="filter-toggle" onclick="toggleFilters()">
               <i class="fas fa-sliders-h"></i> Toggle Filters
             </button>
@@ -957,7 +982,7 @@
 
           <div class="filter-grid" id="filterGrid">
             <div class="filter-group">
-              <label><i class="fas fa-search"></i> Search Products</label>
+              <label><i class="fas fa-search"></i> Search Approved Products</label>
               <input type="text" placeholder="Search by name, SKU, or description..." id="searchInput" />
             </div>
 
@@ -976,24 +1001,6 @@
                   <div class="dropdown-option" data-value="Myntra">Myntra</div>
                   <div class="dropdown-option" data-value="Ajio">Ajio</div>
                   <div class="dropdown-option" data-value="Other">Other</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="filter-group">
-              <label><i class="fas fa-tag"></i> Status</label>
-              <div class="custom-dropdown" id="statusDropdown">
-                <button class="dropdown-btn" data-id="statusFilter">
-                  <span class="selected-text">All Status</span>
-                  <i class="fas fa-chevron-down arrow"></i>
-                </button>
-                <div class="dropdown-options">
-                  <div class="dropdown-option selected" data-value="">All Status</div>
-                  <div class="dropdown-option" data-value="active">Active</div>
-                  <div class="dropdown-option" data-value="pending">Pending</div>
-                  <div class="dropdown-option" data-value="private">Private</div>
-                  <div class="dropdown-option" data-value="rejected">Rejected</div>
-                  <div class="dropdown-option" data-value="draft">Draft</div>
                 </div>
               </div>
             </div>
@@ -1074,6 +1081,21 @@
                 </div>
               </div>
             </div>
+
+            <div class="filter-group">
+              <label><i class="fas fa-star"></i> Featured Status</label>
+              <div class="custom-dropdown" id="featuredDropdown">
+                <button class="dropdown-btn" data-id="featuredFilter">
+                  <span class="selected-text">All Products</span>
+                  <i class="fas fa-chevron-down arrow"></i>
+                </button>
+                <div class="dropdown-options">
+                  <div class="dropdown-option selected" data-value="">All Products</div>
+                  <div class="dropdown-option" data-value="featured">Featured Only</div>
+                  <div class="dropdown-option" data-value="not-featured">Not Featured</div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="filter-actions">
@@ -1083,32 +1105,27 @@
             <button class="btn btn-secondary" onclick="resetFilters()">
               <i class="fas fa-redo"></i> Reset All
             </button>
-            <button class="btn btn-success" onclick="saveFilterPreset()">
-              <i class="fas fa-save"></i> Save Preset
-            </button>
           </div>
         </div>
 
         <div class="table-container">
           <div class="table-header">
             <h3>
-              Products
+              Approved Products List
               <span id="productCount" style="color: var(--gray); font-weight: 400">(0 items)</span>
             </h3>
 
             <div class="table-actions">
               <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search products..." id="tableSearch" />
+                <input type="text" placeholder="Search approved products..." id="tableSearch" />
               </div>
 
               <select class="btn btn-secondary" style="padding: 12px 16px" onchange="runBulkAction(this)"
                 id="bulkActions">
                 <option value="">Bulk Actions</option>
-                <option value="approve">Set Active</option>
-                <option value="pending">Set Pending</option>
-                <option value="private">Set Private</option>
-                <option value="rejected">Set Rejected</option>
+                <option value="private">Set to Private</option>
+                <option value="pending">Set to Pending</option>
                 <option value="delete">Delete</option>
                 <option value="featured">Mark as Featured</option>
                 <option value="unfeatured">Remove Featured</option>
@@ -1139,7 +1156,7 @@
                 </tr>
               </thead>
               <tbody id="productTableBody">
-                <!-- Products will be populated here -->
+                <!-- Approved products will be populated here -->
               </tbody>
             </table>
           </div>
@@ -1147,7 +1164,7 @@
           <div class="pagination">
             <div class="pagination-info">
               Showing <strong id="showingRange">0-0</strong> of
-              <strong id="totalProductsCount">0</strong> products
+              <strong id="totalProductsCount">0</strong> approved products
             </div>
 
             <div class="pagination-controls">
@@ -1171,7 +1188,7 @@
 
   <script>
     let products = [];
-    let statsHistory = [];
+    let approvedProducts = [];
 
     // Initialize products data from localStorage
     function initializeProducts() {
@@ -1189,6 +1206,10 @@
         console.log('No products found in localStorage, loading defaults');
         loadDefaultProducts();
       }
+
+      // Filter only approved (active) products
+      approvedProducts = products.filter(product => product.status === 'active');
+      console.log('Approved products:', approvedProducts.length);
     }
 
     function loadDefaultProducts() {
@@ -1377,171 +1398,77 @@
       }
     }
 
-    // Load stats history
-    try {
-      const savedStatsHistory = localStorage.getItem('statsHistory');
-      if (savedStatsHistory) {
-        statsHistory = JSON.parse(savedStatsHistory);
-      }
-    } catch (e) {
-      console.error('Error loading stats history:', e);
-    }
-
     document.addEventListener("DOMContentLoaded", function () {
       initializeProducts();
-      updateProductStats();
-      populateProductTable();
+      updateApprovedStats();
+      populateApprovedTable();
       setupEventListeners();
       setupDropdownPositioning();
       setupCustomDropdowns();
     });
 
-    // Function to calculate product statistics
-    function calculateProductStats() {
-      const totalProducts = products.length;
+    // Function to calculate approved product statistics
+    function calculateApprovedStats() {
+      const totalApproved = approvedProducts.length;
 
-      const activeProducts = products.filter(p => p.status === 'active').length;
-      const pendingProducts = products.filter(p => p.status === 'pending').length;
+      const featuredApproved = approvedProducts.filter(p => p.isFeatured).length;
+      const inStockApproved = approvedProducts.filter(p => p.stock > 0).length;
+      const lowStockApproved = approvedProducts.filter(p => p.stock > 0 && p.stock < 10).length;
+      const outOfStockApproved = approvedProducts.filter(p => p.stock === 0).length;
 
-      // Low stock: products with stock less than 10 and greater than 0
-      const lowStockProducts = products.filter(p => p.stock > 0 && p.stock < 10).length;
-
-      // Out of stock products
-      const outOfStockProducts = products.filter(p => p.stock === 0).length;
-
-      // Featured products
-      const featuredProducts = products.filter(p => p.isFeatured).length;
-
-      // Total value of inventory (price * stock)
-      const totalInventoryValue = products.reduce((sum, product) => {
+      // Calculate total value of approved inventory
+      const totalInventoryValue = approvedProducts.reduce((sum, product) => {
         return sum + (product.price * product.stock);
       }, 0).toFixed(2);
 
-      // Average price
-      const averagePrice = totalProducts > 0
-        ? (products.reduce((sum, product) => sum + product.price, 0) / totalProducts).toFixed(2)
+      // Average price of approved products
+      const averagePrice = totalApproved > 0
+        ? (approvedProducts.reduce((sum, product) => sum + product.price, 0) / totalApproved).toFixed(2)
         : 0;
 
+      // Group by vendor
+      const vendorStats = {};
+      approvedProducts.forEach(product => {
+        const vendor = product.vendor || 'Unknown';
+        vendorStats[vendor] = (vendorStats[vendor] || 0) + 1;
+      });
+
+      // Group by category
+      const categoryStats = {};
+      approvedProducts.forEach(product => {
+        const category = product.category || 'Unknown';
+        categoryStats[category] = (categoryStats[category] || 0) + 1;
+      });
+
       return {
-        totalProducts,
-        activeProducts,
-        pendingProducts,
-        lowStockProducts,
-        outOfStockProducts,
-        featuredProducts,
+        totalApproved,
+        featuredApproved,
+        inStockApproved,
+        lowStockApproved,
+        outOfStockApproved,
         totalInventoryValue,
         averagePrice,
-        timestamp: new Date().toISOString()
+        vendorStats,
+        categoryStats
       };
     }
 
-    // Function to calculate trends
-    function calculateTrends(currentStats, previousStats) {
-      if (!previousStats) {
-        return {
-          totalChange: 0,
-          activeChange: 0,
-          pendingChange: 0,
-          lowStockChange: 0
-        };
-      }
-
-      const calculatePercentageChange = (current, previous) => {
-        if (previous === 0) return current > 0 ? 100 : 0;
-        return ((current - previous) / previous * 100).toFixed(1);
-      };
-
-      return {
-        totalChange: calculatePercentageChange(currentStats.totalProducts, previousStats.totalProducts),
-        activeChange: calculatePercentageChange(currentStats.activeProducts, previousStats.activeProducts),
-        pendingChange: calculatePercentageChange(currentStats.pendingProducts, previousStats.pendingProducts),
-        lowStockChange: calculatePercentageChange(currentStats.lowStockProducts, previousStats.lowStockProducts)
-      };
-    }
-
-    // Function to update product stats
-    function updateProductStats() {
-      const currentStats = calculateProductStats();
-
-      // Get previous stats (from yesterday)
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      const yesterdayDateStr = yesterday.toISOString().split('T')[0];
-
-      let previousStats = null;
-      if (statsHistory.length > 0) {
-        // Try to find stats from yesterday
-        previousStats = statsHistory.find(stat =>
-          stat.timestamp.startsWith(yesterdayDateStr)
-        );
-
-        // If not found, use the most recent stats
-        if (!previousStats && statsHistory.length > 0) {
-          previousStats = statsHistory[statsHistory.length - 1];
-        }
-      }
-
-      const trends = calculateTrends(currentStats, previousStats);
+    // Function to update approved product stats
+    function updateApprovedStats() {
+      const stats = calculateApprovedStats();
 
       // Update the stats cards
-      document.getElementById('totalProducts').textContent = currentStats.totalProducts;
-      document.getElementById('activeProducts').textContent = currentStats.activeProducts;
-      document.getElementById('pendingProducts').textContent = currentStats.pendingProducts;
-      document.getElementById('lowStockProducts').textContent = currentStats.lowStockProducts;
-
-      // Update trend indicators
-      updateTrendElement('totalTrend', 'totalChange', trends.totalChange);
-      updateTrendElement('activeTrend', 'activeChange', trends.activeChange);
-      updateTrendElement('pendingTrend', 'pendingChange', trends.pendingChange);
-      updateTrendElement('lowStockTrend', 'lowStockChange', trends.lowStockChange);
+      document.getElementById('totalApproved').textContent = stats.totalApproved;
+      document.getElementById('featuredApproved').textContent = stats.featuredApproved;
+      document.getElementById('inStockApproved').textContent = stats.inStockApproved;
+      document.getElementById('lowStockApproved').textContent = stats.lowStockApproved;
 
       // Update pagination info
-      document.getElementById('totalProductsCount').textContent = currentStats.totalProducts;
-      document.getElementById('showingRange').textContent = `1-${Math.min(10, currentStats.totalProducts)}`;
+      document.getElementById('totalProductsCount').textContent = stats.totalApproved;
+      document.getElementById('showingRange').textContent = `1-${Math.min(10, stats.totalApproved)}`;
 
-      // Save current stats to history (once per day)
-      const todayDateStr = new Date().toISOString().split('T')[0];
-      const todayStats = statsHistory.find(stat =>
-        stat.timestamp.startsWith(todayDateStr)
-      );
-
-      if (!todayStats) {
-        statsHistory.push(currentStats);
-        // Keep only last 30 days of history
-        if (statsHistory.length > 30) {
-          statsHistory = statsHistory.slice(-30);
-        }
-        saveStatsHistory();
-      }
-    }
-
-    function saveStatsHistory() {
-      try {
-        localStorage.setItem('statsHistory', JSON.stringify(statsHistory));
-      } catch (e) {
-        console.error('Error saving stats history:', e);
-      }
-    }
-
-    // Helper function to update trend elements
-    function updateTrendElement(trendId, changeId, changeValue) {
-      const changeNum = parseFloat(changeValue);
-      const trendElement = document.getElementById(trendId);
-      const changeElement = document.getElementById(changeId);
-
-      changeElement.textContent = `${Math.abs(changeNum)}%`;
-
-      if (changeNum > 0) {
-        trendElement.className = 'stat-trend positive';
-        trendElement.querySelector('i').className = 'fas fa-arrow-up';
-      } else if (changeNum < 0) {
-        trendElement.className = 'stat-trend negative';
-        trendElement.querySelector('i').className = 'fas fa-arrow-down';
-      } else {
-        trendElement.className = 'stat-trend';
-        trendElement.querySelector('i').className = 'fas fa-minus';
-        changeElement.textContent = '0%';
-      }
+      // Update product count in header
+      document.getElementById('productCount').textContent = `(${stats.totalApproved} items)`;
     }
 
     function setupCustomDropdowns() {
@@ -1662,7 +1589,6 @@
         const viewportHeight = window.innerHeight;
 
         // Check if dropdown will overflow at the bottom
-        // We add the height of the dropdown plus some padding
         const dropdownHeight = menu.offsetHeight;
         const triggerBottom = dropdown.getBoundingClientRect().bottom;
 
@@ -1673,14 +1599,14 @@
       });
     }
 
-    function populateProductTable() {
+    function populateApprovedTable() {
       const tableBody = document.getElementById("productTableBody");
       tableBody.innerHTML = "";
 
-      console.log('Populating table with products:', products.length);
+      console.log('Populating approved table with:', approvedProducts.length, 'products');
 
       // Sort by ID (newest first)
-      const sortedProducts = [...products].sort((a, b) => b.id - a.id);
+      const sortedProducts = [...approvedProducts].sort((a, b) => b.id - a.id);
 
       sortedProducts.forEach((product) => {
         const row = document.createElement("tr");
@@ -1739,7 +1665,7 @@
           </div>
         </td>
         <td>${product.vendor || 'N/A'}</td>
-        <td><span class="badge ${product.status}">${statusText}</span></td>
+        <td><span class="badge active">${statusText}</span></td>
         <td>${product.category || 'N/A'}</td>
         <td class="price-cell">
           ${product.originalPrice ? `<span class="original-price">$${parseFloat(product.originalPrice).toFixed(2)}</span>` : ''}
@@ -1775,6 +1701,9 @@
               <a href="#" class="dropdown-item" onclick="editProduct(${product.id}); event.stopPropagation()">
                 <i class="fas fa-edit"></i> Edit Product
               </a>
+              <a href="#" class="dropdown-item danger" onclick="removeFromApproved(${product.id}); event.stopPropagation()">
+                <i class="fas fa-ban"></i> Remove from Approved
+              </a>
               <a href="#" class="dropdown-item danger" onclick="deleteProduct(${product.id}); event.stopPropagation()">
                 <i class="fas fa-trash"></i> Delete
               </a>
@@ -1784,21 +1713,35 @@
       `;
         tableBody.appendChild(row);
       });
-
-      // Update product count
-      document.getElementById('productCount').textContent = `(${products.length} items)`;
     }
 
     // View product function - redirect to product-detail.html
     function viewProduct(productId) {
-      // Store the product ID and image for detail page
       const product = products.find(p => p.id === productId);
       if (product) {
-        // Store the product image to pass to detail page
         localStorage.setItem('viewedThumbnail', product.image || '');
       }
-      // Redirect to product-detail.html with product ID as parameter
       window.location.href = 'product-detail.html?id=' + productId;
+    }
+
+    // Remove product from approved list (change status)
+    function removeFromApproved(productId) {
+      if (confirm("Are you sure you want to remove this product from approved list? It will be set to pending.")) {
+        const product = products.find(p => p.id === productId);
+        if (product) {
+          product.status = "pending";
+          saveProductsToLocalStorage();
+
+          // Update approved products list
+          approvedProducts = products.filter(p => p.status === 'active');
+
+          // Update UI
+          populateApprovedTable();
+          updateApprovedStats();
+
+          alert("Product removed from approved list and set to pending.");
+        }
+      }
     }
 
     // Function to handle select all checkbox
@@ -1933,10 +1876,11 @@
 
     function applyFilters() {
       const vendor = getDropdownValue("vendorDropdown");
-      const status = getDropdownValue("statusDropdown");
       const category = getDropdownValue("categoryDropdown");
       const platform = getDropdownValue("platformDropdown");
       const dateFilter = getDropdownValue("dateDropdown");
+      const stockFilter = getDropdownValue("stockDropdown");
+      const featuredFilter = getDropdownValue("featuredDropdown");
       const searchQuery = document
         .getElementById("searchInput")
         .value.toLowerCase();
@@ -1944,16 +1888,18 @@
         parseFloat(document.getElementById("priceMin").value) || 0;
       const priceMax =
         parseFloat(document.getElementById("priceMax").value) || Infinity;
-      const stockFilter = getDropdownValue("stockDropdown");
 
       const rows = document.querySelectorAll("#productTableBody tr");
 
       rows.forEach((row) => {
+        const rowDataId = parseInt(row.getAttribute('data-id'));
+        const product = approvedProducts.find(p => p.id === rowDataId);
+        if (!product) {
+          row.style.display = "none";
+          return;
+        }
+
         const vendorCell = row.cells[2].textContent;
-        const statusBadge = row.cells[3].querySelector(".badge");
-        const statusValue = statusBadge
-          ? statusBadge.textContent.toLowerCase()
-          : "";
         const categoryCell = row.cells[4].textContent;
         const priceText = row.cells[5].textContent;
         const price = parseFloat(priceText.replace(/[^0-9.]/g, ""));
@@ -1964,7 +1910,6 @@
         const rowText = row.textContent.toLowerCase();
 
         const matchesVendor = !vendor || vendorCell === vendor;
-        const matchesStatus = !status || statusValue === status.toLowerCase();
         const matchesCategory = !category || categoryCell === category;
         const matchesPlatform = !platform || platformsCell.includes(platform);
         const matchesDate = !dateFilter || checkDateFilter(dateCell, dateFilter);
@@ -1977,16 +1922,20 @@
             stock > 0 &&
             stock < 10) ||
           (stockFilter === "Out of Stock" && stock === 0);
+        const matchesFeatured =
+          !featuredFilter ||
+          (featuredFilter === "featured" && product.isFeatured) ||
+          (featuredFilter === "not-featured" && !product.isFeatured);
 
         row.style.display =
           matchesVendor &&
-            matchesStatus &&
             matchesCategory &&
             matchesPlatform &&
             matchesDate &&
             matchesSearch &&
             matchesPrice &&
-            matchesStock
+            matchesStock &&
+            matchesFeatured
             ? ""
             : "none";
       });
@@ -2043,11 +1992,11 @@
 
       // Reset all custom dropdowns
       setDropdownValue("vendorDropdown", "");
-      setDropdownValue("statusDropdown", "");
       setDropdownValue("categoryDropdown", "");
       setDropdownValue("platformDropdown", "");
       setDropdownValue("dateDropdown", "");
       setDropdownValue("stockDropdown", "");
+      setDropdownValue("featuredDropdown", "");
 
       applyFilters();
     }
@@ -2087,74 +2036,50 @@
       }
 
       switch (action) {
-        case "approve":
-          if (confirm(`Set ${selectedRows.length} product(s) to Active?`)) {
-            selectedRows.forEach(({ row, id }) => {
-              const product = products.find(p => p.id === id);
-              if (product) {
-                product.status = "active";
-                const statusBadge = row.cells[3].querySelector(".badge");
-                statusBadge.className = "badge active";
-                statusBadge.textContent = "Active";
-              }
-            });
-            saveProductsToLocalStorage();
-            updateProductStats();
-          }
-          break;
-
-        case "pending":
-          if (confirm(`Set ${selectedRows.length} product(s) to Pending?`)) {
-            selectedRows.forEach(({ row, id }) => {
-              const product = products.find(p => p.id === id);
-              if (product) {
-                product.status = "pending";
-                const statusBadge = row.cells[3].querySelector(".badge");
-                statusBadge.className = "badge pending";
-                statusBadge.textContent = "Pending";
-              }
-            });
-            saveProductsToLocalStorage();
-            updateProductStats();
-          }
-          break;
-
         case "private":
-          if (confirm(`Set ${selectedRows.length} product(s) to Private?`)) {
+          if (confirm(`Set ${selectedRows.length} approved product(s) to Private?`)) {
             selectedRows.forEach(({ row, id }) => {
               const product = products.find(p => p.id === id);
               if (product) {
                 product.status = "private";
-                const statusBadge = row.cells[3].querySelector(".badge");
-                statusBadge.className = "badge private";
-                statusBadge.textContent = "Private";
+                row.remove();
               }
             });
             saveProductsToLocalStorage();
-            updateProductStats();
+
+            // Update approved products list
+            approvedProducts = products.filter(p => p.status === 'active');
+
+            // Update UI
+            updateApprovedStats();
+            alert("Selected products set to private and removed from approved list.");
           }
           break;
 
-        case "rejected":
-          if (confirm(`Set ${selectedRows.length} product(s) to Rejected?`)) {
+        case "pending":
+          if (confirm(`Set ${selectedRows.length} approved product(s) to Pending?`)) {
             selectedRows.forEach(({ row, id }) => {
               const product = products.find(p => p.id === id);
               if (product) {
-                product.status = "rejected";
-                const statusBadge = row.cells[3].querySelector(".badge");
-                statusBadge.className = "badge rejected";
-                statusBadge.textContent = "Rejected";
+                product.status = "pending";
+                row.remove();
               }
             });
             saveProductsToLocalStorage();
-            updateProductStats();
+
+            // Update approved products list
+            approvedProducts = products.filter(p => p.status === 'active');
+
+            // Update UI
+            updateApprovedStats();
+            alert("Selected products set to pending and removed from approved list.");
           }
           break;
 
         case "delete":
           if (
             confirm(
-              `Are you sure you want to delete ${selectedRows.length} product(s)?`
+              `Are you sure you want to delete ${selectedRows.length} approved product(s)?`
             )
           ) {
             selectedRows.forEach(({ row, id }) => {
@@ -2165,13 +2090,18 @@
               }
             });
             saveProductsToLocalStorage();
-            updateProductStats();
-            populateProductTable();
+
+            // Update approved products list
+            approvedProducts = products.filter(p => p.status === 'active');
+
+            // Update UI
+            updateApprovedStats();
+            alert("Selected products deleted successfully.");
           }
           break;
 
         case "featured":
-          if (confirm(`Mark ${selectedRows.length} product(s) as Featured?`)) {
+          if (confirm(`Mark ${selectedRows.length} approved product(s) as Featured?`)) {
             selectedRows.forEach(({ row, id }) => {
               const product = products.find(p => p.id === id);
               if (product) {
@@ -2184,12 +2114,13 @@
               }
             });
             saveProductsToLocalStorage();
-            updateProductStats();
+            updateApprovedStats();
+            alert("Selected products marked as featured.");
           }
           break;
 
         case "unfeatured":
-          if (confirm(`Remove Featured from ${selectedRows.length} product(s)?`)) {
+          if (confirm(`Remove Featured from ${selectedRows.length} approved product(s)?`)) {
             selectedRows.forEach(({ row, id }) => {
               const product = products.find(p => p.id === id);
               if (product) {
@@ -2202,13 +2133,14 @@
               }
             });
             saveProductsToLocalStorage();
-            updateProductStats();
+            updateApprovedStats();
+            alert("Featured status removed from selected products.");
           }
           break;
 
         case "export":
           const selectedProducts = selectedRows.map(({ id }) =>
-            products.find(p => p.id === id)
+            approvedProducts.find(p => p.id === id)
           ).filter(p => p);
           exportSelectedToCSV(selectedProducts);
           break;
@@ -2218,35 +2150,38 @@
     }
 
     function editProduct(id) {
-      // Store the product ID to edit
       localStorage.setItem('editProductId', id);
-      // Redirect to add_product.html with edit mode
       window.location.href = 'add_product.html?edit=' + id;
     }
 
     function deleteProduct(id) {
-      if (confirm("Are you sure you want to delete this product?")) {
+      if (confirm("Are you sure you want to delete this approved product?")) {
         const index = products.findIndex((p) => p.id === id);
         if (index > -1) {
           products.splice(index, 1);
           saveProductsToLocalStorage();
-          populateProductTable();
-          updateProductStats();
+
+          // Update approved products list
+          approvedProducts = products.filter(p => p.status === 'active');
+
+          // Update UI
+          populateApprovedTable();
+          updateApprovedStats();
           alert("Product deleted successfully");
         }
       }
     }
 
-    // Function to export all products to CSV
+    // Function to export all approved products to CSV
     function exportToCSV() {
-      const csvData = convertToCSV(products);
-      downloadCSV(csvData, 'all_products.csv');
+      const csvData = convertToCSV(approvedProducts);
+      downloadCSV(csvData, 'approved_products.csv');
     }
 
-    // Function to export selected products to CSV
+    // Function to export selected approved products to CSV
     function exportSelectedToCSV(selectedProducts) {
       const csvData = convertToCSV(selectedProducts);
-      downloadCSV(csvData, 'selected_products.csv');
+      downloadCSV(csvData, 'selected_approved_products.csv');
     }
 
     // Function to convert products array to CSV format
@@ -2297,13 +2232,6 @@
 
     function addNewProduct() {
       window.location.href = 'add_product.html';
-    }
-
-    function saveFilterPreset() {
-      const presetName = prompt("Enter a name for this filter preset:");
-      if (presetName) {
-        alert(`Filter preset "${presetName}" saved successfully`);
-      }
     }
   </script>
 </body>

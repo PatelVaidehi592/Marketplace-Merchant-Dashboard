@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -282,11 +281,11 @@
       border-radius: 50%;
     }
 
-    input:checked+.toggle-slider {
+    input:checked + .toggle-slider {
       background-color: var(--primary);
     }
 
-    input:checked+.toggle-slider:before {
+    input:checked + .toggle-slider:before {
       transform: translateX(24px);
     }
 
@@ -471,11 +470,36 @@
       font-weight: 500;
     }
 
-    /* Sync Logs Table */
-    .sync-logs-container {
+    /* Sync Logs Section */
+    .sync-logs-section {
+      background-color: white;
+      border-radius: var(--border-radius);
+      padding: 30px;
+      box-shadow: var(--box-shadow);
       margin-top: 30px;
     }
 
+    .logs-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .logs-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .logs-count {
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    /* Sync Logs Table */
     .logs-table {
       width: 100%;
       border-collapse: collapse;
@@ -516,6 +540,76 @@
     .log-status.pending {
       background-color: rgba(255, 193, 7, 0.1);
       color: #ffc107;
+    }
+
+    /* Platform-specific styling */
+    .platform-badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      min-width: 100px;
+    }
+
+    .platform-shopify {
+      background-color: rgba(95, 189, 125, 0.1);
+      color: #5fbd7d;
+    }
+
+    .platform-woo {
+      background-color: rgba(123, 104, 238, 0.1);
+      color: #7b68ee;
+    }
+
+    .platform-wix {
+      background-color: rgba(0, 196, 204, 0.1);
+      color: #00c4cc;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: var(--border-radius);
+      color: white;
+      font-weight: 600;
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--box-shadow);
+      animation: slideInRight 0.3s ease;
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .toast.success {
+      background-color: var(--success);
+    }
+
+    .toast.error {
+      background-color: var(--danger);
+    }
+
+    .toast.info {
+      background-color: var(--primary);
+    }
+
+    .toast.warning {
+      background-color: var(--warning);
     }
 
     /* Responsive Design */
@@ -589,13 +683,12 @@
     }
   </style>
 </head>
-
 <body>
   <div class="container">
     <!-- Page Header -->
     <div class="page-header">
       <h1 class="page-title">Product Sync Settings</h1>
-      <a href="vendor-management.html " class="back-btn">
+      <a href="vendor-management.html" class="back-btn">
         <i class="fas fa-arrow-left"></i> Back to Vendors
       </a>
     </div>
@@ -612,7 +705,17 @@
           <h3 class="sync-title">Product Sync Settings</h3>
           <div class="sync-status">
             <div class="sync-status-indicator" id="productSyncStatus"></div>
-            <span class="sync-status-text" id="productSyncStatusText">Last sync: 5 minutes ago</span>
+            <span class="sync-status-text" id="productSyncStatusText">Loading...</span>
+          </div>
+        </div>
+
+        <!-- Sync Frequency -->
+        <div class="sync-frequency" style="margin-bottom: 25px;">
+          <div class="frequency-label">Sync Frequency</div>
+          <div class="frequency-options" id="productSyncMode">
+            <div class="frequency-option active" data-value="realtime">Real-time</div>
+            <div class="frequency-option" data-value="scheduled">Scheduled</div>
+            <div class="frequency-option" data-value="manual">Manual Only</div>
           </div>
         </div>
 
@@ -623,28 +726,28 @@
               <div class="sync-toggle">
                 <span class="toggle-label">Inventory Sync</span>
                 <label class="toggle-switch">
-                  <input type="checkbox" id="inventorySyncToggle" checked />
+                  <input type="checkbox" id="inventorySyncToggle" />
                   <span class="toggle-slider"></span>
                 </label>
               </div>
               <div class="sync-toggle">
                 <span class="toggle-label">Price Sync</span>
                 <label class="toggle-switch">
-                  <input type="checkbox" id="priceSyncToggle" checked />
+                  <input type="checkbox" id="priceSyncToggle" />
                   <span class="toggle-slider"></span>
                 </label>
               </div>
               <div class="sync-toggle">
                 <span class="toggle-label">Image Sync</span>
                 <label class="toggle-switch">
-                  <input type="checkbox" id="imageSyncToggle" checked />
+                  <input type="checkbox" id="imageSyncToggle" />
                   <span class="toggle-slider"></span>
                 </label>
               </div>
               <div class="sync-toggle">
                 <span class="toggle-label">Description Sync</span>
                 <label class="toggle-switch">
-                  <input type="checkbox" id="descriptionSyncToggle" checked />
+                  <input type="checkbox" id="descriptionSyncToggle" />
                   <span class="toggle-slider"></span>
                 </label>
               </div>
@@ -657,21 +760,21 @@
               <div class="sync-toggle">
                 <span class="toggle-label">Sync Product Variants</span>
                 <label class="toggle-switch">
-                  <input type="checkbox" id="variantsSyncToggle" checked />
+                  <input type="checkbox" id="variantsSyncToggle" />
                   <span class="toggle-slider"></span>
                 </label>
               </div>
               <div class="sync-toggle">
                 <span class="toggle-label">Sync Out-of-Stock Products</span>
                 <label class="toggle-switch">
-                  <input type="checkbox" id="outOfStockSyncToggle" checked />
+                  <input type="checkbox" id="outOfStockSyncToggle" />
                   <span class="toggle-slider"></span>
                 </label>
               </div>
               <div class="sync-toggle">
                 <span class="toggle-label">Auto-create Categories</span>
                 <label class="toggle-switch">
-                  <input type="checkbox" id="categoriesSyncToggle" checked />
+                  <input type="checkbox" id="categoriesSyncToggle" />
                   <span class="toggle-slider"></span>
                 </label>
               </div>
@@ -689,7 +792,7 @@
         <div class="sync-info">
           <div class="last-sync">
             Last product sync:
-            <span class="last-sync-time" id="lastProductSync">Today, 10:30 AM</span>
+            <span class="last-sync-time" id="lastProductSync">Loading...</span>
           </div>
           <div class="sync-stats">
             <div class="stat-box">
@@ -720,483 +823,592 @@
           </button>
         </div>
       </div>
+
+      <!-- Sync Logs Section -->
+      <div class="sync-logs-section">
+        <div class="logs-header">
+          <h3 class="logs-title">Sync Logs</h3>
+          <span class="logs-count" id="logsCount">0 logs</span>
+        </div>
+        <table class="logs-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Items</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody id="syncLogsTable">
+            <!-- Sync logs will be loaded here -->
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toastNotification" style="display: none;">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">Action completed successfully!</span>
   </div>
 
   <script>
     // Get vendor ID from URL
     const urlParams = new URLSearchParams(window.location.search);
-    const vendorId = urlParams.get("id") || 1; // Default to vendor ID 1
+    const vendorId = urlParams.get("id");
 
-    // Vendor data (same as in main file)
-    const vendorsData = [
-      {
-        id: 1,
-        name: "TechGadgets Inc.",
-        email: "contact@techgadgets.com",
-        platform: "shopify",
-        status: "approved",
-        country: "us",
-        products: 245,
-        joinedDate: "2023-05-15",
-        lastSync: new Date().toISOString(),
-        avatarColor: "#4361ee",
-        syncSettings: {
-          productSyncMode: "realtime",
-          inventorySync: true,
-          priceSync: true,
-          imageSync: true,
-          descriptionSync: true,
-          variantsSync: true,
-          outOfStockSync: true,
-          categoriesSync: true,
-          reviewsSync: false,
-        },
-      },
-    ];
+    // Global variables
+    let currentVendor = null;
+    let vendorsData = [];
+
+    // Platform display names
+    const platformNames = {
+      shopify: "Shopify",
+      woo: "WooCommerce",
+      wix: "Wix",
+    };
+
+    // Country data
+    const countries = {
+      us: { name: "United States", flag: "🇺🇸" },
+      uk: { name: "United Kingdom", flag: "🇬🇧" },
+      ca: { name: "Canada", flag: "🇨🇦" },
+      au: { name: "Australia", flag: "🇦🇺" },
+      de: { name: "Germany", flag: "🇩🇪" },
+      fr: { name: "France", flag: "🇫🇷" },
+    };
 
     // Initialize page
-    document.addEventListener("DOMContentLoaded", function () {
-      loadVendorInfo();
-      initializeSyncSettings();
-      loadErrorLogs();
-      loadSyncLogs();
+    document.addEventListener("DOMContentLoaded", async function () {
+      await loadVendorData();
+      if (currentVendor) {
+        loadVendorInfo();
+        initializeSyncSettings();
+        loadSyncLogs();
+        attachEventListeners();
+      } else {
+        showToast("Vendor not found!", "error");
+        setTimeout(() => {
+          window.location.href = "vendor-management.html";
+        }, 2000);
+      }
     });
+
+    // Load vendor data from localStorage
+    async function loadVendorData() {
+      try {
+        // Get all vendors from localStorage
+        const storedVendors = localStorage.getItem('vendorsData');
+        if (storedVendors) {
+          vendorsData = JSON.parse(storedVendors);
+          
+          // Find the specific vendor by ID
+          const vendor = vendorsData.find(v => v.id == vendorId);
+          
+          if (vendor) {
+            currentVendor = vendor;
+            
+            // Ensure vendor has sync settings
+            if (!currentVendor.syncSettings) {
+              currentVendor.syncSettings = getDefaultSyncSettings();
+            }
+            
+            // Ensure vendor has sync stats
+            if (!currentVendor.syncStats) {
+              currentVendor.syncStats = getDefaultSyncStats();
+            }
+            
+            // Ensure vendor has sync logs
+            if (!currentVendor.syncLogs) {
+              currentVendor.syncLogs = getDefaultSyncLogs();
+            }
+            
+            // Save updated vendor data
+            saveVendorData();
+            return true;
+          }
+        }
+        return false;
+      } catch (error) {
+        console.error("Error loading vendor data:", error);
+        return false;
+      }
+    }
+
+    // Get default sync settings
+    function getDefaultSyncSettings() {
+      return {
+        productSyncMode: "realtime",
+        inventorySync: true,
+        priceSync: true,
+        imageSync: true,
+        descriptionSync: true,
+        variantsSync: true,
+        outOfStockSync: true,
+        categoriesSync: true,
+        reviewsSync: false,
+      };
+    }
+
+    // Get default sync stats
+    function getDefaultSyncStats() {
+      return {
+        total: currentVendor?.products || 0,
+        synced: Math.floor((currentVendor?.products || 0) * 0.9),
+        failed: Math.floor((currentVendor?.products || 0) * 0.05),
+        pending: Math.floor((currentVendor?.products || 0) * 0.05),
+        lastSync: new Date().toISOString(),
+      };
+    }
+
+    // Get default sync logs
+    function getDefaultSyncLogs() {
+      const now = new Date();
+      return [
+        {
+          id: Date.now(),
+          time: new Date(now.getTime() - 2 * 60 * 60 * 1000).toISOString(),
+          type: "Product Sync",
+          status: "success",
+          items: `${Math.floor(currentVendor?.products * 0.8) || 0} products`,
+          details: "Initial product sync completed",
+        },
+        {
+          id: Date.now() - 1,
+          time: new Date(now.getTime() - 4 * 60 * 60 * 1000).toISOString(),
+          type: "Settings Update",
+          status: "success",
+          items: "Sync settings",
+          details: "Default sync settings applied",
+        },
+      ];
+    }
+
+    // Save vendor data to localStorage
+    function saveVendorData() {
+      try {
+        // Update the vendor in the vendors array
+        const index = vendorsData.findIndex(v => v.id == currentVendor.id);
+        if (index !== -1) {
+          vendorsData[index] = currentVendor;
+          localStorage.setItem('vendorsData', JSON.stringify(vendorsData));
+        }
+      } catch (error) {
+        console.error("Error saving vendor data:", error);
+      }
+    }
 
     // Load vendor information
     function loadVendorInfo() {
-      const vendor =
-        vendorsData.find((v) => v.id == vendorId) || vendorsData[0];
+      if (!currentVendor) return;
+
       const vendorInfoCard = document.getElementById("vendorInfoCard");
+      const stats = currentVendor.syncStats || getDefaultSyncStats();
 
       vendorInfoCard.innerHTML = `
-                <div class="vendor-avatar" style="background-color: ${vendor.avatarColor
-        }">
-                    ${vendor.name.charAt(0)}
-                </div>
-                <div class="vendor-details">
-                    <h3>${vendor.name}</h3>
-                    <p>${vendor.email}</p>
-                    <p><strong>Platform:</strong> ${vendor.platform === "shopify"
-          ? "Shopify"
-          : vendor.platform === "woo"
-            ? "WooCommerce"
-            : "Wix"
-        }</p>
-                    <div class="vendor-stats">
-                        <div class="stat-item">
-                            <div class="stat-value">${vendor.products}</div>
-                            <div class="stat-label">Products</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" style="color: #28a745;">${Math.floor(
-          vendor.products * 0.95
-        )}</div>
-                            <div class="stat-label">Active</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" style="color: #ffc107;">${Math.floor(
-          vendor.products * 0.03
-        )}</div>
-                            <div class="stat-label">Pending</div>
-                        </div>
-                    </div>
-                </div>
-            `;
+        <div class="vendor-avatar" style="background-color: ${currentVendor.avatarColor || '#4361ee'}">
+          ${currentVendor.name.charAt(0)}
+        </div>
+        <div class="vendor-details">
+          <h3>${currentVendor.name}</h3>
+          <p>${currentVendor.email}</p>
+          <p>
+            <strong>Platform:</strong> 
+            <span class="platform-badge platform-${currentVendor.platform}">
+              ${platformNames[currentVendor.platform] || currentVendor.platform}
+            </span>
+          </p>
+          <p>
+            <strong>Country:</strong> 
+            <span class="country-flag">
+              ${countries[currentVendor.country]?.flag || "🌐"}
+              ${countries[currentVendor.country]?.name || currentVendor.country}
+            </span>
+          </p>
+          <div class="vendor-stats">
+            <div class="stat-item">
+              <div class="stat-value">${stats.total}</div>
+              <div class="stat-label">Total Products</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" style="color: #28a745;">${stats.synced}</div>
+              <div class="stat-label">Synced</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" style="color: #dc3545;">${stats.failed}</div>
+              <div class="stat-label">Failed</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" style="color: #ffc107;">${stats.pending}</div>
+              <div class="stat-label">Pending</div>
+            </div>
+          </div>
+        </div>
+      `;
 
       // Update product stats
-      document.getElementById("totalProducts").textContent = vendor.products;
-      document.getElementById("syncedProducts").textContent = Math.floor(
-        vendor.products * 0.95
-      );
-      document.getElementById("failedProducts").textContent = Math.floor(
-        vendor.products * 0.02
-      );
-      document.getElementById("pendingProducts").textContent = Math.floor(
-        vendor.products * 0.03
-      );
+      document.getElementById("totalProducts").textContent = stats.total;
+      document.getElementById("syncedProducts").textContent = stats.synced;
+      document.getElementById("failedProducts").textContent = stats.failed;
+      document.getElementById("pendingProducts").textContent = stats.pending;
+      document.getElementById("lastProductSync").textContent = formatTime(stats.lastSync);
     }
 
     // Initialize sync settings
     function initializeSyncSettings() {
-      const vendor =
-        vendorsData.find((v) => v.id == vendorId) || vendorsData[0];
-      const settings = vendor.syncSettings;
+      if (!currentVendor || !currentVendor.syncSettings) return;
+
+      const settings = currentVendor.syncSettings;
 
       // Set sync mode
-      document
-        .querySelectorAll("#productSyncMode .frequency-option")
-        .forEach((option) => {
-          if (option.dataset.value === settings.productSyncMode) {
-            option.classList.add("active");
-          } else {
-            option.classList.remove("active");
-          }
-        });
-
-      // Set toggle switches
-      document.getElementById("inventorySyncToggle").checked =
-        settings.inventorySync;
-      document.getElementById("priceSyncToggle").checked = settings.priceSync;
-      document.getElementById("imageSyncToggle").checked = settings.imageSync;
-      document.getElementById("descriptionSyncToggle").checked =
-        settings.descriptionSync;
-      document.getElementById("variantsSyncToggle").checked =
-        settings.variantsSync;
-      document.getElementById("outOfStockSyncToggle").checked =
-        settings.outOfStockSync;
-      document.getElementById("categoriesSyncToggle").checked =
-        settings.categoriesSync;
-      document.getElementById("reviewsSyncToggle").checked =
-        settings.reviewsSync;
-
-      // Update last sync time
-      document.getElementById("lastProductSync").textContent = formatTime(
-        new Date(vendor.lastSync)
-      );
-
-      // Sync mode selection
-      document
-        .querySelectorAll("#productSyncMode .frequency-option")
-        .forEach((option) => {
-          option.addEventListener("click", function () {
-            document
-              .querySelectorAll("#productSyncMode .frequency-option")
-              .forEach((opt) => {
-                opt.classList.remove("active");
-              });
-            this.classList.add("active");
-
-            // Update status text
-            const mode = this.dataset.value;
-            const statusText = document.getElementById(
-              "productSyncStatusText"
-            );
-            const statusIndicator =
-              document.getElementById("productSyncStatus");
-
-            if (mode === "realtime") {
-              statusText.textContent = "Real-time sync active";
-              statusIndicator.style.backgroundColor = "#4cc9f0";
-            } else if (mode === "scheduled") {
-              statusText.textContent = "Scheduled sync (every 4 hours)";
-              statusIndicator.style.backgroundColor = "#ffc107";
-            } else {
-              statusText.textContent = "Manual sync only";
-              statusIndicator.style.backgroundColor = "#6c757d";
-            }
-          });
-        });
-
-      // Sync Now button
-      document
-        .getElementById("productSyncNow")
-        .addEventListener("click", function () {
-          const syncBtn = this;
-          const originalText = syncBtn.innerHTML;
-
-          // Show syncing state
-          syncBtn.innerHTML =
-            '<i class="fas fa-spinner fa-spin"></i> Syncing...';
-          syncBtn.disabled = true;
-
-          // Update status
-          document.getElementById("productSyncStatusText").textContent =
-            "Syncing...";
-          document.getElementById("productSyncStatus").style.backgroundColor =
-            "#ffc107";
-
-          // Simulate sync process
-          setTimeout(() => {
-            // Update vendor's last sync time
-            const vendor =
-              vendorsData.find((v) => v.id == vendorId) || vendorsData[0];
-            vendor.lastSync = new Date().toISOString();
-
-            // Update UI
-            document.getElementById("lastProductSync").textContent =
-              "Just now";
-            document.getElementById("productSyncStatusText").textContent =
-              "Last sync: Just now";
-            document.getElementById(
-              "productSyncStatus"
-            ).style.backgroundColor = "#4cc9f0";
-
-            // Reset button
-            syncBtn.innerHTML = originalText;
-            syncBtn.disabled = false;
-
-            // Add sync log
-            addSyncLog(
-              "Product Sync",
-              "success",
-              `${vendor.products} products`,
-              "Products synced successfully"
-            );
-
-            // Show success message
-            showNotification(
-              "Product sync completed successfully!",
-              "success"
-            );
-
-            // Update stats (simulate some changes)
-            updateSyncStats();
-          }, 2000);
-        });
-
-      // Save Settings button
-      document
-        .getElementById("saveProductSettings")
-        .addEventListener("click", function () {
-          const saveBtn = this;
-          const originalText = saveBtn.innerHTML;
-
-          // Get current settings
-          const activeMode = document.querySelector(
-            "#productSyncMode .frequency-option.active"
-          );
-
-          // Update vendor settings
-          const vendor =
-            vendorsData.find((v) => v.id == vendorId) || vendorsData[0];
-          vendor.syncSettings.productSyncMode = activeMode
-            ? activeMode.dataset.value
-            : "realtime";
-          vendor.syncSettings.inventorySync = document.getElementById(
-            "inventorySyncToggle"
-          ).checked;
-          vendor.syncSettings.priceSync =
-            document.getElementById("priceSyncToggle").checked;
-          vendor.syncSettings.imageSync =
-            document.getElementById("imageSyncToggle").checked;
-          vendor.syncSettings.descriptionSync = document.getElementById(
-            "descriptionSyncToggle"
-          ).checked;
-          vendor.syncSettings.variantsSync =
-            document.getElementById("variantsSyncToggle").checked;
-          vendor.syncSettings.outOfStockSync = document.getElementById(
-            "outOfStockSyncToggle"
-          ).checked;
-          vendor.syncSettings.categoriesSync = document.getElementById(
-            "categoriesSyncToggle"
-          ).checked;
-          vendor.syncSettings.reviewsSync =
-            document.getElementById("reviewsSyncToggle").checked;
-
-          // Show saving state
-          saveBtn.innerHTML = '<i class="fas fa-check"></i> Settings Saved';
-          saveBtn.style.backgroundColor = "#28a745";
-
-          // Add sync log
-          addSyncLog(
-            "Settings Update",
-            "success",
-            "Product sync settings",
-            "Settings updated successfully"
-          );
-
-          setTimeout(() => {
-            saveBtn.innerHTML = originalText;
-            saveBtn.style.backgroundColor = "";
-          }, 2000);
-
-          showNotification("Sync settings saved successfully!", "success");
-        });
-    }
-
-    // Load error logs
-    function loadErrorLogs() {
-      const errorLogContainer = document.getElementById("errorLogContainer");
-      const errors = [
-        {
-          time: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
-          message: "Failed to sync product #45678: Connection timeout",
-        },
-        {
-          time: new Date(Date.now() - 5 * 60 * 60 * 1000), // 5 hours ago
-          message: "Inventory update failed for SKU: TECH-12345",
-        },
-        {
-          time: new Date(Date.now() - 24 * 60 * 60 * 1000), // 24 hours ago
-          message: "Product image sync failed: Invalid image format",
-        },
-      ];
-
-      errorLogContainer.innerHTML = "";
-      errors.forEach((error) => {
-        const errorEntry = document.createElement("div");
-        errorEntry.className = "error-entry";
-        errorEntry.innerHTML = `
-                    <div class="error-time">${formatTime(error.time)}</div>
-                    <div class="error-message">${error.message}</div>
-                `;
-        errorLogContainer.appendChild(errorEntry);
+      document.querySelectorAll("#productSyncMode .frequency-option").forEach((option) => {
+        if (option.dataset.value === settings.productSyncMode) {
+          option.classList.add("active");
+        } else {
+          option.classList.remove("active");
+        }
       });
 
-      document.getElementById(
-        "errorLogCount"
-      ).textContent = `${errors.length} errors in last 24 hours`;
+      // Set toggle switches
+      document.getElementById("inventorySyncToggle").checked = settings.inventorySync;
+      document.getElementById("priceSyncToggle").checked = settings.priceSync;
+      document.getElementById("imageSyncToggle").checked = settings.imageSync;
+      document.getElementById("descriptionSyncToggle").checked = settings.descriptionSync;
+      document.getElementById("variantsSyncToggle").checked = settings.variantsSync;
+      document.getElementById("outOfStockSyncToggle").checked = settings.outOfStockSync;
+      document.getElementById("categoriesSyncToggle").checked = settings.categoriesSync;
+      document.getElementById("reviewsSyncToggle").checked = settings.reviewsSync;
+
+      // Update status display
+      updateSyncStatusDisplay();
+    }
+
+    // Update sync status display
+    function updateSyncStatusDisplay() {
+      if (!currentVendor || !currentVendor.syncSettings) return;
+
+      const mode = currentVendor.syncSettings.productSyncMode;
+      const statusText = document.getElementById("productSyncStatusText");
+      const statusIndicator = document.getElementById("productSyncStatus");
+
+      switch (mode) {
+        case "realtime":
+          statusText.textContent = "Real-time sync active";
+          statusIndicator.style.backgroundColor = "#4cc9f0";
+          break;
+        case "scheduled":
+          statusText.textContent = "Scheduled sync (every 4 hours)";
+          statusIndicator.style.backgroundColor = "#ffc107";
+          break;
+        case "manual":
+          statusText.textContent = "Manual sync only";
+          statusIndicator.style.backgroundColor = "#6c757d";
+          break;
+        default:
+          statusText.textContent = "Sync status unknown";
+          statusIndicator.style.backgroundColor = "#6c757d";
+      }
     }
 
     // Load sync logs
     function loadSyncLogs() {
+      if (!currentVendor) return;
+
       const syncLogsTable = document.getElementById("syncLogsTable");
-      const logs = [
-        {
-          time: new Date(),
-          type: "Product Sync",
-          status: "success",
-          items: "245 products",
-          details: "Updated prices and inventory",
-        },
-        {
-          time: new Date(Date.now() - 2 * 60 * 60 * 1000),
-          type: "Product Sync",
-          status: "error",
-          items: "1 product",
-          details: "Connection timeout",
-        },
-        {
-          time: new Date(Date.now() - 6 * 60 * 60 * 1000),
-          type: "Product Sync",
-          status: "success",
-          items: "15 products",
-          details: "New products added",
-        },
-        {
-          time: new Date(Date.now() - 12 * 60 * 60 * 1000),
-          type: "Settings Update",
-          status: "success",
-          items: "Sync settings",
-          details: "Settings updated",
-        },
-      ];
+      const logsCount = document.getElementById("logsCount");
+      const logs = currentVendor.syncLogs || [];
 
       syncLogsTable.innerHTML = "";
-      logs.forEach((log) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-                    <td>${formatTime(log.time)}</td>
-                    <td>${log.type}</td>
-                    <td><span class="log-status ${log.status}">${log.status.charAt(0).toUpperCase() + log.status.slice(1)
-          }</span></td>
-                    <td>${log.items}</td>
-                    <td>${log.details}</td>
-                `;
-        syncLogsTable.appendChild(row);
-      });
+      
+      if (logs.length === 0) {
+        syncLogsTable.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align: center; padding: 40px; color: var(--gray);">
+              <i class="fas fa-history" style="font-size: 32px; margin-bottom: 10px; display: block; color: #e9ecef;"></i>
+              <p>No sync logs available</p>
+            </td>
+          </tr>
+        `;
+      } else {
+        // Sort logs by time (newest first)
+        logs.sort((a, b) => new Date(b.time) - new Date(a.time));
+        
+        // Display only the 10 most recent logs
+        const recentLogs = logs.slice(0, 10);
+        
+        recentLogs.forEach((log) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${formatTime(log.time)}</td>
+            <td>${log.type}</td>
+            <td><span class="log-status ${log.status}">${log.status.charAt(0).toUpperCase() + log.status.slice(1)}</span></td>
+            <td>${log.items}</td>
+            <td>${log.details}</td>
+          `;
+          syncLogsTable.appendChild(row);
+        });
+      }
+
+      logsCount.textContent = `${logs.length} logs`;
     }
 
     // Add sync log
     function addSyncLog(type, status, items, details) {
-      const syncLogsTable = document.getElementById("syncLogsTable");
-      const now = new Date();
+      if (!currentVendor) return;
 
-      const row = document.createElement("tr");
-      row.innerHTML = `
-                <td>${formatTime(now)}</td>
-                <td>${type}</td>
-                <td><span class="log-status ${status}">${status.charAt(0).toUpperCase() + status.slice(1)
-        }</span></td>
-                <td>${items}</td>
-                <td>${details}</td>
-            `;
+      const log = {
+        id: Date.now(),
+        time: new Date().toISOString(),
+        type,
+        status,
+        items,
+        details,
+      };
 
-      // Insert at the top
-      if (syncLogsTable.firstChild) {
-        syncLogsTable.insertBefore(row, syncLogsTable.firstChild);
-      } else {
-        syncLogsTable.appendChild(row);
+      // Initialize sync logs array if it doesn't exist
+      if (!currentVendor.syncLogs) {
+        currentVendor.syncLogs = [];
       }
 
-      // Limit to 10 rows
-      const rows = syncLogsTable.querySelectorAll("tr");
-      if (rows.length > 10) {
-        syncLogsTable.removeChild(rows[rows.length - 1]);
+      // Add log to beginning of array
+      currentVendor.syncLogs.unshift(log);
+
+      // Keep only the last 50 logs
+      if (currentVendor.syncLogs.length > 50) {
+        currentVendor.syncLogs = currentVendor.syncLogs.slice(0, 50);
       }
+
+      // Save data
+      saveVendorData();
+
+      // Update UI
+      loadSyncLogs();
     }
 
-    // Update sync stats
-    function updateSyncStats() {
-      const vendor =
-        vendorsData.find((v) => v.id == vendorId) || vendorsData[0];
-      const synced = Math.floor(vendor.products * 0.95 + Math.random() * 5);
-      const failed = Math.floor(vendor.products * 0.02 + Math.random() * 2);
-      const pending = vendor.products - synced - failed;
+    // Attach event listeners
+    function attachEventListeners() {
+      // Sync mode selection
+      document.querySelectorAll("#productSyncMode .frequency-option").forEach((option) => {
+        option.addEventListener("click", function () {
+          document.querySelectorAll("#productSyncMode .frequency-option").forEach((opt) => {
+            opt.classList.remove("active");
+          });
+          this.classList.add("active");
+          
+          if (currentVendor) {
+            currentVendor.syncSettings.productSyncMode = this.dataset.value;
+            updateSyncStatusDisplay();
+          }
+        });
+      });
 
-      document.getElementById("syncedProducts").textContent = synced;
-      document.getElementById("failedProducts").textContent = failed;
-      document.getElementById("pendingProducts").textContent = pending;
-    }
+      // Sync Now button
+      document.getElementById("productSyncNow").addEventListener("click", async function () {
+        await syncProducts();
+      });
 
-    // Format time
-    function formatTime(date) {
-      const now = new Date();
-      const diffMs = now - date;
-      const diffMins = Math.floor(diffMs / 60000);
-      const diffHours = Math.floor(diffMs / 3600000);
-      const diffDays = Math.floor(diffMs / 86400000);
-
-      if (diffMins < 1) return "Just now";
-      if (diffMins < 60)
-        return `${diffMins} minute${diffMins > 1 ? "s" : ""} ago`;
-      if (diffHours < 24)
-        return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
-
-      return date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
+      // Save Settings button
+      document.getElementById("saveProductSettings").addEventListener("click", function () {
+        saveSyncSettings();
       });
     }
 
-    // Show notification
-    function showNotification(message, type = "success") {
-      // Create notification element
-      const notification = document.createElement("div");
-      notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 15px 25px;
-                background-color: ${type === "success" ? "#28a745" : "#dc3545"};
-                color: white;
-                border-radius: var(--border-radius);
-                box-shadow: var(--box-shadow);
-                z-index: 1000;
-                animation: slideIn 0.3s ease;
-            `;
+    // Sync products function
+    async function syncProducts() {
+      if (!currentVendor) return;
 
-      // Add keyframes for animation
-      const style = document.createElement("style");
-      style.textContent = `
-                @keyframes slideIn {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-            `;
-      document.head.appendChild(style);
+      const syncBtn = document.getElementById("productSyncNow");
+      const originalText = syncBtn.innerHTML;
 
-      notification.innerHTML = `
-                <i class="fas fa-${type === "success" ? "check-circle" : "exclamation-circle"
-        }"></i>
-                ${message}
-            `;
+      // Disable button and show loading
+      syncBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing...';
+      syncBtn.disabled = true;
 
-      document.body.appendChild(notification);
+      // Update status display
+      document.getElementById("productSyncStatusText").textContent = "Syncing...";
+      document.getElementById("productSyncStatus").style.backgroundColor = "#ffc107";
 
-      // Remove after 3 seconds
+      try {
+        // Simulate API call delay
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        // Update sync stats
+        const stats = currentVendor.syncStats || getDefaultSyncStats();
+        
+        // Simulate some changes
+        const newSynced = Math.min(stats.total, stats.synced + Math.floor(Math.random() * 10) + 1);
+        const newFailed = Math.max(0, stats.failed - Math.floor(Math.random() * 2));
+        const newPending = stats.total - newSynced - newFailed;
+
+        currentVendor.syncStats = {
+          ...stats,
+          synced: newSynced,
+          failed: newFailed,
+          pending: newPending,
+          lastSync: new Date().toISOString(),
+        };
+
+        // Update vendor info in the main vendors list
+        updateVendorInMainList();
+
+        // Save data
+        saveVendorData();
+
+        // Update UI
+        loadVendorInfo();
+        updateSyncStatusDisplay();
+
+        // Add sync log
+        addSyncLog(
+          "Product Sync",
+          "success",
+          `${newSynced - stats.synced} products`,
+          "Products synced successfully"
+        );
+
+        // Show success message
+        showToast("Product sync completed successfully!", "success");
+
+      } catch (error) {
+        console.error("Sync error:", error);
+        
+        // Add error log
+        addSyncLog(
+          "Product Sync",
+          "error",
+          "0 products",
+          `Sync failed: ${error.message || "Unknown error"}`
+        );
+
+        // Show error message
+        showToast("Sync failed. Please try again.", "error");
+        
+        // Update status to error
+        document.getElementById("productSyncStatusText").textContent = "Sync failed";
+        document.getElementById("productSyncStatus").style.backgroundColor = "#dc3545";
+      } finally {
+        // Restore button
+        syncBtn.innerHTML = originalText;
+        syncBtn.disabled = false;
+      }
+    }
+
+    // Save sync settings
+    function saveSyncSettings() {
+      if (!currentVendor) return;
+
+      const saveBtn = document.getElementById("saveProductSettings");
+      const originalText = saveBtn.innerHTML;
+
+      // Get current settings from UI
+      const activeMode = document.querySelector("#productSyncMode .frequency-option.active");
+      
+      // Update sync settings
+      currentVendor.syncSettings = {
+        productSyncMode: activeMode ? activeMode.dataset.value : "realtime",
+        inventorySync: document.getElementById("inventorySyncToggle").checked,
+        priceSync: document.getElementById("priceSyncToggle").checked,
+        imageSync: document.getElementById("imageSyncToggle").checked,
+        descriptionSync: document.getElementById("descriptionSyncToggle").checked,
+        variantsSync: document.getElementById("variantsSyncToggle").checked,
+        outOfStockSync: document.getElementById("outOfStockSyncToggle").checked,
+        categoriesSync: document.getElementById("categoriesSyncToggle").checked,
+        reviewsSync: document.getElementById("reviewsSyncToggle").checked,
+      };
+
+      // Update vendor in main list
+      updateVendorInMainList();
+
+      // Save data
+      saveVendorData();
+
+      // Update status display
+      updateSyncStatusDisplay();
+
+      // Show saving state
+      saveBtn.innerHTML = '<i class="fas fa-check"></i> Settings Saved';
+      saveBtn.style.backgroundColor = "#28a745";
+
+      // Add sync log
+      addSyncLog(
+        "Settings Update",
+        "success",
+        "Sync settings",
+        "Settings updated successfully"
+      );
+
+      // Show notification
+      showToast("Sync settings saved successfully!", "success");
+
+      // Restore button after 2 seconds
       setTimeout(() => {
-        notification.style.animation = "slideOut 0.3s ease";
-        notification.style.transform = "translateX(100%)";
-        setTimeout(() => {
-          document.body.removeChild(notification);
-        }, 300);
+        saveBtn.innerHTML = originalText;
+        saveBtn.style.backgroundColor = "";
+      }, 2000);
+    }
+
+    // Update vendor in the main vendors list
+    function updateVendorInMainList() {
+      try {
+        const allVendors = JSON.parse(localStorage.getItem('vendorsData') || '[]');
+        const index = allVendors.findIndex(v => v.id == currentVendor.id);
+        
+        if (index !== -1) {
+          // Update only the relevant fields to preserve other data
+          allVendors[index] = {
+            ...allVendors[index],
+            syncSettings: currentVendor.syncSettings,
+            syncStats: currentVendor.syncStats,
+            syncLogs: currentVendor.syncLogs,
+          };
+          
+          localStorage.setItem('vendorsData', JSON.stringify(allVendors));
+        }
+      } catch (error) {
+        console.error("Error updating vendor in main list:", error);
+      }
+    }
+
+    // Format time
+    function formatTime(dateString) {
+      try {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffMs = now - date;
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+
+        if (diffMins < 1) return "Just now";
+        if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? "s" : ""} ago`;
+        if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
+
+        return date.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      } catch (error) {
+        return "Unknown time";
+      }
+    }
+
+    // Show toast notification
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toastNotification');
+      const toastMessage = document.getElementById('toastMessage');
+      
+      toastMessage.textContent = message;
+      toast.className = `toast ${type}`;
+      toast.style.display = 'flex';
+      
+      setTimeout(() => {
+        toast.style.display = 'none';
       }, 3000);
     }
   </script>
 </body>
-
 </html>

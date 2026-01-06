@@ -33,6 +33,10 @@
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     }
 
+    span.remove-icon {
+      cursor: pointer;
+    }
+
     body {
       background-color: var(--bg);
       color: var(--dark);
@@ -75,6 +79,10 @@
       display: flex;
       align-items: center;
       gap: 16px;
+    }
+
+    .thumbnail.remove-btn {
+      margin-top: 2px;
     }
 
     .user-profile {
@@ -989,6 +997,9 @@
     <!-- Header -->
     <div class="header">
       <div class="header-left">
+        <a href="product-list.html" class="back-button">
+          <i class="fas fa-arrow-left"></i>
+        </a>
         <h1>Product Details</h1>
         <p>View and manage product information</p>
       </div>
@@ -996,6 +1007,7 @@
         <div class="user-profile">
           <img src="https://ui-avatars.com/api/?name=Admin+User&background=4361ee&color=fff" alt="Admin User" />
           <div>
+
             <h4>Admin User</h4>
             <p>Super Admin</p>
           </div>
@@ -1571,7 +1583,7 @@
           };
 
           // Add remove button in edit mode
-          if (isEditMode && productImages.length > 1) {
+          if (isEditMode) {
             const removeIcon = document.createElement("span");
             removeIcon.className = "remove-icon";
             removeIcon.innerHTML = '<i class="fas fa-times"></i>';
@@ -1586,49 +1598,44 @@
           thumbnailsContainer.appendChild(thumbnailWrapper);
         });
 
-        // If less than 4 images, show placeholder for remaining slots in edit mode
-        // If less than 4 images, show placeholder for remaining slots in edit mode
-        if (productImages.length < 20 && isEditMode) {
-          for (let i = productImages.length; i < 3; i++) {
-            const placeholder = document.createElement("div");
-            placeholder.className = 'thumbnail remove-btn';
-            placeholder.style.backgroundColor = '#f5f5f5';
-            placeholder.style.display = 'flex';
-            placeholder.style.alignItems = 'center';
-            placeholder.style.justifyContent = 'center';
-            placeholder.style.color = '#ccc';
-            placeholder.style.cursor = 'pointer';
-            placeholder.innerHTML = '<i class="fas fa-plus"></i>';
-            placeholder.onclick = () => {
-              // Trigger image upload
-              document.querySelector('.image-upload-btn input').click();
-            };
-            thumbnailsContainer.appendChild(placeholder);
-          }
+        // Add plus button for adding more images in edit mode
+        if (isEditMode) {
+          const placeholder = document.createElement("div");
+          placeholder.className = 'thumbnail remove-btn';
+          placeholder.style.backgroundColor = '#f5f5f5';
+          placeholder.style.display = 'flex';
+          placeholder.style.alignItems = 'center';
+          placeholder.style.justifyContent = 'center';
+          placeholder.style.color = '#ccc';
+          placeholder.style.cursor = 'pointer';
+          placeholder.innerHTML = '<i class="fas fa-plus"></i>';
+          placeholder.onclick = () => {
+            // Trigger image upload
+            document.querySelector('.image-upload-btn input').click();
+          };
+          thumbnailsContainer.appendChild(placeholder);
         }
       } else {
         // No images
         mainImage.style.display = "none";
         imagePlaceholder.style.display = "flex";
 
-        // Show 4 empty slots in edit mode
+        // Show plus button in edit mode
         if (isEditMode) {
-          for (let i = 0; i < 24; i++) {
-            const placeholder = document.createElement("div");
-            placeholder.className = 'thumbnail remove-btn';
-            placeholder.style.backgroundColor = '#f5f5f5';
-            placeholder.style.display = 'flex';
-            placeholder.style.alignItems = 'center';
-            placeholder.style.justifyContent = 'center';
-            placeholder.style.color = '#ccc';
-            placeholder.style.cursor = 'pointer';
-            placeholder.innerHTML = '<i class="fas fa-plus"></i>';
-            placeholder.onclick = () => {
-              // Trigger image upload
-              document.querySelector('.image-upload-btn input').click();
-            };
-            thumbnailsContainer.appendChild(placeholder);
-          }
+          const placeholder = document.createElement("div");
+          placeholder.className = 'thumbnail remove-btn';
+          placeholder.style.backgroundColor = '#f5f5f5';
+          placeholder.style.display = 'flex';
+          placeholder.style.alignItems = 'center';
+          placeholder.style.justifyContent = 'center';
+          placeholder.style.color = '#ccc';
+          placeholder.style.cursor = 'pointer';
+          placeholder.innerHTML = '<i class="fas fa-plus"></i>';
+          placeholder.onclick = () => {
+            // Trigger image upload
+            document.querySelector('.image-upload-btn input').click();
+          };
+          thumbnailsContainer.appendChild(placeholder);
         }
       }
     }

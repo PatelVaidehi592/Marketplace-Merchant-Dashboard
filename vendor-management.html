@@ -1,319 +1,2263 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard - Vendor Management</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/vendor-management.css" />
-  </head>
 
-  <body>
-    <div class="container">
-      <!-- Sidebar -->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Vendor Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3a56d4;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --gray: #6c757d;
 
-      <!-- Main Content -->
-      <main class="main-content">
-        <!-- Header -->
-        <header>
-          <div class="header-left">
-            <h1 id="pageMainTitle">Vendor Management</h1>
-            <p id="pageSubtitle">
-              Manage all vendors, review applications, and monitor activity
-            </p>
-          </div>
-          <div class="header-right">
-            <div class="user-profile">
-              <img
-                src="https://ui-avatars.com/api/?name=Admin+User&background=4361ee&color=fff"
-                alt="Admin User"
-              />
-              <div>
-                <h4>Admin User</h4>
-                <p>Super Admin</p>
-              </div>
+      --light-gray: #e9ecef;
+      --success: #28a745;
+      --danger: #dc3545;
+      --warning: #ffc107;
+      --border-radius: 10px;
+      --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fb;
+      color: var(--dark);
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      margin: 0 auto;
+     
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 20px;
+      width: 100%
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      background-color: white;
+      padding: 15px 25px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+
+    .header-left h1 {
+      font-size: 24px;
+      color: var(--dark);
+    }
+
+    .header-left p {
+      color: var(--gray);
+      font-size: 14px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 15px;
+      background-color: var(--light);
+      border-radius: 30px;
+    }
+
+    .user-profile img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .add-vendor-btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .add-vendor-btn:hover {
+      background-color: var(--secondary);
+      transform: translateY(-2px);
+    }
+
+    /* Filters Section - Enhanced */
+    .filters-section {
+      background-color: white;
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 25px;
+    }
+
+    .filters-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .filters-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .clear-filters {
+      color: var(--primary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      align-items: end;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .filter-label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--gray);
+    }
+
+    .filter-select,
+    .search-input {
+      padding: 10px 12px;
+      border: 1px solid var(--light-gray);
+      border-radius: var(--border-radius);
+      font-size: 14px;
+      transition: var(--transition);
+    }
+
+    .filter-select:focus,
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+    }
+
+    .search-input-wrapper {
+      position: relative;
+    }
+
+    .search-input-wrapper i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray);
+    }
+
+    .search-input-wrapper .search-input {
+      padding-left: 40px;
+      width: 100%;
+    }
+
+    /* Bulk Actions Button - New Style */
+    .bulk-actions-btn {
+      background-color: #f8f9fa;
+      color: var(--dark);
+      border: 1px solid var(--light-gray);
+      padding: 10px 16px;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+      position: relative;
+      height: 41px;
+    }
+
+    .bulk-actions-btn:hover {
+      background-color: #e9ecef;
+      border-color: var(--gray);
+    }
+
+    .bulk-actions-btn.has-selection {
+      background-color: rgba(67, 97, 238, 0.1);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .bulk-actions-dropdown {
+      position: absolute;
+      top: calc(100% + 5px);
+      right: 0;
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      min-width: 200px;
+      z-index: 1000;
+      display: none;
+      overflow: hidden;
+      border: 1px solid var(--light-gray);
+    }
+
+    .bulk-actions-dropdown.show {
+      display: block;
+      animation: fadeInUp 0.2s ease;
+      top: 60px !important;
+      right: 35px !important;
+    }
+
+    .bulk-dropdown-item {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: var(--transition);
+      border-bottom: 1px solid var(--light-gray);
+      color: var(--dark);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .bulk-dropdown-item:last-child {
+      border-bottom: none;
+    }
+
+    .bulk-dropdown-item:hover {
+      background-color: var(--light);
+    }
+
+    .bulk-dropdown-item i {
+      width: 20px;
+      text-align: center;
+    }
+
+    .bulk-dropdown-item.approve {
+      color: var(--success);
+    }
+
+    .bulk-dropdown-item.suspend {
+      color: var(--warning);
+    }
+
+    .bulk-dropdown-item.delete {
+      color: var(--danger);
+    }
+
+    .bulk-dropdown-item.export {
+      color: var(--primary);
+    }
+
+    .bulk-dropdown-item.activate {
+      color: var(--success);
+    }
+
+    .bulk-dropdown-item.email {
+      color: var(--dark);
+    }
+
+    /* Selected Count Badge */
+    .selected-count-badge {
+      background-color: var(--primary);
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      display: none;
+    }
+
+    .has-selection .selected-count-badge {
+      display: flex;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Vendors Table */
+    .vendors-table-container {
+      background-color: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    .vendors-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1000px;
+    }
+
+    .vendors-table thead {
+      background-color: #f8f9fa;
+    }
+
+    .vendors-table th {
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      color: var(--gray);
+      border-bottom: 1px solid var(--light-gray);
+      white-space: nowrap;
+    }
+
+    .vendors-table td {
+      padding: 15px;
+      border-bottom: 1px solid var(--light-gray);
+      vertical-align: middle;
+    }
+
+    .vendors-table tbody tr {
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .vendors-table tbody tr:hover {
+      background-color: rgba(67, 97, 238, 0.1);
+    }
+
+    .vendor-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      width: fit-content;
+    }
+
+    .vendor-info:hover .vendor-name {
+      color: var(--primary);
+    }
+
+    .vendor-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      background-color: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .vendor-name {
+      font-weight: 600;
+      margin-bottom: 3px;
+      transition: var(--transition);
+    }
+
+    .vendor-email {
+      font-size: 12px;
+      color: var(--gray);
+    }
+
+    .country-flag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .flag-icon {
+      width: 24px;
+      height: 16px;
+      border-radius: 2px;
+      object-fit: cover;
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      position: relative;
+    }
+
+    .action-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f8f9fa;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--gray);
+    }
+
+    .action-btn:hover {
+      background-color: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .sync-action-btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: var(--border-radius);
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .sync-action-btn:hover {
+      background-color: var(--secondary);
+      transform: translateY(-2px);
+    }
+
+    .checkbox-cell {
+      width: 40px;
+      text-align: center;
+    }
+
+    /* Enhanced Checkbox Styling */
+    .custom-checkbox {
+      width: 18px;
+      height: 18px;
+      border-radius: 3px;
+      border: 2px solid var(--light-gray);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .custom-checkbox.checked {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .custom-checkbox.checked:after {
+      content: "✓";
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    /* Indeterminate state styling */
+    .custom-checkbox.indeterminate {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .custom-checkbox.indeterminate:after {
+      content: "";
+      width: 10px;
+      height: 2px;
+      background-color: white;
+      border-radius: 1px;
+      position: absolute;
+    }
+
+    /* Select All checkbox container */
+    .select-all-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    /* Action Dropdown - Simplified */
+    .action-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      min-width: 180px;
+      z-index: 1000;
+      display: none;
+      overflow: hidden;
+      margin-top: 5px;
+      border: 1px solid var(--light-gray);
+    }
+
+    .action-dropdown.show {
+      display: block;
+      animation: fadeInUp 0.2s ease;
+    }
+
+    .action-dropdown-item {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: var(--transition);
+      border-bottom: 1px solid var(--light-gray);
+      text-decoration: none;
+      color: var(--dark);
+    }
+
+    .action-dropdown-item:last-child {
+      border-bottom: none;
+    }
+
+    .action-dropdown-item:hover {
+      background-color: var(--light);
+    }
+
+    .action-dropdown-item i {
+      width: 20px;
+      text-align: center;
+    }
+
+    .action-dropdown-item.view {
+      color: var(--primary);
+    }
+
+    .action-dropdown-item.edit {
+      color: var(--primary);
+    }
+
+    .action-dropdown-item.delete {
+      color: var(--danger);
+    }
+
+    /* Platform Badges */
+    .platform-badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      min-width: 100px;
+    }
+
+    .platform-shopify {
+      background-color: rgba(95, 189, 125, 0.1);
+      color: #5fbd7d;
+    }
+
+    .platform-woo {
+      background-color: rgba(123, 104, 238, 0.1);
+      color: #7b68ee;
+    }
+
+    .platform-wix {
+      background-color: rgba(0, 196, 204, 0.1);
+      color: #00c4cc;
+    }
+
+    /* Status Badges */
+    .status-badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      min-width: 90px;
+    }
+
+    .status-pending {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: #ffc107;
+    }
+
+    .status-approved {
+      background-color: rgba(40, 167, 69, 0.1);
+      color: #28a745;
+    }
+
+    .status-suspended {
+      background-color: rgba(220, 53, 69, 0.1);
+      color: #dc3545;
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background-color: white;
+      border-top: 1px solid var(--light-gray);
+    }
+
+    .pagination-info {
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pagination-btn {
+      padding: 8px 16px;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--light-gray);
+      background-color: white;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 14px;
+    }
+
+    .pagination-btn:hover:not(:disabled) {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .pagination-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .page-numbers {
+      display: flex;
+      gap: 5px;
+    }
+
+    .page-number {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 1px solid var(--light-gray);
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 14px;
+    }
+
+    .page-number.active {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .page-number:hover:not(.active) {
+      background-color: #f8f9fa;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background-color: white;
+      border-radius: var(--border-radius);
+      width: 90%;
+      max-width: 500px;
+      box-shadow: var(--box-shadow);
+      animation: modalFadeIn 0.3s ease;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--gray);
+      transition: var(--transition);
+    }
+
+    .modal-close:hover {
+      color: var(--dark);
+    }
+
+    .modal-body {
+      padding: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .modal-footer {
+      padding: 20px;
+      border-top: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .modal-btn {
+      padding: 10px 20px;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+    }
+
+    .modal-btn.primary {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .modal-btn.primary:hover {
+      background-color: var(--secondary);
+    }
+
+    .modal-btn.secondary {
+      background-color: var(--light);
+      color: var(--dark);
+    }
+
+    .modal-btn.secondary:hover {
+      background-color: #e9ecef;
+    }
+
+    .modal-btn.danger {
+      background-color: var(--danger);
+      color: white;
+    }
+
+    .modal-btn.danger:hover {
+      background-color: #c82333;
+    }
+
+    /* Edit Modal Form */
+    .edit-form-group {
+      margin-bottom: 20px;
+    }
+
+    .edit-form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .edit-form-input,
+    .edit-form-select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--light-gray);
+      border-radius: var(--border-radius);
+      font-size: 14px;
+      transition: var(--transition);
+    }
+
+    .edit-form-input:focus,
+    .edit-form-select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: var(--border-radius);
+      color: white;
+      font-weight: 600;
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--box-shadow);
+      animation: slideInRight 0.3s ease;
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .toast.success {
+      background-color: var(--success);
+    }
+
+    .toast.error {
+      background-color: var(--danger);
+    }
+
+    .toast.info {
+      background-color: var(--primary);
+    }
+
+    .toast.warning {
+      background-color: var(--warning);
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .filter-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+    }
+
+    @media (max-width: 992px) {
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+
+      .filter-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-right {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .filters-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .filter-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pagination {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .table-actions {
+        flex-direction: column;
+      }
+
+      .action-dropdown {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+        width: 100%;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .container {
+        padding: 10px;
+      }
+
+      header {
+        padding: 15px;
+      }
+
+      .vendors-table-container {
+        margin: 0 -10px;
+        border-radius: 0;
+      }
+
+      .modal-content {
+        width: 95%;
+        margin: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header>
+        <div class="header-left">
+          <h1 id="pageMainTitle">Vendor Management</h1>
+          <p id="pageSubtitle">
+            Manage all vendors, review applications, and monitor activity
+          </p>
+        </div>
+        <div class="header-right">
+          <div class="user-profile">
+            <img src="https://ui-avatars.com/api/?name=Admin+User&background=4361ee&color=fff" alt="Admin User" />
+            <div>
+              <h4>Admin User</h4>
+              <p>Super Admin</p>
             </div>
           </div>
-        </header>
+        </div>
+      </header>
 
-        <!-- Vendors List Page -->
-        <div class="vendors-list-page active" id="vendorsListPage">
-          <!-- Page Header -->
-          <div class="page-header">
-            <h2 class="page-title">All Vendors</h2>
-            <button class="add-vendor-btn" id="addVendorBtn">
-              <i class="fas fa-plus"></i> Add New Vendor
+      <!-- Vendors List Page -->
+      <div class="vendors-list-page active" id="vendorsListPage">
+        <!-- Page Header -->
+        <div class="page-header">
+          <h2 class="page-title">All Vendors</h2>
+          <a href="vendor-add.html" class="add-vendor-btn" id="addVendorBtn">
+            <i class="fas fa-plus"></i> Add New Vendor
+          </a>
+        </div>
+
+        <!-- Filters Section -->
+        <div class="filters-section">
+          <div class="filters-header">
+            <h3 class="filters-title">Filter Vendors</h3>
+            <button class="clear-filters" id="clearFilters">
+              <i class="fas fa-times"></i> Clear Filters
             </button>
           </div>
-
-          <!-- Filters Section -->
-          <div class="filters-section">
-            <div class="filters-header">
-              <h3 class="filters-title">Filter Vendors</h3>
-              <button class="clear-filters" id="clearFilters">
-                <i class="fas fa-times"></i> Clear Filters
-              </button>
+          <div class="filter-grid">
+            <div class="filter-group">
+              <label class="filter-label">Status</label>
+              <select class="filter-select" id="statusFilter">
+                <option value="all">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="suspended">Suspended</option>
+              </select>
             </div>
-            <div class="filter-grid">
-              <div class="filter-group">
-                <label class="filter-label">Status</label>
-                <select class="filter-select" id="statusFilter">
-                  <option value="all">All Status</option>
-                  <option value="pending">Pending</option>
-                  <option value="approved">Approved</option>
-                  <option value="suspended">Suspended</option>
-                </select>
+            <div class="filter-group">
+              <label class="filter-label">Platform</label>
+              <select class="filter-select" id="platformFilter">
+                <option value="all">All Platforms</option>
+                <option value="shopify">Shopify</option>
+                <option value="woo">WooCommerce</option>
+                <option value="wix">Wix</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label class="filter-label">Country</label>
+              <select class="filter-select" id="countryFilter">
+                <option value="all">All Countries</option>
+                <option value="us">United States</option>
+                <option value="uk">United Kingdom</option>
+                <option value="ca">Canada</option>
+                <option value="au">Australia</option>
+                <option value="de">Germany</option>
+                <option value="fr">France</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label class="filter-label">Search</label>
+              <div class="search-input-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search by name or email..." />
               </div>
-              <div class="filter-group">
-                <label class="filter-label">Platform</label>
-                <select class="filter-select" id="platformFilter">
-                  <option value="all">All Platforms</option>
-                  <option value="shopify">Shopify</option>
-                  <option value="woo">WooCommerce</option>
-                  <option value="wix">Wix</option>
-                </select>
-              </div>
-              <div class="filter-group">
-                <label class="filter-label">Country</label>
-                <select class="filter-select" id="countryFilter">
-                  <option value="all">All Countries</option>
-                  <option value="us">United States</option>
-                  <option value="uk">United Kingdom</option>
-                  <option value="ca">Canada</option>
-                  <option value="au">Australia</option>
-                  <option value="de">Germany</option>
-                  <option value="fr">France</option>
-                </select>
-              </div>
-              <div class="filter-group">
-                <label class="filter-label">Search</label>
-                <div class="search-input-wrapper">
-                  <i class="fas fa-search"></i>
-                  <input
-                    type="text"
-                    class="search-input"
-                    id="searchInput"
-                    placeholder="Search by name or email..."
-                  />
+            </div>
+            <!-- Bulk Actions Button -->
+            <div class="filter-group">
+              <label class="filter-label" style="visibility: hidden;">Actions</label>
+              <div style="position: relative;">
+                <button class="bulk-actions-btn" id="bulkActionsBtn">
+                  <i class="fas fa-layer-group"></i> Bulk Actions
+                  <div class="selected-count-badge" id="selectedCountBadge">0</div>
+                </button>
+                <div class="bulk-actions-dropdown" id="bulkActionsDropdown">
+                  <div class="bulk-dropdown-item approve" data-action="approve">
+                    <i class="fas fa-check"></i> Approve Selected
+                  </div>
+                  <div class="bulk-dropdown-item activate" data-action="activate">
+                    <i class="fas fa-play"></i> Activate Selected
+                  </div>
+                  <div class="bulk-dropdown-item suspend" data-action="suspend">
+                    <i class="fas fa-ban"></i> Suspend Selected
+                  </div>
+                  <div class="bulk-dropdown-item email" data-action="email">
+                    <i class="fas fa-envelope"></i> Email Selected
+                  </div>
+                  <div class="bulk-dropdown-item export" data-action="export">
+                    <i class="fas fa-download"></i> Export Selected
+                  </div>
+                  <div class="bulk-dropdown-item delete" data-action="delete">
+                    <i class="fas fa-trash"></i> Delete Selected
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Bulk Actions -->
-          <div class="bulk-actions" id="bulkActions">
-            <div class="selected-count" id="selectedCount">
-              0 vendors selected
-            </div>
-            <button class="bulk-action-btn bulk-approve" id="bulkApprove">
-              <i class="fas fa-check"></i> Approve Selected
-            </button>
-            <button class="bulk-action-btn bulk-suspend" id="bulkSuspend">
-              <i class="fas fa-ban"></i> Suspend Selected
-            </button>
-            <button
-              class="bulk-action-btn"
-              id="clearSelection"
-              style="background-color: #f8f9fa; color: var(--gray)"
-            >
-              <i class="fas fa-times"></i> Clear Selection
-            </button>
-          </div>
-
-          <!-- Vendors Table -->
-          <div class="vendors-table-container">
-            <div class="table-responsive">
-              <table class="vendors-table" id="vendorsTable">
-                <thead>
-                  <tr>
-                    <th class="checkbox-cell">
+        <!-- Vendors Table -->
+        <div class="vendors-table-container">
+          <div class="table-responsive">
+            <table class="vendors-table" id="vendorsTable">
+              <thead>
+                <tr>
+                  <th class="checkbox-cell">
+                    <div class="select-all-container">
                       <div class="custom-checkbox" id="selectAllCheckbox"></div>
-                    </th>
-                    <th>Vendor</th>
-                    <th>Platform</th>
-                    <th>Status</th>
-                    <th>Country</th>
-                    <th>Products</th>
-                    <th>Last Sync</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="vendorsTableBody">
-                  <!-- Table rows will be inserted here by JavaScript -->
-                </tbody>
-              </table>
-            </div>
-
-            <!-- Pagination -->
-            <div class="pagination">
-              <div class="pagination-info" id="paginationInfo">
-                Showing 1-10 of 124 vendors
-              </div>
-              <div class="pagination-controls">
-                <button class="pagination-btn" id="prevPage" disabled>
-                  <i class="fas fa-chevron-left"></i> Previous
-                </button>
-                <div class="page-numbers" id="pageNumbers">
-                  <!-- Page numbers will be inserted here -->
-                </div>
-                <button class="pagination-btn" id="nextPage">
-                  Next <i class="fas fa-chevron-right"></i>
-                </button>
-              </div>
-            </div>
+                    </div>
+                  </th>
+                  <th>Vendor</th>
+                  <th>Platform</th>
+                  <th>Status</th>
+                  <th>Country</th>
+                  <th>Products</th>
+                  <th>Last Sync</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="vendorsTableBody">
+                <!-- Table rows will be inserted here by JavaScript -->
+              </tbody>
+            </table>
           </div>
-        </div>
 
-        <!-- Vendor Details Page -->
-        <div class="vendor-details-page" id="vendorDetailsPage">
-          <button class="back-btn" id="backToVendorsBtn">
-            <i class="fas fa-arrow-left"></i> Back to Vendors
-          </button>
-
-          <div class="vendor-details-container" id="vendorDetailsContent">
-            <!-- Content will be populated by JavaScript -->
-          </div>
-        </div>
-      </main>
-    </div>
-
-    <div id="addVendorModal" class="modal-overlay" style="display: none">
-      <div class="modal-container">
-        <div class="modal-header">
-          <h2>Add New Vendor</h2>
-          <button class="modal-close-btn">&times;</button>
-        </div>
-        <div class="modal-body">
-          <form id="addVendorForm">
-            <div class="form-grid">
-              <div class="form-group">
-                <label for="vendorName">Vendor Name *</label>
-                <input
-                  type="text"
-                  id="vendorName"
-                  required
-                  placeholder="Enter vendor name"
-                />
-              </div>
-              <div class="form-group">
-                <label for="vendorEmail">Email Address *</label>
-                <input
-                  type="email"
-                  id="vendorEmail"
-                  required
-                  placeholder="vendor@example.com"
-                />
-              </div>
-              <div class="form-group">
-                <label for="vendorStoreName">Store Name</label>
-                <input
-                  type="text"
-                  id="vendorStoreName"
-                  placeholder="Enter store name"
-                />
-              </div>
-              <div class="form-group">
-                <label for="vendorCompanyName">Company Name</label>
-                <input
-                  type="text"
-                  id="vendorCompanyName"
-                  placeholder="Enter company name"
-                />
-              </div>
-              <div class="form-group">
-                <label for="vendorBrandName">Brand Name</label>
-                <input
-                  type="text"
-                  id="vendorBrandName"
-                  placeholder="Enter brand name"
-                />
-              </div>
-              <div class="form-group">
-                <label for="vendorPlatform">Platform *</label>
-                <select id="vendorPlatform" required>
-                  <option value="">Select Platform</option>
-                  <option value="shopify">Shopify</option>
-                  <option value="woo">WooCommerce</option>
-                  <option value="wix">Wix</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="vendorCountry">Country *</label>
-                <select id="vendorCountry" required>
-                  <option value="">Select Country</option>
-                  <option value="us">United States</option>
-                  <option value="uk">United Kingdom</option>
-                  <option value="ca">Canada</option>
-                  <option value="au">Australia</option>
-                  <option value="de">Germany</option>
-                  <option value="fr">France</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="vendorSubscriptionPlan">Subscription Plan</label>
-                <select id="vendorSubscriptionPlan">
-                  <option value="">Select Plan</option>
-                  <option value="Basic">Basic</option>
-                  <option value="Standard">Standard</option>
-                  <option value="Pro">Pro</option>
-                  <option value="Enterprise">Enterprise</option>
-                  <option value="Shopify Plus">Shopify Plus</option>
-                  <option value="WooCommerce Pro">WooCommerce Pro</option>
-                  <option value="Wix Business Elite">Wix Business Elite</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="vendorRenewalDate">Renewal Date</label>
-                <input type="date" id="vendorRenewalDate" />
-              </div>
-              <div class="form-group full-width">
-                <label for="vendorWebsite">Website URL</label>
-                <input
-                  type="url"
-                  id="vendorWebsite"
-                  placeholder="https://example.com"
-                />
-              </div>
-              <div class="form-group full-width">
-                <label for="vendorAddress">Address</label>
-                <input
-                  type="text"
-                  id="vendorAddress"
-                  placeholder="Enter full address"
-                />
-              </div>
-              <div class="form-group">
-                <label for="vendorPhone">Phone</label>
-                <input
-                  type="tel"
-                  id="vendorPhone"
-                  placeholder="+1 (555) 123-4567"
-                />
-              </div>
-              <div class="form-group">
-                <label for="vendorDescription">Description</label>
-                <textarea
-                  id="vendorDescription"
-                  rows="3"
-                  placeholder="Brief description about the vendor..."
-                ></textarea>
-              </div>
+          <!-- Pagination -->
+          <div class="pagination">
+            <div class="pagination-info" id="paginationInfo">
+              Showing 1-10 of 124 vendors
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn-secondary modal-cancel-btn">
-                Cancel
+            <div class="pagination-controls">
+              <button class="pagination-btn" id="prevPage" disabled>
+                <i class="fas fa-chevron-left"></i> Previous
               </button>
-              <button type="submit" class="btn-primary">Add Vendor</button>
+              <div class="page-numbers" id="pageNumbers">
+                <!-- Page numbers will be inserted here -->
+              </div>
+              <button class="pagination-btn" id="nextPage">
+                Next <i class="fas fa-chevron-right"></i>
+              </button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
+  </div>
 
-    <script src="js/vendor-management.js"></script>
-  </body>
+  <!-- Action Dropdown Template - Simplified -->
+  <div class="action-dropdown" id="actionDropdownTemplate" style="display: none;">
+    <a href="#" class="action-dropdown-item view" data-action="view">
+      <i class="fas fa-eye"></i> View Details
+    </a>
+    <a href="#" class="action-dropdown-item edit" data-action="edit">
+      <i class="fas fa-edit"></i> Edit Vendor
+    </a>
+    <div class="action-dropdown-item delete" data-action="delete">
+      <i class="fas fa-trash"></i> Delete Vendor
+    </div>
+  </div>
+
+  <!-- Edit Vendor Modal -->
+  <div class="modal" id="editVendorModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Edit Vendor</h3>
+        <button class="modal-close" id="closeEditModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="editVendorForm">
+          <div class="edit-form-group">
+            <label class="edit-form-label">Vendor Name</label>
+            <input type="text" class="edit-form-input" id="editVendorName" required>
+          </div>
+          <div class="edit-form-group">
+            <label class="edit-form-label">Email Address</label>
+            <input type="email" class="edit-form-input" id="editVendorEmail" required>
+          </div>
+          <div class="edit-form-group">
+            <label class="edit-form-label">Platform</label>
+            <select class="edit-form-select" id="editVendorPlatform" required>
+              <option value="shopify">Shopify</option>
+              <option value="woo">WooCommerce</option>
+              <option value="wix">Wix</option>
+            </select>
+          </div>
+          <div class="edit-form-group">
+            <label class="edit-form-label">Status</label>
+            <select class="edit-form-select" id="editVendorStatus" required>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="suspended">Suspended</option>
+            </select>
+          </div>
+          <div class="edit-form-group">
+            <label class="edit-form-label">Country</label>
+            <select class="edit-form-select" id="editVendorCountry" required>
+              <option value="us">United States</option>
+              <option value="uk">United Kingdom</option>
+              <option value="ca">Canada</option>
+              <option value="au">Australia</option>
+              <option value="de">Germany</option>
+              <option value="fr">France</option>
+            </select>
+          </div>
+          <div class="edit-form-group">
+            <label class="edit-form-label">Products</label>
+            <input type="number" class="edit-form-input" id="editVendorProducts" min="0" required>
+          </div>
+          <div class="edit-form-group">
+            <label class="edit-form-label">Phone Number</label>
+            <input type="text" class="edit-form-input" id="editVendorPhone">
+          </div>
+          <div class="edit-form-group">
+            <label class="edit-form-label">Description</label>
+            <textarea class="edit-form-input" id="editVendorDescription" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" id="cancelEditModal">Cancel</button>
+        <button class="modal-btn primary" id="saveVendorChanges">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal" id="deleteConfirmModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Confirm Delete</h3>
+        <button class="modal-close" id="closeDeleteModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="deleteConfirmText">Are you sure you want to delete this vendor? This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" id="cancelDeleteModal">Cancel</button>
+        <button class="modal-btn danger" id="confirmDeleteVendor">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toastNotification" style="display: none;">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">Action completed successfully!</span>
+  </div>
+
+  <script>
+    // Country data
+    const countries = {
+      us: { name: "United States", flag: "🇺🇸" },
+      uk: { name: "United Kingdom", flag: "🇬🇧" },
+      ca: { name: "Canada", flag: "🇨🇦" },
+      au: { name: "Australia", flag: "🇦🇺" },
+      de: { name: "Germany", flag: "🇩🇪" },
+      fr: { name: "France", flag: "🇫🇷" },
+    };
+
+    const platformNames = {
+      shopify: "Shopify",
+      woo: "WooCommerce",
+      wix: "Wix",
+    };
+
+    const statusNames = {
+      approved: "Approved",
+      pending: "Pending Review",
+      suspended: "Suspended",
+    };
+
+    const statusColors = {
+      approved: "#28a745",
+      pending: "#ffc107",
+      suspended: "#dc3545",
+    };
+
+    // Global variables
+    let currentVendorPage = 1;
+    const itemsPerPage = 10;
+    let filteredVendors = [];
+    let vendorsData = [];
+    let currentActionVendorId = null;
+    let currentActionDropdown = null;
+    let currentBulkActionsDropdown = null;
+
+    // Function to get vendors from localStorage or use default
+    function getVendorsData() {
+      const storedVendors = localStorage.getItem('vendorsData');
+      if (storedVendors) {
+        return JSON.parse(storedVendors);
+      }
+
+      // Default vendors if nothing in localStorage
+      return [
+        {
+          id: 1,
+          name: "TechGadgets Inc",
+          email: "contact@techgadgets.com",
+          platform: "shopify",
+          status: "approved",
+          country: "us",
+          products: 156,
+          revenue: "$124,850",
+          orders: 189,
+          joinedDate: "2023-01-15",
+          lastSync: "2023-11-10 09:30:00",
+          phone: "+1 (555) 123-4567",
+          website: "https://techgadgets.com",
+          avatarColor: "#4361ee",
+          address: "123 Tech Street, San Francisco, CA 94107",
+          description: "Leading provider of innovative tech gadgets and electronics.",
+          storeInfo: {
+            storeUrl: "store.techgadgets.com",
+            apiStatus: "Connected",
+            plan: "Shopify Plus",
+            subscription: "Active",
+            renewalDate: "2024-01-15",
+          },
+        },
+        {
+          id: 2,
+          name: "HomeStyle Living",
+          email: "info@homestyle.com",
+          platform: "woo",
+          status: "pending",
+          country: "uk",
+          products: 89,
+          revenue: "$45,620",
+          orders: 67,
+          joinedDate: "2023-08-22",
+          lastSync: "2023-11-09 14:15:00",
+          phone: "+44 20 7946 0958",
+          website: "https://homestyleliving.co.uk",
+          avatarColor: "#4cc9f0",
+          address: "45 Home Lane, London, UK EC1A 1BB",
+          description: "Premium home decor and furniture retailer offering modern living solutions.",
+          storeInfo: {
+            storeUrl: "homestyleliving.com",
+            apiStatus: "Connected",
+            plan: "WooCommerce Pro",
+            subscription: "Active",
+            renewalDate: "2024-08-22",
+          },
+        },
+        {
+          id: 3,
+          name: "Fashion Trends",
+          email: "hello@fashiontrends.com",
+          platform: "wix",
+          status: "suspended",
+          country: "fr",
+          products: 45,
+          revenue: "$18,450",
+          orders: 32,
+          joinedDate: "2023-05-10",
+          lastSync: "2023-10-28 11:45:00",
+          phone: "+33 1 23 45 67 89",
+          website: "https://fashiontrends.fr",
+          avatarColor: "#f72585",
+          address: "78 Rue de la Mode, Paris, France 75001",
+          description: "Trendy fashion apparel and accessories for modern women.",
+          storeInfo: {
+            storeUrl: "fashiontrends.fr",
+            apiStatus: "Disconnected",
+            plan: "Wix Business",
+            subscription: "Suspended",
+            renewalDate: "2024-05-10",
+          },
+        },
+        {
+          id: 4,
+          name: "Sports Gear Pro",
+          email: "sales@sportsgearpro.com",
+          platform: "shopify",
+          status: "approved",
+          country: "ca",
+          products: 210,
+          revenue: "$189,750",
+          orders: 245,
+          joinedDate: "2022-11-05",
+          lastSync: "2023-11-10 08:00:00",
+          phone: "+1 (416) 555-7890",
+          website: "https://sportsgearpro.ca",
+          avatarColor: "#06d6a0",
+          address: "456 Athletic Ave, Toronto, ON M5H 2N2",
+          description: "Professional sports equipment and athletic wear for all levels.",
+          storeInfo: {
+            storeUrl: "store.sportsgearpro.ca",
+            apiStatus: "Connected",
+            plan: "Shopify Advanced",
+            subscription: "Active",
+            renewalDate: "2023-11-05",
+          },
+        },
+        {
+          id: 5,
+          name: "Healthy Foods Co",
+          email: "orders@healthyfoods.com",
+          platform: "woo",
+          status: "approved",
+          country: "us",
+          products: 120,
+          revenue: "$89,300",
+          orders: 145,
+          joinedDate: "2023-03-18",
+          lastSync: "2023-11-09 16:20:00",
+          phone: "+1 (555) 987-6543",
+          website: "https://healthyfoods.com",
+          avatarColor: "#38b000",
+          address: "789 Wellness Blvd, Austin, TX 73301",
+          description: "Organic and natural foods for healthy living.",
+          storeInfo: {
+            storeUrl: "shop.healthyfoods.com",
+            apiStatus: "Connected",
+            plan: "WooCommerce Business",
+            subscription: "Active",
+            renewalDate: "2024-03-18",
+          },
+        },
+        {
+          id: 6,
+          name: "Book Haven",
+          email: "support@bookhaven.com",
+          platform: "wix",
+          status: "pending",
+          country: "uk",
+          products: 320,
+          revenue: "$56,800",
+          orders: 89,
+          joinedDate: "2023-09-05",
+          lastSync: "2023-11-08 10:45:00",
+          phone: "+44 20 7946 1234",
+          website: "https://bookhaven.co.uk",
+          avatarColor: "#7209b7",
+          address: "22 Library Street, Oxford, UK OX1 2JD",
+          description: "Online bookstore with rare and collectible editions.",
+          storeInfo: {
+            storeUrl: "bookhaven.co.uk",
+            apiStatus: "Pending",
+            plan: "Wix Premium",
+            subscription: "Pending",
+            renewalDate: "2024-09-05",
+          },
+        },
+      ];
+    }
+
+    // Helper Functions
+    function timeAgo(dateString) {
+      const date = new Date(dateString);
+      const now = new Date();
+      const seconds = Math.floor((now - date) / 1000);
+
+      let interval = Math.floor(seconds / 31536000);
+      if (interval >= 1) return interval + " years ago";
+
+      interval = Math.floor(seconds / 2592000);
+      if (interval >= 1) return interval + " months ago";
+
+      interval = Math.floor(seconds / 86400);
+      if (interval >= 1) return interval + " days ago";
+
+      interval = Math.floor(seconds / 3600);
+      if (interval >= 1) return interval + " hours ago";
+
+      interval = Math.floor(seconds / 60);
+      if (interval >= 1) return interval + " minutes ago";
+
+      return "just now";
+    }
+
+    // Show toast notification
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toastNotification');
+      const toastMessage = document.getElementById('toastMessage');
+
+      toastMessage.textContent = message;
+      toast.className = `toast ${type}`;
+      toast.style.display = 'flex';
+
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3000);
+    }
+
+    // Show action dropdown (simplified - only View, Edit, Delete)
+    function showActionDropdown(vendorId, buttonElement) {
+      // Close any open dropdown
+      if (currentActionDropdown) {
+        currentActionDropdown.classList.remove('show');
+      }
+
+      // Create new dropdown
+      const dropdown = document.getElementById('actionDropdownTemplate').cloneNode(true);
+      dropdown.id = `actionDropdown_${vendorId}`;
+      dropdown.style.display = 'block';
+      dropdown.classList.add('show');
+
+      // Position dropdown
+      const rect = buttonElement.getBoundingClientRect();
+      dropdown.style.position = 'absolute';
+      dropdown.style.top = `${rect.bottom + window.scrollY}px`;
+      dropdown.style.right = `${window.innerWidth - rect.right}px`;
+
+      // Add event listeners to dropdown items
+      const dropdownItems = dropdown.querySelectorAll('.action-dropdown-item');
+      dropdownItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleActionClick(vendorId, item.getAttribute('data-action'));
+          dropdown.classList.remove('show');
+        });
+      });
+
+      // Add dropdown to body
+      document.body.appendChild(dropdown);
+      currentActionDropdown = dropdown;
+      currentActionVendorId = vendorId;
+
+      // Close dropdown when clicking outside
+      setTimeout(() => {
+        document.addEventListener('click', closeDropdownOnClickOutside);
+      }, 10);
+    }
+
+    // Show bulk actions dropdown
+    function showBulkActionsDropdown() {
+      const selectedIds = getSelectedVendorIds();
+
+      if (selectedIds.length === 0) {
+        showToast("Please select at least one vendor.", 'warning');
+        return;
+      }
+
+      // Close any open dropdown
+      if (currentBulkActionsDropdown) {
+        currentBulkActionsDropdown.classList.remove('show');
+      }
+
+      const button = document.getElementById('bulkActionsBtn');
+      const dropdown = document.getElementById('bulkActionsDropdown');
+
+      dropdown.classList.add('show');
+      currentBulkActionsDropdown = dropdown;
+
+      // Position dropdown
+      const rect = button.getBoundingClientRect();
+      dropdown.style.top = `${rect.bottom + window.scrollY + 5}px`;
+      dropdown.style.right = `${window.innerWidth - rect.right}px`;
+
+      // Add event listeners to dropdown items
+      const dropdownItems = dropdown.querySelectorAll('.bulk-dropdown-item');
+      dropdownItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleBulkAction(item.getAttribute('data-action'));
+          dropdown.classList.remove('show');
+        });
+      });
+
+      // Close dropdown when clicking outside
+      setTimeout(() => {
+        document.addEventListener('click', closeBulkDropdownOnClickOutside);
+      }, 10);
+    }
+
+    // Close dropdown when clicking outside
+    function closeDropdownOnClickOutside(e) {
+      if (currentActionDropdown && !currentActionDropdown.contains(e.target)) {
+        currentActionDropdown.classList.remove('show');
+        document.removeEventListener('click', closeDropdownOnClickOutside);
+        setTimeout(() => {
+          if (currentActionDropdown && currentActionDropdown.parentNode) {
+            currentActionDropdown.parentNode.removeChild(currentActionDropdown);
+          }
+          currentActionDropdown = null;
+          currentActionVendorId = null;
+        }, 300);
+      }
+    }
+
+    // Close bulk dropdown when clicking outside
+    function closeBulkDropdownOnClickOutside(e) {
+      const button = document.getElementById('bulkActionsBtn');
+      const dropdown = document.getElementById('bulkActionsDropdown');
+
+      if (dropdown.classList.contains('show') &&
+        !dropdown.contains(e.target) &&
+        !button.contains(e.target)) {
+        dropdown.classList.remove('show');
+        document.removeEventListener('click', closeBulkDropdownOnClickOutside);
+        currentBulkActionsDropdown = null;
+      }
+    }
+
+    // Handle action click (simplified)
+    function handleActionClick(vendorId, action) {
+      const vendor = vendorsData.find(v => v.id == vendorId);
+      if (!vendor) return;
+
+      switch (action) {
+        case 'view':
+          window.location.href = `vendor-details.html?id=${vendorId}`;
+          break;
+        case 'edit':
+          // Redirect to vendor-add.html with vendor ID as parameter
+          window.location.href = `vendor-add.html?id=${vendorId}`;
+          break;
+        case 'delete':
+          openDeleteModal(vendor);
+          break;
+      }
+    }
+
+    // Handle bulk action
+    function handleBulkAction(action) {
+      const selectedIds = getSelectedVendorIds();
+
+      if (selectedIds.length === 0) {
+        showToast("Please select at least one vendor.", 'warning');
+        return;
+      }
+
+      switch (action) {
+        case 'approve':
+          bulkApproveVendors(selectedIds);
+          break;
+        case 'activate':
+          bulkActivateVendors(selectedIds);
+          break;
+        case 'suspend':
+          bulkSuspendVendors(selectedIds);
+          break;
+        case 'email':
+          bulkEmailVendors(selectedIds);
+          break;
+        case 'export':
+          bulkExportVendors(selectedIds);
+          break;
+        case 'delete':
+          bulkDeleteVendors(selectedIds);
+          break;
+      }
+    }
+
+    // Open edit modal (not used when redirecting to vendor-add.html)
+    function openEditModal(vendor) {
+      document.getElementById('editVendorName').value = vendor.name;
+      document.getElementById('editVendorEmail').value = vendor.email;
+      document.getElementById('editVendorPlatform').value = vendor.platform;
+      document.getElementById('editVendorStatus').value = vendor.status;
+      document.getElementById('editVendorCountry').value = vendor.country;
+      document.getElementById('editVendorProducts').value = vendor.products;
+      document.getElementById('editVendorPhone').value = vendor.phone || '';
+      document.getElementById('editVendorDescription').value = vendor.description || '';
+
+      currentActionVendorId = vendor.id;
+      document.getElementById('editVendorModal').classList.add('show');
+    }
+
+    // Open delete modal
+    function openDeleteModal(vendor) {
+      document.getElementById('deleteConfirmText').textContent =
+        `Are you sure you want to delete "${vendor.name}"? This action cannot be undone.`;
+      currentActionVendorId = vendor.id;
+      document.getElementById('deleteConfirmModal').classList.add('show');
+    }
+
+    // Save vendors data to localStorage
+    function saveVendorsData() {
+      localStorage.setItem('vendorsData', JSON.stringify(vendorsData));
+    }
+
+    // Get selected vendor IDs
+    function getSelectedVendorIds() {
+      const selectedCheckboxes = document.querySelectorAll(
+        ".custom-checkbox.checked:not(#selectAllCheckbox)"
+      );
+      const selectedIds = [];
+
+      selectedCheckboxes.forEach((checkbox) => {
+        const vendorId = checkbox.getAttribute("data-id");
+        if (vendorId) {
+          selectedIds.push(parseInt(vendorId));
+        }
+      });
+
+      return selectedIds;
+    }
+
+    // Get all vendor IDs on current page
+    function getAllVendorIdsOnPage() {
+      const vendorIds = [];
+      const rows = document.querySelectorAll("#vendorsTableBody tr[data-vendor-id]");
+      rows.forEach(row => {
+        const vendorId = parseInt(row.getAttribute("data-vendor-id"));
+        if (vendorId) {
+          vendorIds.push(vendorId);
+        }
+      });
+      return vendorIds;
+    }
+
+    // Bulk approve function
+    function bulkApproveVendors(selectedIds) {
+      selectedIds.forEach((vendorId) => {
+        const vendor = vendorsData.find((v) => v.id === vendorId);
+        if (vendor) {
+          vendor.status = "approved";
+        }
+      });
+
+      saveVendorsData();
+      showToast(`Successfully approved ${selectedIds.length} vendor(s).`, 'success');
+      clearSelection();
+      window.filterVendors();
+    }
+
+    // Bulk activate function
+    function bulkActivateVendors(selectedIds) {
+      selectedIds.forEach((vendorId) => {
+        const vendor = vendorsData.find((v) => v.id === vendorId);
+        if (vendor) {
+          vendor.status = "approved";
+        }
+      });
+
+      saveVendorsData();
+      showToast(`Successfully activated ${selectedIds.length} vendor(s).`, 'success');
+      clearSelection();
+      window.filterVendors();
+    }
+
+    // Bulk suspend function
+    function bulkSuspendVendors(selectedIds) {
+      selectedIds.forEach((vendorId) => {
+        const vendor = vendorsData.find((v) => v.id === vendorId);
+        if (vendor) {
+          vendor.status = "suspended";
+        }
+      });
+
+      saveVendorsData();
+      showToast(`Successfully suspended ${selectedIds.length} vendor(s).`, 'warning');
+      clearSelection();
+      window.filterVendors();
+    }
+
+    // Bulk email function
+    function bulkEmailVendors(selectedIds) {
+      const vendors = vendorsData.filter(v => selectedIds.includes(v.id));
+      const emailList = vendors.map(v => v.email).join(',');
+      window.location.href = `mailto:${emailList}?subject=Vendor%20Management&body=Dear%20Vendor`;
+      showToast(`Opened email client for ${selectedIds.length} vendor(s).`, 'info');
+    }
+
+    // Bulk export function
+    function bulkExportVendors(selectedIds) {
+      const vendorsToExport = vendorsData.filter(v => selectedIds.includes(v.id));
+
+      if (vendorsToExport.length === 0) return;
+
+      const dataStr = JSON.stringify(vendorsToExport, null, 2);
+      const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
+      const exportFileDefaultName = `vendors_export_${new Date().toISOString().slice(0, 10)}.json`;
+
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', dataUri);
+      linkElement.setAttribute('download', exportFileDefaultName);
+      linkElement.click();
+
+      showToast(`Exported data for ${selectedIds.length} vendor(s).`, 'info');
+    }
+
+    // Bulk delete function
+    function bulkDeleteVendors(selectedIds) {
+      if (confirm(`Are you sure you want to delete ${selectedIds.length} selected vendor(s)? This action cannot be undone.`)) {
+        // Remove selected vendors
+        vendorsData = vendorsData.filter(vendor => !selectedIds.includes(vendor.id));
+        saveVendorsData();
+        showToast(`Successfully deleted ${selectedIds.length} vendor(s).`, 'success');
+        clearSelection();
+        window.filterVendors();
+      }
+    }
+
+    // Clear selection
+    function clearSelection() {
+      document
+        .querySelectorAll(".custom-checkbox.checked")
+        .forEach((checkbox) => {
+          checkbox.classList.remove("checked");
+        });
+      updateSelectAllCheckbox();
+      updateBulkActionsUI();
+    }
+
+    // Update select all checkbox state
+    function updateSelectAllCheckbox() {
+      const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+      const totalCheckboxes = document.querySelectorAll(".custom-checkbox:not(#selectAllCheckbox)").length;
+      const selectedCount = getSelectedVendorIds().length;
+
+      // Remove previous states
+      selectAllCheckbox.classList.remove("checked");
+      selectAllCheckbox.classList.remove("indeterminate");
+
+      // Set new state
+      if (selectedCount === 0) {
+        // No checkboxes selected
+        selectAllCheckbox.classList.remove("checked");
+        selectAllCheckbox.classList.remove("indeterminate");
+      } else if (selectedCount === totalCheckboxes) {
+        // All checkboxes selected
+        selectAllCheckbox.classList.add("checked");
+        selectAllCheckbox.classList.remove("indeterminate");
+      } else {
+        // Some checkboxes selected (indeterminate state)
+        selectAllCheckbox.classList.remove("checked");
+        selectAllCheckbox.classList.add("indeterminate");
+      }
+    }
+
+    // Update bulk actions UI
+    function updateBulkActionsUI() {
+      const selectedCount = getSelectedVendorIds().length;
+      const bulkActionsBtn = document.getElementById('bulkActionsBtn');
+      const badge = document.getElementById('selectedCountBadge');
+
+      badge.textContent = selectedCount;
+
+      if (selectedCount > 0) {
+        bulkActionsBtn.classList.add('has-selection');
+      } else {
+        bulkActionsBtn.classList.remove('has-selection');
+      }
+    }
+
+    // Toggle checkbox for a specific vendor
+    function toggleVendorCheckbox(vendorId) {
+      const checkbox = document.querySelector(`.custom-checkbox[data-id="${vendorId}"]`);
+      if (checkbox) {
+        checkbox.classList.toggle("checked");
+        updateSelectAllCheckbox();
+        updateBulkActionsUI();
+      }
+    }
+
+    // Select/Deselect all checkboxes
+    function toggleAllCheckboxes() {
+      const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+      const isCurrentlyChecked = selectAllCheckbox.classList.contains("checked");
+      const checkboxes = document.querySelectorAll(
+        ".custom-checkbox:not(#selectAllCheckbox)"
+      );
+
+      if (isCurrentlyChecked) {
+        // Deselect all
+        checkboxes.forEach((cb) => {
+          cb.classList.remove("checked");
+        });
+        selectAllCheckbox.classList.remove("checked");
+        selectAllCheckbox.classList.remove("indeterminate");
+      } else {
+        // Select all
+        checkboxes.forEach((cb) => {
+          cb.classList.add("checked");
+        });
+        selectAllCheckbox.classList.add("checked");
+        selectAllCheckbox.classList.remove("indeterminate");
+      }
+
+      updateBulkActionsUI();
+    }
+
+    // Add checkbox listeners
+    function addCheckboxListeners() {
+      const checkboxes = document.querySelectorAll(".custom-checkbox");
+      checkboxes.forEach((checkbox) => {
+        // Remove existing listeners
+        const newCheckbox = checkbox.cloneNode(true);
+        checkbox.parentNode.replaceChild(newCheckbox, checkbox);
+
+        // Add click listener to new checkbox
+        newCheckbox.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          if (this.id === "selectAllCheckbox") {
+            toggleAllCheckboxes();
+          } else {
+            this.classList.toggle("checked");
+            updateSelectAllCheckbox();
+            updateBulkActionsUI();
+          }
+        });
+      });
+    }
+
+    // Add vendor-info click listeners
+    function addVendorInfoClickListeners() {
+      const vendorInfoElements = document.querySelectorAll(".vendor-info");
+      vendorInfoElements.forEach((vendorInfo) => {
+        vendorInfo.addEventListener("click", function (e) {
+          e.stopPropagation();
+          const vendorId = this.closest("tr").getAttribute("data-vendor-id");
+          if (vendorId) {
+            window.location.href = `vendor-details.html?id=${vendorId}`;
+          }
+        });
+      });
+    }
+
+    // Add row click listeners
+    function addRowClickListeners() {
+      const rows = document.querySelectorAll("#vendorsTableBody tr");
+      rows.forEach((row) => {
+        row.addEventListener("click", function (e) {
+          // Don't trigger for specific elements
+          if (
+            e.target.closest(".table-actions") ||
+            e.target.closest(".sync-action-btn") ||
+            e.target.closest(".action-dropdown") ||
+            e.target.closest(".bulk-actions-btn") ||
+            e.target.closest(".bulk-actions-dropdown") ||
+            e.target.closest(".action-btn")
+          ) {
+            return;
+          }
+
+          // If clicking directly on vendor-info, let that handler take over
+          if (e.target.closest(".vendor-info")) {
+            return;
+          }
+
+          // If clicking on checkbox area, let checkbox handler take over
+          if (e.target.closest(".checkbox-cell") || e.target.closest(".custom-checkbox")) {
+            return;
+          }
+
+          // Otherwise, toggle the checkbox for this row
+          const vendorId = this.getAttribute("data-vendor-id");
+          if (vendorId) {
+            toggleVendorCheckbox(vendorId);
+          }
+        });
+      });
+    }
+
+    // Main render table function
+    function renderTable() {
+      const tableBody = document.getElementById("vendorsTableBody");
+      const paginationInfo = document.getElementById("paginationInfo");
+      const pageNumbers = document.getElementById("pageNumbers");
+      const prevPageBtn = document.getElementById("prevPage");
+      const nextPageBtn = document.getElementById("nextPage");
+
+      tableBody.innerHTML = "";
+
+      const startIndex = (currentVendorPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const vendorsToShow = filteredVendors.slice(startIndex, endIndex);
+
+      if (vendorsToShow.length === 0) {
+        tableBody.innerHTML = `
+        <tr>
+          <td colspan="8" style="text-align: center; padding: 40px; color: var(--gray);">
+            <i class="fas fa-store-slash" style="font-size: 48px; margin-bottom: 20px; display: block; color: #e9ecef;"></i>
+            <h3>No vendors found</h3>
+            <p>Try adjusting your filters or add a new vendor</p>
+          </td>
+        </tr>
+      `;
+      } else {
+        vendorsToShow.forEach((vendor) => {
+          const row = document.createElement("tr");
+          row.setAttribute("data-vendor-id", vendor.id);
+          row.innerHTML = `
+          <td class="checkbox-cell">
+            <div class="custom-checkbox" data-id="${vendor.id}"></div>
+          </td>
+          <td>
+            <div class="vendor-info" data-vendor-id="${vendor.id}">
+              <div class="vendor-avatar" style="background-color: ${vendor.avatarColor}">
+                ${vendor.name.charAt(0)}
+              </div>
+              <div>
+                <div class="vendor-name">${vendor.name}</div>
+                <div class="vendor-email">${vendor.email}</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="platform-badge platform-${vendor.platform}">
+              ${platformNames[vendor.platform]}
+            </span>
+          </td>
+          <td>
+            <span class="status-badge status-${vendor.status}" style="background-color: ${statusColors[vendor.status]}0.1; color: ${statusColors[vendor.status]}">
+              ${statusNames[vendor.status]}
+            </span>
+          </td>
+          <td>
+            <div class="country-flag">
+              <span class="flag-icon">${countries[vendor.country]?.flag || "🌐"}</span>
+              ${countries[vendor.country]?.name || vendor.country}
+            </div>
+          </td>
+          <td>
+            <strong>${vendor.products}</strong> products
+          </td>
+          <td>${timeAgo(vendor.lastSync)}</td>
+          <td>
+            <div class="table-actions">
+              <a href="sync-vendor-product.html?id=${vendor.id}" class="sync-action-btn" title="Sync Settings">
+                <i class="fas fa-sync-alt"></i> Sync
+              </a>
+              <button class="action-btn" title="More Actions" onclick="showActionDropdown(${vendor.id}, this)">
+                <i class="fas fa-ellipsis-h"></i>
+              </button>
+            </div>
+          </td>
+        `;
+          tableBody.appendChild(row);
+        });
+      }
+
+      updatePaginationInfo();
+      renderPageNumbers();
+      addCheckboxListeners();
+      addVendorInfoClickListeners();
+      addRowClickListeners();
+      updateSelectAllCheckbox();
+      updateBulkActionsUI();
+    }
+
+    // Update pagination info
+    function updatePaginationInfo() {
+      const start = (currentVendorPage - 1) * itemsPerPage + 1;
+      const end = Math.min(
+        currentVendorPage * itemsPerPage,
+        filteredVendors.length
+      );
+      const total = filteredVendors.length;
+
+      document.getElementById(
+        "paginationInfo"
+      ).textContent = `Showing ${start}-${end} of ${total} vendors`;
+
+      document.getElementById("prevPage").disabled = currentVendorPage === 1;
+      document.getElementById("nextPage").disabled =
+        currentVendorPage ===
+        Math.ceil(filteredVendors.length / itemsPerPage);
+    }
+
+    // Render page numbers
+    function renderPageNumbers() {
+      const pageNumbers = document.getElementById("pageNumbers");
+      const totalPages = Math.ceil(filteredVendors.length / itemsPerPage);
+
+      const maxVisiblePages = 5;
+      let startPage = Math.max(
+        1,
+        currentVendorPage - Math.floor(maxVisiblePages / 2)
+      );
+      let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+      if (endPage - startPage + 1 < maxVisiblePages) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+      }
+
+      pageNumbers.innerHTML = "";
+
+      document.getElementById("prevPage").onclick = () => {
+        if (currentVendorPage > 1) {
+          currentVendorPage--;
+          renderTable();
+        }
+      };
+
+      document.getElementById("nextPage").onclick = () => {
+        if (currentVendorPage < totalPages) {
+          currentVendorPage++;
+          renderTable();
+        }
+      };
+
+      if (startPage > 1) {
+        const firstBtn = document.createElement("div");
+        firstBtn.className = "page-number";
+        firstBtn.textContent = "1";
+        firstBtn.onclick = () => {
+          currentVendorPage = 1;
+          renderTable();
+        };
+        pageNumbers.appendChild(firstBtn);
+
+        if (startPage > 2) {
+          const ellipsis = document.createElement("div");
+          ellipsis.className = "page-number";
+          ellipsis.textContent = "...";
+          ellipsis.style.cursor = "default";
+          pageNumbers.appendChild(ellipsis);
+        }
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+        const pageBtn = document.createElement("div");
+        pageBtn.className = `page-number ${i === currentVendorPage ? "active" : ""
+          }`;
+        pageBtn.textContent = i;
+        pageBtn.onclick = () => {
+          currentVendorPage = i;
+          renderTable();
+        };
+        pageNumbers.appendChild(pageBtn);
+      }
+
+      if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+          const ellipsis = document.createElement("div");
+          ellipsis.className = "page-number";
+          ellipsis.textContent = "...";
+          ellipsis.style.cursor = "default";
+          pageNumbers.appendChild(ellipsis);
+        }
+
+        const lastBtn = document.createElement("div");
+        lastBtn.className = "page-number";
+        lastBtn.textContent = totalPages;
+        lastBtn.onclick = () => {
+          currentVendorPage = totalPages;
+          renderTable();
+        };
+        pageNumbers.appendChild(lastBtn);
+      }
+    }
+
+    // Filter vendors function
+    window.filterVendors = function () {
+      // Refresh vendors data from localStorage
+      vendorsData = getVendorsData();
+
+      const status = document.getElementById("statusFilter").value;
+      const platform = document.getElementById("platformFilter").value;
+      const country = document.getElementById("countryFilter").value;
+      const search = document
+        .getElementById("searchInput")
+        .value.toLowerCase();
+
+      filteredVendors = vendorsData.filter((vendor) => {
+        if (status !== "all" && vendor.status !== status) return false;
+        if (platform !== "all" && vendor.platform !== platform) return false;
+        if (country !== "all" && vendor.country !== country) return false;
+        if (search) {
+          const searchInName = vendor.name.toLowerCase().includes(search);
+          const searchInEmail = vendor.email.toLowerCase().includes(search);
+          if (!searchInName && !searchInEmail) return false;
+        }
+        return true;
+      });
+
+      // Sort by most recent first
+      filteredVendors.sort((a, b) => new Date(b.joinedDate) - new Date(a.joinedDate));
+
+      currentVendorPage = 1;
+      renderTable();
+    };
+
+    // Initialize Table Functions
+    function initializeTable() {
+      // Load vendors from localStorage
+      vendorsData = getVendorsData();
+
+      // Filter and search event listeners
+      document.getElementById("statusFilter").addEventListener("change", window.filterVendors);
+      document.getElementById("platformFilter").addEventListener("change", window.filterVendors);
+      document.getElementById("countryFilter").addEventListener("change", window.filterVendors);
+      document.getElementById("searchInput").addEventListener("input", window.filterVendors);
+
+      // Clear filters
+      document.getElementById("clearFilters").addEventListener("click", () => {
+        document.getElementById("statusFilter").value = "all";
+        document.getElementById("platformFilter").value = "all";
+        document.getElementById("countryFilter").value = "all";
+        document.getElementById("searchInput").value = "";
+        window.filterVendors();
+      });
+
+      // Select all checkbox
+      document.getElementById("selectAllCheckbox").addEventListener("click", function (e) {
+        e.stopPropagation();
+        toggleAllCheckboxes();
+      });
+
+      // Bulk actions button
+      document.getElementById("bulkActionsBtn").addEventListener("click", (e) => {
+        e.stopPropagation();
+        showBulkActionsDropdown();
+      });
+
+      // Modal close buttons (for delete modal)
+      document.getElementById("closeDeleteModal").addEventListener("click", () => {
+        document.getElementById("deleteConfirmModal").classList.remove("show");
+      });
+
+      document.getElementById("cancelDeleteModal").addEventListener("click", () => {
+        document.getElementById("deleteConfirmModal").classList.remove("show");
+      });
+
+      // Confirm delete
+      document.getElementById("confirmDeleteVendor").addEventListener("click", () => {
+        if (!currentActionVendorId) return;
+
+        const index = vendorsData.findIndex(v => v.id == currentActionVendorId);
+        if (index !== -1) {
+          const vendorName = vendorsData[index].name;
+          vendorsData.splice(index, 1);
+          saveVendorsData();
+          showToast(`Vendor "${vendorName}" deleted successfully!`, 'success');
+          document.getElementById("deleteConfirmModal").classList.remove("show");
+          window.filterVendors();
+        }
+      });
+
+      // Close modals when clicking outside
+      window.addEventListener('click', (e) => {
+        const deleteModal = document.getElementById('deleteConfirmModal');
+
+        if (deleteModal.classList.contains('show') && e.target === deleteModal) {
+          deleteModal.classList.remove('show');
+        }
+      });
+
+      // Initial render
+      window.filterVendors();
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener("DOMContentLoaded", () => {
+      initializeTable();
+
+      // Set up global functions
+      window.showActionDropdown = showActionDropdown;
+      window.showBulkActionsDropdown = showBulkActionsDropdown;
+      window.renderTable = renderTable;
+      window.toggleVendorCheckbox = toggleVendorCheckbox;
+      window.toggleAllCheckboxes = toggleAllCheckboxes;
+      window.getSelectedVendorIds = getSelectedVendorIds;
+      window.clearSelection = clearSelection;
+    });
+  </script>
+</body>
+
 </html>
