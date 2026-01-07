@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add/Edit Vendor - Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+     <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/vendor-add.css" />
+
+  
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <h1>Admin Dashboard</h1>
+                <p>Vendor Management System</p>
+            </div>
+            <div class="header-right">
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=4361ee&color=fff" alt="Admin User">
+                    <div>
+                        <h4>Admin User</h4>
+                        <p>Super Admin</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h2 class="page-title" id="pageTitle">Add New Vendor</h2>
+            <a href="vendor-management.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Vendors
+            </a>
+        </div>
+
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i> <span id="successMessageText">Vendor added successfully! Redirecting to vendors list...</span>
+        </div>
+
+        <!-- Form Container -->
+        <div class="form-container">
+            <form id="addVendorForm">
+                <!-- Basic Information Section -->
+                <div class="form-section">
+                    <h3 class="section-title"><i class="fas fa-user"></i> Basic Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="vendorName" class="required">Vendor Name</label>
+                            <input type="text" id="vendorName" required placeholder="Enter vendor name">
+                        </div>
+                        <div class="form-group">
+                            <label for="vendorEmail" class="required">Email Address</label>
+                            <input type="email" id="vendorEmail" required placeholder="vendor@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="vendorPhone">Phone Number</label>
+                            <input type="tel" id="vendorPhone" placeholder="+1 (555) 123-4567">
+                        </div>
+                        <div class="form-group">
+                            <label for="vendorCountry" class="required">Country</label>
+                            <select id="vendorCountry" required>
+                                <option value="">Select Country</option>
+                                <option value="us">United States</option>
+                                <option value="uk">United Kingdom</option>
+                                <option value="ca">Canada</option>
+                                <option value="au">Australia</option>
+                                <option value="de">Germany</option>
+                                <option value="fr">France</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="vendorStatus" class="required">Status</label>
+                            <select id="vendorStatus" required>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="vendorAddress">Address</label>
+                            <input type="text" id="vendorAddress" placeholder="Enter full address">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Company Information Section -->
+                <div class="form-section">
+                    <h3 class="section-title"><i class="fas fa-building"></i> Company Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="vendorStoreName">Store Name</label>
+                            <input type="text" id="vendorStoreName" placeholder="Enter store name">
+                        </div>
+                        <div class="form-group">
+                            <label for="vendorCompanyName">Company Name</label>
+                            <input type="text" id="vendorCompanyName" placeholder="Enter company name">
+                        </div>
+                        <div class="form-group">
+                            <label for="vendorBrandName">Brand Name</label>
+                            <input type="text" id="vendorBrandName" placeholder="Enter brand name">
+                        </div>
+                        <div class="form-group">
+                            <label for="vendorWebsite">Website URL</label>
+                            <input type="url" id="vendorWebsite" placeholder="https://example.com">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Platform & Subscription Section -->
+                <div class="form-section">
+                    <h3 class="section-title"><i class="fas fa-store"></i> Platform & Subscription</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="vendorPlatform" class="required">Platform</label>
+                            <select id="vendorPlatform" required>
+                                <option value="">Select Platform</option>
+                                <option value="shopify">Shopify</option>
+                                <option value="woo">WooCommerce</option>
+                                <option value="wix">Wix</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="vendorProducts">Products Count</label>
+                            <input type="number" id="vendorProducts" placeholder="Number of products" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="vendorSubscriptionPlan">Subscription Plan</label>
+                            <select id="vendorSubscriptionPlan">
+                                <option value="">Select Plan</option>
+                                <option value="Basic">Basic</option>
+                                <option value="Standard">Standard</option>
+                                <option value="Pro">Pro</option>
+                                <option value="Enterprise">Enterprise</option>
+                                <option value="Shopify Plus">Shopify Plus</option>
+                                <option value="WooCommerce Pro">WooCommerce Pro</option>
+                                <option value="Wix Business Elite">Wix Business Elite</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="vendorRenewalDate">Renewal Date</label>
+                            <input type="date" id="vendorRenewalDate">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Information Section -->
+                <div class="form-section">
+                    <h3 class="section-title"><i class="fas fa-info-circle"></i> Additional Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="vendorDescription">Description</label>
+                            <textarea id="vendorDescription" rows="4" placeholder="Brief description about the vendor..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Footer -->
+                <div class="form-footer">
+                    <button type="button" class="btn-secondary" onclick="window.location.href='vendor-management.html'">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn-primary" id="submitBtn">
+                        <i class="fas fa-plus"></i> <span id="submitBtnText">Add Vendor</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/vendor-add.js"></script>
+
+</body>
+</html>

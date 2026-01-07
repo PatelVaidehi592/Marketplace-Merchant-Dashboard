@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Product — Inline Form</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/add_product.css" />
+
+
+</head>
+
+<body>
+
+  <div class="page-wrapper">
+    <div class="page-header">
+      <div class="page-title">
+        <a href="product-list.html" class="back-button">
+          <i class="fas fa-arrow-left">Back To Vendor</i>
+        </a>
+        <i class="fas fa-cube"></i>
+        <h2 id="pageTitle">Add New Product</h2>
+        <span class="badge">Sequential Form</span>
+      </div>
+      <div class="form-note">
+        <i class="fas fa-info-circle"></i>
+        <span>Follow the sequence for best results</span>
+      </div>
+    </div>
+
+    <div id="successMessage" class="success-message">
+      <i class="fas fa-check-circle" style="font-size: 20px;"></i>
+      <div>
+        <strong id="successTitle">Product saved successfully!</strong>
+        <div style="font-size: 14px;" id="successSubtitle">The product has been added to your inventory.</div>
+      </div>
+    </div>
+
+    <form id="productForm">
+      <div class="form-sequence">
+        <div class="form-section">
+          <div class="section-header">
+            <div class="section-title">Product Name & SKU</div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label class="required">Product Name</label>
+              <input type="text" id="productName" class="form-control" required placeholder="Enter product name">
+              <div class="form-hint">Use a descriptive and clear product name that customers will recognize</div>
+            </div>
+
+            <div class="form-group">
+              <label class="required">SKU</label>
+              <input type="text" id="productSKU" class="form-control" required placeholder="Enter SKU">
+              <div class="form-hint">Unique Stock Keeping Unit for inventory tracking</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Description -->
+        <div class="form-section">
+          <div class="section-header">
+            <div class="section-title">Description</div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label class="required">Description</label>
+              <textarea id="productDescription" class="form-control" rows="5" required
+                placeholder="Enter product description..."></textarea>
+              <div class="form-hint">Describe features, benefits, specifications, and what makes your product unique
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Images -->
+        <div class="form-section">
+          <div class="section-header">
+            <div class="section-title">Product Images</div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label>Upload Images</label>
+              <input type="file" id="productImagesInput" class="file-input-hidden" accept="image/*" multiple>
+
+              <div id="multiImageUploadArea" class="multi-image-upload-area">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <h4 id="uploadAreaTitle">Drag & Drop Images Here</h4>
+                <p id="uploadAreaMessage">Upload multiple product images to showcase different angles</p>
+                <div class="upload-actions">
+                  <div class="upload-btn" id="browseFilesBtn">
+                    <i class="fas fa-folder-open"></i> Browse Files
+                  </div>
+                </div>
+                <div class="form-note" style="margin-top: 16px;">
+                  <i class="fas fa-info-circle"></i>
+                  <span>Supports JPG, PNG, GIF up to 5MB each</span>
+                </div>
+              </div>
+
+              <div id="imagePreviewsContainer" class="image-previews-container">
+                <div id="imagePreviewsGrid" class="image-previews-grid"></div>
+              </div>
+
+              <div class="form-note">
+                <i class="fas fa-image"></i>
+                <span>First image will be used as the main thumbnail. Drag to reorder.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-header">
+            <div class="section-title">Additional Details</div>
+            <div class="section-hint">Complete the product setup</div>
+          </div>
+
+          <div class="pending-section">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="required">Vendor</label>
+                <select id="productVendor" class="form-control" required>
+                  <option value="">Select Vendor</option>
+                  <option>Amazon</option>
+                  <option>Flipkart</option>
+                  <option>Meesho</option>
+                  <option>Myntra</option>
+                  <option>Ajio</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="required">Category</label>
+                <select id="productCategory" class="form-control" required>
+                  <option value="">Select Category</option>
+                  <option>Electronics</option>
+                  <option>Fashion</option>
+                  <option>Home & Kitchen</option>
+                  <option>Beauty</option>
+                  <option>Sports</option>
+                  <option>Books</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="required">Price ($)</label>
+                <input type="number" id="productPrice" class="form-control" step="0.01" required placeholder="0.00"
+                  min="0">
+                <div class="form-hint">Current selling price</div>
+              </div>
+
+              <div class="form-group">
+                <label>Original Price ($)</label>
+                <input type="number" id="productOriginalPrice" class="form-control" step="0.01" placeholder="0.00"
+                  min="0">
+                <div class="form-hint">Original price before discount (optional)</div>
+              </div>
+
+              <div class="form-group">
+                <label class="required">Stock Quantity</label>
+                <input type="number" id="productStock" class="form-control" required placeholder="0" min="0">
+                <div class="form-hint">Available units in inventory</div>
+              </div>
+
+              <div class="form-group">
+                <label class="required">Status</label>
+                <select id="productStatus" class="form-control" required>
+                  <option value="active">Active</option>
+                  <option value="pending">Pending</option>
+                  <option value="private">Private</option>
+                  <option value="rejected">Rejected</option>
+                </select>
+              </div>
+
+              <div class="form-group full-width">
+                <div class="featured-toggle">
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="productFeatured">
+                    <span class="toggle-slider"></span>
+                  </div>
+                  <label for="productFeatured">Mark as Featured Product</label>
+                  <i class="fas fa-star" style="color: #f59e0b;"></i>
+                </div>
+                <div class="form-hint">Featured products appear on homepage and get special visibility</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <input type="hidden" id="productId">
+      <input type="hidden" id="productImagesData">
+
+      <div class="form-footer">
+        <div>
+          <button type="button" class="btn btn-secondary" onclick="window.location.href='product-list.html'">
+            <i class="fas fa-times"></i>
+            Cancel
+          </button>
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <button type="button" class="btn btn-secondary" onclick="saveAsDraft()">
+            <i class="fas fa-save"></i>
+            Save Draft
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-check-circle"></i>
+            <span id="submitButtonText">Save Product</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+  <script src="../js/add_product.js"></script>
+
+</body>
+
+</html>

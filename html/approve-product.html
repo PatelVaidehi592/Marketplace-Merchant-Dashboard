@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Approved Products</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/approve-product.css" />
+</head>
+
+<body>
+  <div class="container">
+    <main class="main-content">
+      <header>
+        <div class="header-left">
+          <h1>Approved Products</h1>
+          <p>View and manage all approved/active products in your marketplace</p>
+        </div>
+        <div class="header-right">
+          <button class="btn btn-secondary" onclick="window.location.href='index.html'">
+            <i class="fas fa-arrow-left"></i> Back to All Products
+          </button>
+          <div class="user-profile">
+            <img src="https://ui-avatars.com/api/?name=Admin+User&background=4361ee&color=fff" alt="Admin User" />
+            <div>
+              <h4>Admin User</h4>
+              <p>Super Admin</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-container">
+        <div class="page-header">
+          <div>
+            <h1>
+              Approved Products
+              <span class="approve-indicator">
+                <i class="fas fa-check-circle"></i> All Active
+              </span>
+            </h1>
+            <div class="page-subtext">
+              Showing only products with "Active" status. These products are visible to customers.
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-secondary" onclick="exportToCSV()">
+              <i class="fas fa-download"></i> Export CSV
+            </button>
+            <button class="btn btn-success" onclick="window.location.href='add_product.html'">
+              <i class="fas fa-plus"></i> Add New Product
+            </button>
+          </div>
+        </div>
+
+        <div class="stats-cards">
+          <div class="stat-card success">
+            <div class="stat-label">Total Approved Products</div>
+            <div class="stat-value" id="totalApproved">0</div>
+            <div class="stat-trend positive" id="approvedTrend">
+              <i class="fas fa-arrow-up"></i> <span id="approvedChange">0%</span> from last week
+            </div>
+          </div>
+
+          <div class="stat-card primary">
+            <div class="stat-label">Featured Products</div>
+            <div class="stat-value" id="featuredApproved">0</div>
+            <div class="stat-trend positive" id="featuredTrend">
+              <i class="fas fa-arrow-up"></i> <span id="featuredChange">0%</span> from last month
+            </div>
+          </div>
+
+          <div class="stat-card info">
+            <div class="stat-label">In Stock Products</div>
+            <div class="stat-value" id="inStockApproved">0</div>
+            <div class="stat-trend positive" id="stockTrend">
+              <i class="fas fa-arrow-up"></i> <span id="stockChange">0%</span> from yesterday
+            </div>
+          </div>
+
+          <div class="stat-card warning">
+            <div class="stat-label">Low Stock (&lt; 10)</div>
+            <div class="stat-value" id="lowStockApproved">0</div>
+            <div class="stat-trend negative" id="lowStockTrend">
+              <i class="fas fa-arrow-down"></i> <span id="lowStockChange">0%</span> from yesterday
+            </div>
+          </div>
+        </div>
+
+        <div class="advanced-filters">
+          <div class="filter-header">
+            <h3>Filter Approved Products</h3>
+            <button class="filter-toggle" onclick="toggleFilters()">
+              <i class="fas fa-sliders-h"></i> Toggle Filters
+            </button>
+          </div>
+
+          <div class="filter-grid" id="filterGrid">
+            <div class="filter-group">
+              <label><i class="fas fa-search"></i> Search Approved Products</label>
+              <input type="text" placeholder="Search by name, SKU, or description..." id="searchInput" />
+            </div>
+
+            <div class="filter-group">
+              <label><i class="fas fa-store"></i> Vendor</label>
+              <div class="custom-dropdown" id="vendorDropdown">
+                <button class="dropdown-btn" data-id="vendorFilter">
+                  <span class="selected-text">All Vendors</span>
+                  <i class="fas fa-chevron-down arrow"></i>
+                </button>
+                <div class="dropdown-options">
+                  <div class="dropdown-option selected" data-value="">All Vendors</div>
+                  <div class="dropdown-option" data-value="Amazon">Amazon</div>
+                  <div class="dropdown-option" data-value="Flipkart">Flipkart</div>
+                  <div class="dropdown-option" data-value="Meesho">Meesho</div>
+                  <div class="dropdown-option" data-value="Myntra">Myntra</div>
+                  <div class="dropdown-option" data-value="Ajio">Ajio</div>
+                  <div class="dropdown-option" data-value="Other">Other</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <label><i class="fas fa-folder"></i> Category</label>
+              <div class="custom-dropdown" id="categoryDropdown">
+                <button class="dropdown-btn" data-id="categoryFilter">
+                  <span class="selected-text">All Categories</span>
+                  <i class="fas fa-chevron-down arrow"></i>
+                </button>
+                <div class="dropdown-options">
+                  <div class="dropdown-option selected" data-value="">All Categories</div>
+                  <div class="dropdown-option" data-value="Electronics">Electronics</div>
+                  <div class="dropdown-option" data-value="Fashion">Fashion</div>
+                  <div class="dropdown-option" data-value="Home & Kitchen">Home & Kitchen</div>
+                  <div class="dropdown-option" data-value="Beauty">Beauty</div>
+                  <div class="dropdown-option" data-value="Sports">Sports</div>
+                  <div class="dropdown-option" data-value="Books">Books</div>
+                  <div class="dropdown-option" data-value="Other">Other</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <label><i class="fas fa-mobile-alt"></i> Platform</label>
+              <div class="custom-dropdown" id="platformDropdown">
+                <button class="dropdown-btn" data-id="platformFilter">
+                  <span class="selected-text">All Platforms</span>
+                  <i class="fas fa-chevron-down arrow"></i>
+                </button>
+                <div class="dropdown-options">
+                  <div class="dropdown-option selected" data-value="">All Platforms</div>
+                  <div class="dropdown-option" data-value="Web">Web</div>
+                  <div class="dropdown-option" data-value="Android">Android</div>
+                  <div class="dropdown-option" data-value="iOS">iOS</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <label><i class="fas fa-calendar"></i> Date Added</label>
+              <div class="custom-dropdown" id="dateDropdown">
+                <button class="dropdown-btn" data-id="dateFilter">
+                  <span class="selected-text">Any Time</span>
+                  <i class="fas fa-chevron-down arrow"></i>
+                </button>
+                <div class="dropdown-options">
+                  <div class="dropdown-option selected" data-value="">Any Time</div>
+                  <div class="dropdown-option" data-value="Last 24 Hours">Last 24 Hours</div>
+                  <div class="dropdown-option" data-value="Last 7 Days">Last 7 Days</div>
+                  <div class="dropdown-option" data-value="Last 30 Days">Last 30 Days</div>
+                  <div class="dropdown-option" data-value="Last Quarter">Last Quarter</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <label><i class="fas fa-dollar-sign"></i> Price Range</label>
+              <div style="display: flex; gap: 8px">
+                <input type="number" placeholder="Min" id="priceMin" style="flex: 1" />
+                <input type="number" placeholder="Max" id="priceMax" style="flex: 1" />
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <label><i class="fas fa-box"></i> Stock Status</label>
+              <div class="custom-dropdown" id="stockDropdown">
+                <button class="dropdown-btn" data-id="stockFilter">
+                  <span class="selected-text">All Stock</span>
+                  <i class="fas fa-chevron-down arrow"></i>
+                </button>
+                <div class="dropdown-options">
+                  <div class="dropdown-option selected" data-value="">All Stock</div>
+                  <div class="dropdown-option" data-value="In Stock">In Stock</div>
+                  <div class="dropdown-option" data-value="Low Stock (&lt; 10)">Low Stock (&lt; 10)</div>
+                  <div class="dropdown-option" data-value="Out of Stock">Out of Stock</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <label><i class="fas fa-star"></i> Featured Status</label>
+              <div class="custom-dropdown" id="featuredDropdown">
+                <button class="dropdown-btn" data-id="featuredFilter">
+                  <span class="selected-text">All Products</span>
+                  <i class="fas fa-chevron-down arrow"></i>
+                </button>
+                <div class="dropdown-options">
+                  <div class="dropdown-option selected" data-value="">All Products</div>
+                  <div class="dropdown-option" data-value="featured">Featured Only</div>
+                  <div class="dropdown-option" data-value="not-featured">Not Featured</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-actions">
+            <button class="btn btn-primary" onclick="applyFilters()">
+              <i class="fas fa-filter"></i> Apply Filters
+            </button>
+            <button class="btn btn-secondary" onclick="resetFilters()">
+              <i class="fas fa-redo"></i> Reset All
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <div class="table-header">
+            <h3>
+              Approved Products List
+              <span id="productCount" style="color: var(--gray); font-weight: 400">(0 items)</span>
+            </h3>
+
+            <div class="table-actions">
+              <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search approved products..." id="tableSearch" />
+              </div>
+
+              <select class="btn btn-secondary" style="padding: 12px 16px" onchange="runBulkAction(this)"
+                id="bulkActions">
+                <option value="">Bulk Actions</option>
+                <option value="private">Set to Private</option>
+                <option value="pending">Set to Pending</option>
+                <option value="delete">Delete</option>
+                <option value="featured">Mark as Featured</option>
+                <option value="unfeatured">Remove Featured</option>
+                <option value="export">Export Selected</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="product-table">
+              <thead>
+                <tr>
+                  <th style="width: 50px">
+                    <div class="checkbox-container" onclick="toggleSelectAll()">
+                      <input type="checkbox" id="selectAll" />
+                      <span class="checkbox-custom"></span>
+                    </div>
+                  </th>
+                  <th style="width: 300px">Product</th>
+                  <th>Vendor</th>
+                  <th>Status</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Platforms</th>
+                  <th>Date Added</th>
+                  <th style="width: 100px">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="productTableBody">
+                <!-- Approved products will be populated here -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination">
+            <div class="pagination-info">
+              Showing <strong id="showingRange">0-0</strong> of
+              <strong id="totalProductsCount">0</strong> approved products
+            </div>
+
+            <div class="pagination-controls">
+              <button class="page-btn" disabled>
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button class="page-btn active">1</button>
+              <button class="page-btn">2</button>
+              <button class="page-btn">3</button>
+              <button class="page-btn">4</button>
+              <button class="page-btn">5</button>
+              <button class="page-btn">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+
+  <script src="../js/approve-product.js"></script>
+
+</body>
+
+</html>

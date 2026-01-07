@@ -147,3 +147,54 @@ function initSidebar() {
     frame.addEventListener("load", () => {
       frame.classList.add("loaded");
     });
+
+
+    document.getElementById('sidebarToggle').addEventListener('click', function () {
+      document.querySelector('.sidebar').classList.toggle('active');
+    });
+
+    document.getElementById('contentFrame').addEventListener('load', function () {
+      this.classList.add('loaded');
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      if (link.getAttribute('href') && !link.getAttribute('href').startsWith('javascript:')) {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          const href = this.getAttribute('href');
+          document.getElementById('contentFrame').src = href;
+
+          document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+          this.classList.add('active');
+
+          if (window.innerWidth <= 768) {
+            document.querySelector('.sidebar').classList.remove('active');
+          }
+        });
+      }
+    });
+
+    document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+      toggle.addEventListener('click', function (e) {
+        if (window.innerWidth <= 768) {
+          const parent = this.parentElement;
+          parent.classList.toggle('active');
+        } else {
+          const sidebar = document.querySelector('.sidebar');
+          if (sidebar.matches(':hover')) {
+            const parent = this.parentElement;
+            parent.classList.toggle('active');
+          }
+        }
+      });
+    });
+
+    document.addEventListener('click', function (e) {
+      if (window.innerWidth <= 768) {
+        if (!e.target.closest('.has-dropdown')) {
+          document.querySelectorAll('.has-dropdown').forEach(item => {
+            item.classList.remove('active');
+          });
+        }
+      }
+    });

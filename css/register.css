@@ -1,0 +1,423 @@
+
+    .registration-data .page-container {
+      display: flex;
+      min-height: 100vh;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .registration-data .content-wrapper {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .registration-data .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      width: 100%;
+    }
+
+    .registration-data .registration-card {
+      max-width: 800px;
+    }
+
+    .registration-data .login-card {
+      margin-left: 30px;
+      max-width: 380px;
+      align-self: flex-start;
+    }
+
+    .registration-data .section-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .registration-data .section-header--left {
+      text-align: left;
+    }
+
+    .registration-data .section-header__title {
+      color: #2c3e50;
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .registration-data .section-header__title--medium {
+      font-size: 1.8rem;
+    }
+
+    .registration-data .section-header__title--small {
+      font-size: 1.5rem;
+    }
+
+    .registration-data .section-header__subtitle {
+      color: #7f8c8d;
+      font-size: 1rem;
+    }
+
+    .registration-data .form {
+      width: 100%;
+    }
+
+    .registration-data .form__group {
+      margin-bottom: 20px;
+    }
+
+    .registration-data .form__row {
+      display: flex;
+      gap: 20px;
+    }
+
+    .registration-data .form__row .form__group {
+      flex: 1;
+    }
+
+    .registration-data .form__label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+      font-size: 0.95rem;
+    }
+
+    .registration-data .form__input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: border 0.3s;
+    }
+
+    .registration-data .form__input:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    .registration-data .form__select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: border 0.3s;
+      background-color: white;
+      cursor: pointer;
+    }
+
+    .registration-data .form__select:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+
+    .registration-data .password-input {
+      position: relative;
+    }
+
+    .registration-data .password-input__toggle {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #7f8c8d;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 0;
+      width: 24px;
+      height: 24px;
+    }
+
+    .registration-data .required-field::after {
+      content: " *";
+      color: #e74c3c;
+    }
+
+
+    .registration-data .btn {
+      border: none;
+      padding: 15px;
+      font-size: 18px;
+      font-weight: 600;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s;
+      margin-top: 10px;
+    }
+
+    .registration-data .btn--primary {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .registration-data .btn--primary:hover {
+      background-color: #2980b9;
+    }
+
+    .registration-data .btn--secondary {
+      background-color: #2ecc71;
+      color: white;
+      padding: 12px;
+      font-size: 16px;
+    }
+
+    .registration-data .btn--secondary:hover {
+      background-color: #27ae60;
+    }
+
+    .registration-data .btn--tertiary {
+      background-color: #9b59b6;
+      color: white;
+      padding: 12px;
+      font-size: 16px;
+    }
+
+    .registration-data .btn--tertiary:hover {
+      background-color: #8e44ad;
+
+      .registration-data .link-container {
+        text-align: center;
+        margin-top: 25px;
+        color: #7f8c8d;
+        font-size: 0.95rem;
+      }
+
+      .registration-data .link-container--small {
+        margin-top: 20px;
+      }
+
+      .registration-data .link {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .registration-data .link:hover {
+        text-decoration: underline;
+      }
+
+
+      .registration-data .benefits-list {
+        list-style: none;
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 30px;
+      }
+
+      .registration-data .benefits-list__item {
+        margin-bottom: 12px;
+        display: flex;
+        align-items: flex-start;
+        padding: 8px 0;
+      }
+
+      .registration-data .benefits-list__icon {
+        margin-right: 12px;
+        color: #3498db;
+        margin-top: 3px;
+        flex-shrink: 0;
+      }
+
+      .registration-data .forgot-password {
+        text-align: right;
+        margin-top: 10px;
+      }
+
+      .registration-data .forgot-password__link {
+        color: #3498db;
+        text-decoration: none;
+        font-size: 14px;
+      }
+
+      .registration-data .forgot-password__link:hover {
+        text-decoration: underline;
+      }
+
+
+      .registration-data .back-link {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .registration-data .back-link__anchor {
+        color: #3498db;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+      }
+
+      .registration-data .back-link__anchor:hover {
+        text-decoration: underline;
+      }
+
+      .registration-data .message {
+        padding: 12px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .registration-data .message--error {
+        color: #e74c3c;
+        font-size: 0.85rem;
+        margin-top: 5px;
+        text-align: left;
+        display: none;
+      }
+
+      .registration-data .message--success {
+        background-color: #d4edda;
+        color: #155724;
+        display: none;
+      }
+
+      .registration-data .message--info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+        display: none;
+      }
+
+      .registration-data .otp-container {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      .registration-data .otp-input {
+        width: 42px;
+        height: 42px;
+        text-align: center;
+        font-size: 24px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-weight: bold;
+      }
+
+      .registration-data .otp-input:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+      }
+
+
+      .registration-data .countdown-timer {
+        text-align: center;
+        margin: 15px 0;
+        color: #e74c3c;
+        font-weight: bold;
+      }
+
+      .registration-data .resend-otp {
+        text-align: center;
+        margin-top: 10px;
+      }
+
+      .registration-data .resend-otp__link {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .registration-data .resend-otp__link:hover {
+        text-decoration: underline;
+      }
+
+      .registration-data .resend-otp__link.disabled {
+        color: #95a5a6;
+        cursor: not-allowed;
+      }
+
+      .registration-data .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(52, 152, 219, 0.3);
+        border-radius: 50%;
+        border-top-color: #3498db;
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (max-width: 992px) {
+        .registration-data .page-container {
+          flex-direction: column;
+        }
+
+        .registration-data .content-wrapper {
+          flex-direction: column;
+          padding: 20px;
+        }
+
+        .registration-data .registration-card {
+          padding: 30px;
+        }
+
+        .registration-data .login-card {
+          margin: 30px 0 0 0;
+          max-width: 100%;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .registration-data .form__row {
+          flex-direction: column;
+          gap: 0;
+        }
+
+        .registration-data .section-header__title {
+          font-size: 1.8rem;
+        }
+
+        .registration-data .benefits-list__item {
+          font-size: 0.9rem;
+        }
+
+        .registration-data .otp-container {
+          gap: 5px;
+        }
+
+        .registration-data .otp-input {
+          width: 40px;
+          height: 50px;
+          font-size: 20px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .registration-data .registration-card {
+          padding: 20px;
+        }
+
+        .registration-data .section-header__title--medium {
+          font-size: 1.5rem;
+        }
+
+        .registration-data .section-header__title--small {
+          font-size: 1.3rem;
+        }
+
+        .registration-data .btn {
+          padding: 12px;
+          font-size: 16px;
+        }
+      }

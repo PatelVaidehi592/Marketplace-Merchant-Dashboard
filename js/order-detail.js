@@ -1,441 +1,492 @@
-// Order Detail Page JavaScript
 
-// Sample detailed order data
-const orderDetails = {
-    "ORD-1001": {
-        id: "ORD-1001",
-        customer: {
-            name: "Rahul Sharma",
-            email: "rahul.sharma@example.com",
-            phone: "+91 9876543210",
-            id: "CUST-001",
-            address: {
-                shipping: "123 Main Street, Mumbai, Maharashtra 400001",
-                billing: "Same as shipping",
-                city: "Mumbai",
-                state: "Maharashtra",
-                pincode: "400001"
-            }
-        },
-        date: "2023-11-12T10:30:00",
-        vendor: "TechGadgets Inc.",
-        status: "pending",
-        shipping: {
-            status: "pending",
-            method: "Standard Shipping",
-            estimatedDelivery: "2023-11-16",
-            tracking: null,
-            cost: 50
-        },
-        payment: {
-            method: "Credit Card",
-            status: "paid",
-            transactionId: "TXN-789012",
-            gateway: "Razorpay",
-            date: "2023-11-12T10:35:00",
-            amount: 2076
-        },
-        items: [
-            {
-                id: 1,
-                name: "Wireless Bluetooth Headphones",
-                description: "Noise cancelling headphones with 30hr battery",
-                price: 1250,
-                quantity: 1,
-                image: "https://via.placeholder.com/50",
-                vendor: "TechGadgets Inc.",
-                sku: "TG-HP001"
-            },
-            {
-                id: 2,
-                name: "Phone Case",
-                description: "Premium silicone case for iPhone 14",
-                price: 299,
-                quantity: 2,
-                image: "https://via.placeholder.com/50",
-                vendor: "TechGadgets Inc.",
-                sku: "TG-PC001"
-            }
-        ],
-        totals: {
-            subtotal: 1848,
-            shipping: 50,
-            tax: 278,
-            discount: 100,
-            total: 2076
-        },
-        notes: "Please deliver before 5 PM",
-        syncHistory: [
-            {
-                id: 1,
-                type: "order_created",
-                status: "success",
-                message: "Order synced with marketplace",
-                details: "Successfully synced with Amazon",
-                timestamp: "2023-11-12T10:30:00"
-            },
-            {
-                id: 2,
-                type: "inventory_check",
-                status: "warning",
-                message: "Inventory update failed",
-                details: "Product out of stock",
-                timestamp: "2023-11-12T10:25:00"
-            },
-            {
-                id: 3,
-                type: "payment_processed",
-                status: "success",
-                message: "Payment processed successfully",
-                details: "Transaction ID: TXN-789012",
-                timestamp: "2023-11-12T10:35:00"
-            }
-        ],
-        tracking: {
-            steps: [
-                {
-                    id: 1,
-                    name: "Order Placed",
-                    status: "completed",
-                    timestamp: "2023-11-12T10:30:00"
-                },
-                {
-                    id: 2,
-                    name: "Payment Confirmed",
-                    status: "completed",
-                    timestamp: "2023-11-12T10:35:00"
-                },
-                {
-                    id: 3,
-                    name: "Processing",
-                    status: "current",
-                    estimated: "2023-11-13"
-                },
-                {
-                    id: 4,
-                    name: "Shipped",
-                    status: "pending"
-                },
-                {
-                    id: 5,
-                    name: "Delivered",
-                    status: "pending",
-                    estimated: "2023-11-16"
-                }
-            ]
+    document.addEventListener('DOMContentLoaded', function () {
+      // Order.html ma thi order ID levo
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderId = urlParams.get('id');
+
+      if (orderId) {
+        console.log('Loading order:', orderId);
+        // Order details load karo
+        loadOrderDetails(orderId);
+        document.getElementById('orderHeaderInfo').textContent = `Order ID: ${orderId}`;
+      } else {
+        document.getElementById('orderHeaderInfo').textContent = 'No order selected';
+      }
+
+      // Sample order data (same as order.html)
+
+      function getOrderData(orderId) {
+        // First check localStorage
+        const savedOrders = JSON.parse(localStorage.getItem('orderDetails')) || {};
+        if (savedOrders[orderId]) {
+          return savedOrders[orderId];
         }
-    }
-};
 
-// Initialize the page
-document.addEventListener('DOMContentLoaded', function() {
-    loadOrderDetails();
-    initializeEventListeners();
-    initializeModals();
-});
+        // If not in localStorage, generate from order ID
+        return generateOrderDataFromId(orderId);
+      }
 
-function loadOrderDetails() {
-    // Get order ID from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const orderId = urlParams.get('id');
-    
-    if (!orderId) {
-        showNotification('No order ID provided', 'error');
-        return;
-    }
-    
-    // Show loading
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    loadingOverlay.style.display = 'flex';
-    
-    // Simulate API call delay
-    setTimeout(() => {
-        const order = orderDetails[orderId];
-        
-        if (!order) {
-            showNotification('Order not found', 'error');
-            loadingOverlay.style.display = 'none';
-            return;
+      function generateOrderDataFromId(orderId) {
+        // Extract order number
+        const orderNum = orderId.split('-')[1];
+
+        // Generate basic data based on order number
+        const baseData = {
+          id: orderId,
+          customer: `Customer ${orderNum}`,
+          date: `2023-${10 + Math.floor(Math.random() * 2)}-${15 + Math.floor(Math.random() * 10)}`,
+          vendor: `Vendor ${orderNum}`,
+          status: ["pending", "processing", "shipped", "delivered"][Math.floor(Math.random() * 4)],
+          shipping: ["pending", "processing", "shipped", "delivered"][Math.floor(Math.random() * 4)],
+          items: ["Laptop", "Mouse", "Keyboard", "Monitor", "Headphones"][Math.floor(Math.random() * 5)],
+          total: (100 + Math.random() * 2000).toFixed(2),
+          pushed: Math.random() > 0.5,
+
+          // Generate detailed data
+          customerName: `Customer ${orderNum}`,
+          customerEmail: `customer${orderNum}@email.com`,
+          customerPhone: `+91 ${Math.floor(1000000000 + Math.random() * 9000000000)}`,
+          customerId: `CUST-${orderNum}`,
+
+          shippingAddress: `${Math.floor(100 + Math.random() * 900)} Main Street`,
+          shippingCity: ["Mumbai", "Delhi", "Bangalore", "Chennai"][Math.floor(Math.random() * 4)],
+          shippingState: ["Maharashtra", "Delhi", "Karnataka", "Tamil Nadu"][Math.floor(Math.random() * 4)],
+          shippingPincode: Math.floor(400000 + Math.random() * 100000).toString(),
+          shippingStatus: ["Pending", "Processing", "Shipped", "Delivered"][Math.floor(Math.random() * 4)],
+
+          billingAddress: `${Math.floor(100 + Math.random() * 900)} Billing Avenue`,
+          gstNumber: `27AABC${Math.floor(1000 + Math.random() * 9000)}Z${Math.floor(1 + Math.random() * 9)}`,
+          invoiceNumber: `INV-2023-${orderNum}`,
+
+          vendorName: `vendor${orderNum}`,
+          vendorType: ["Vendor", "Supplier", "Partner"][Math.floor(Math.random() * 3)],
+          vendorEarning: `${Math.floor(5 + Math.random() * 20)}% Commission`,
+          payoutStatus: ["UNPAID", "PAID", "PROCESSING"][Math.floor(Math.random() * 3)],
+
+          transactionId: `TXN-${Date.now().toString().slice(-6)}`,
+          paymentStatus: ["Pending", "Paid", "Failed"][Math.floor(Math.random() * 3)],
+          paymentDate: new Date().toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          }),
+          paymentGateway: ["Razorpay", "Stripe", "PayPal"][Math.floor(Math.random() * 3)],
+          amountPaid: `₹${(100 + Math.random() * 2000).toFixed(2)}`,
+
+          trackingNumber: `TRK${Math.floor(1000000000 + Math.random() * 9000000000)}`,
+          courierService: ["BlueDart", "DTDC", "Delhivery"][Math.floor(Math.random() * 3)],
+          trackingLastUpdated: new Date().toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          }) + ' PM',
+
+          warehouseStatus: ["No Warehouse", "Has Warehouse", "Dropship"][Math.floor(Math.random() * 3)],
+          pickupStatus: Math.random() > 0.5,
+          payoutsStatus: Math.random() > 0.5
+        };
+
+        return baseData;
+      }
+
+      function loadOrderDetails(orderId) {
+        const orderData = getOrderData(orderId);
+
+        if (!orderData) {
+          showNotification('Order not found!', 'error');
+          return;
         }
-        
-        // Update page title
-        document.title = `Order ${order.id} - Order Management`;
-        
+
+        // Display order details
+        displayOrderDetails(orderData);
+      }
+
+      function displayOrderDetails(orderData) {
         // Update header
-        document.getElementById('orderHeaderInfo').textContent = 
-            `Order placed on ${formatDate(order.date)}`;
-        
-        // Update order overview
-        document.getElementById('orderIdDisplay').textContent = `Order #${order.id}`;
-        document.getElementById('orderStatusBadge').textContent = 
-            order.status.charAt(0).toUpperCase() + order.status.slice(1);
-        document.getElementById('orderStatusBadge').className = `status-badge status-${order.status}`;
-        
-        document.getElementById('paymentStatusBadge').textContent = 
-            order.payment.status.charAt(0).toUpperCase() + order.payment.status.slice(1);
-        document.getElementById('paymentStatusBadge').className = `payment-status ${order.payment.status}`;
-        
-        document.getElementById('orderDate').textContent = formatDate(order.date);
-        document.getElementById('shippingMethod').textContent = order.shipping.method;
-        document.getElementById('paymentMethod').textContent = order.payment.method;
-        document.getElementById('orderTotal').textContent = formatCurrency(order.totals.total);
-        
-        // Update customer details
-        document.getElementById('customerName').textContent = order.customer.name;
-        document.getElementById('customerEmail').textContent = order.customer.email;
-        document.getElementById('customerPhone').textContent = order.customer.phone;
-        document.getElementById('customerId').textContent = order.customer.id;
-        
-        // Update shipping details
-        document.getElementById('shippingAddressText').textContent = order.customer.address.shipping;
-        document.getElementById('shippingCity').textContent = order.customer.address.city;
-        document.getElementById('shippingState').textContent = order.customer.address.state;
-        document.getElementById('shippingPincode').textContent = order.customer.address.pincode;
-        document.getElementById('shippingStatus').textContent = 
-            order.shipping.status.charAt(0).toUpperCase() + order.shipping.status.slice(1);
-        
-        // Update billing details
-        document.getElementById('billingAddress').textContent = order.customer.address.billing;
-        
-        // Group items by vendor
-        const vendorItems = {};
-        order.items.forEach(item => {
-            if (!vendorItems[item.vendor]) {
-                vendorItems[item.vendor] = [];
+        document.getElementById('orderHeaderInfo').textContent =
+          `Order ID: ${orderData.id} | Date: ${orderData.date} | Status: ${orderData.status}`;
+
+        // Customer details
+        document.getElementById('customerName').textContent = orderData.customerName || orderData.customer;
+        document.getElementById('customerEmail').textContent = orderData.customerEmail || 'N/A';
+        document.getElementById('customerPhone').textContent = orderData.customerPhone || 'N/A';
+        document.getElementById('customerId').textContent = orderData.customerId || 'N/A';
+
+        // Shipping details
+        document.getElementById('shippingAddressText').textContent = orderData.shippingAddress || 'N/A';
+        document.getElementById('shippingCity').textContent = orderData.shippingCity || 'N/A';
+        document.getElementById('shippingState').textContent = orderData.shippingState || 'N/A';
+        document.getElementById('shippingPincode').textContent = orderData.shippingPincode || 'N/A';
+        document.getElementById('shippingStatus').textContent = orderData.shippingStatus || 'N/A';
+
+        // Billing details
+        document.getElementById('billingAddress').textContent = orderData.billingAddress || orderData.shippingAddress || 'N/A';
+        document.getElementById('gstNumber').textContent = orderData.gstNumber || 'N/A';
+        document.getElementById('invoiceNumber').textContent = orderData.invoiceNumber || 'N/A';
+
+        // Vendor details
+        document.getElementById('vendorNameDisplay').textContent = orderData.vendorName || orderData.vendor;
+        document.getElementById('vendorTypeDisplay').textContent = orderData.vendorType || 'Vendor';
+        document.getElementById('vendorEarningDisplay').textContent = orderData.vendorEarning || 'N/A';
+
+        const payoutStatusElement = document.getElementById('payoutStatusDisplay');
+        payoutStatusElement.textContent = orderData.payoutStatus || 'N/A';
+        payoutStatusElement.className = `status-${(orderData.payoutStatus || '').toLowerCase()}`;
+
+        document.getElementById('warehouseDisplay').textContent = orderData.warehouseStatus || 'No Warehouse';
+
+        // Show/hide badges based on status
+        document.getElementById('pickupBadge').style.display = orderData.pickupStatus ? 'inline-block' : 'none';
+        document.getElementById('payoutsBadge').style.display = orderData.payoutsStatus ? 'inline-block' : 'none';
+
+        // Payment details
+        document.getElementById('transactionId').textContent = orderData.transactionId || 'N/A';
+        document.getElementById('paymentStatus').textContent = orderData.paymentStatus || 'N/A';
+        document.getElementById('paymentDate').textContent = orderData.paymentDate || 'N/A';
+        document.getElementById('paymentGateway').textContent = orderData.paymentGateway || 'N/A';
+        document.getElementById('amountPaid').textContent = orderData.amountPaid || '₹0.00';
+
+        // Tracking details
+        document.getElementById('trackingNumberText').textContent = orderData.trackingNumber || 'N/A';
+        document.getElementById('courierService').textContent = orderData.courierService || 'N/A';
+        document.getElementById('trackingLastUpdated').textContent = orderData.trackingLastUpdated || 'N/A';
+
+        // Set edit form values
+        setEditFormValues(orderData);
+      }
+
+      function setEditFormValues(orderData) {
+        // Customer edit form
+        document.getElementById('editCustomerName').value = orderData.customerName || orderData.customer;
+        document.getElementById('editCustomerEmail').value = orderData.customerEmail || '';
+        document.getElementById('editCustomerPhone').value = orderData.customerPhone || '';
+
+        // Shipping edit form
+        document.getElementById('editShippingAddress').value = orderData.shippingAddress || '';
+        document.getElementById('editShippingCity').value = orderData.shippingCity || '';
+        document.getElementById('editShippingState').value = orderData.shippingState || '';
+        document.getElementById('editShippingPincode').value = orderData.shippingPincode || '';
+        document.getElementById('editShippingStatus').value = orderData.shippingStatus ? orderData.shippingStatus.toLowerCase() : 'pending';
+
+        // Billing edit form
+        document.getElementById('editBillingAddress').value = orderData.billingAddress || orderData.shippingAddress || '';
+        document.getElementById('editGstNumber').value = orderData.gstNumber || '';
+        document.getElementById('editInvoiceNumber').value = orderData.invoiceNumber || '';
+
+        // Vendor edit form
+        document.getElementById('editVendorName').value = orderData.vendorName || orderData.vendor;
+        document.getElementById('editVendorType').value = orderData.vendorType ? orderData.vendorType.toLowerCase() : 'vendor';
+        document.getElementById('editWarehouseStatus').value = orderData.warehouseStatus || 'No Warehouse';
+        document.getElementById('editVendorEarning').value = orderData.vendorEarning || '';
+        document.getElementById('editPayoutStatus').value = orderData.payoutStatus || 'UNPAID';
+        document.getElementById('editPickupStatus').checked = orderData.pickupStatus || false;
+        document.getElementById('editPayoutsStatus').checked = orderData.payoutsStatus || false;
+
+        // Payment edit form
+        document.getElementById('editTransactionId').value = orderData.transactionId || '';
+        document.getElementById('editPaymentStatus').value = orderData.paymentStatus ? orderData.paymentStatus.toLowerCase() : 'pending';
+        document.getElementById('editPaymentGateway').value = orderData.paymentGateway || 'Razorpay';
+        document.getElementById('editAmountPaid').value = orderData.amountPaid ? orderData.amountPaid.replace('₹', '') : '';
+
+        // Tracking edit form
+        document.getElementById('editTrackingNumber').value = orderData.trackingNumber || '';
+        document.getElementById('editCourierService').value = orderData.courierService || 'BlueDart';
+        document.getElementById('editTrackingStatus').value = orderData.shippingStatus ? orderData.shippingStatus.toLowerCase() : 'pending';
+      }
+
+      // Rest of your existing functions (showNotification, edit functions, etc.)
+      function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+          <i class="fas fa-${type === 'success' ? 'check-circle' :
+            type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+          <span>${message}</span>
+        `;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          notification.classList.add('show');
+        }, 10);
+
+        setTimeout(() => {
+          notification.classList.remove('show');
+          setTimeout(() => {
+            if (notification.parentNode) {
+              notification.parentNode.removeChild(notification);
             }
-            vendorItems[item.vendor].push(item);
-        });
-        
-        // Render vendor items
-        const vendorItemsContainer = document.getElementById('vendorItemsContainer');
-        vendorItemsContainer.innerHTML = '';
-        
-        Object.keys(vendorItems).forEach(vendorName => {
-            const vendorSection = document.createElement('div');
-            vendorSection.className = 'vendor-items';
-            
-            let vendorTotal = 0;
-            const itemsHtml = vendorItems[vendorName].map(item => {
-                const itemTotal = item.price * item.quantity;
-                vendorTotal += itemTotal;
-                
-                return `
-                    <tr>
-                        <td>
-                            <div class="item-info">
-                                <img src="${item.image}" alt="${item.name}" class="item-image">
-                                <div class="item-details">
-                                    <h4>${item.name}</h4>
-                                    <p>${item.description}</p>
-                                    <p style="font-size: 11px; color: var(--gray);">SKU: ${item.sku}</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>${formatCurrency(item.price)}</td>
-                        <td>${item.quantity}</td>
-                        <td class="item-total">${formatCurrency(itemTotal)}</td>
-                    </tr>
-                `;
-            }).join('');
-            
-            vendorSection.innerHTML = `
-                <div class="vendor-header">
-                    <div class="vendor-name">
-                        <i class="fas fa-store"></i>
-                        ${vendorName}
-                    </div>
-                    <span class="vendor-status">Pending Sync</span>
-                </div>
-                <table class="items-table">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Qty</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${itemsHtml}
-                    </tbody>
-                </table>
-                <div class="vendor-total">
-                    <div class="total-row">
-                        <span>Vendor Total:</span>
-                        <span>${formatCurrency(vendorTotal)}</span>
-                    </div>
-                </div>
-            `;
-            
-            vendorItemsContainer.appendChild(vendorSection);
-        });
-        
-        // Update payment details
-        document.getElementById('transactionId').textContent = order.payment.transactionId;
-        document.getElementById('paymentStatus').textContent = 
-            order.payment.status.charAt(0).toUpperCase() + order.payment.status.slice(1);
-        document.getElementById('paymentDate').textContent = formatDate(order.payment.date);
-        document.getElementById('paymentGateway').textContent = order.payment.gateway;
-        document.getElementById('amountPaid').textContent = formatCurrency(order.payment.amount);
-        
-        // Update tracking timeline
-        const trackingTimeline = document.querySelector('.tracking-timeline');
-        if (trackingTimeline) {
-            trackingTimeline.innerHTML = '';
-            
-            order.tracking.steps.forEach(step => {
-                const stepElement = document.createElement('div');
-                stepElement.className = `tracking-step ${step.status}`;
-                
-                const stepIcon = step.status === 'completed' ? 'check-circle' :
-                                step.status === 'current' ? 'spinner fa-spin' : 'circle';
-                
-                stepElement.innerHTML = `
-                    <div class="step-icon">
-                        <i class="fas fa-${stepIcon}"></i>
-                    </div>
-                    <div class="step-content">
-                        <h4>${step.name}</h4>
-                        <p>${step.timestamp ? formatDate(step.timestamp) : 
-                           step.estimated ? `Estimated: ${step.estimated}` : ''}</p>
-                    </div>
-                `;
-                
-                trackingTimeline.appendChild(stepElement);
-            });
-        }
-        
-        // Update order totals
-        document.getElementById('modalSubtotal').textContent = formatCurrency(order.totals.subtotal);
-        document.getElementById('modalShipping').textContent = formatCurrency(order.totals.shipping);
-        document.getElementById('modalTax').textContent = formatCurrency(order.totals.tax);
-        document.getElementById('modalDiscount').textContent = formatCurrency(order.totals.discount);
-        document.getElementById('modalFinalTotal').textContent = formatCurrency(order.totals.total);
-        
-        // Hide loading
-        loadingOverlay.style.display = 'none';
-        
-        // Show success message
-        showNotification(`Loaded order ${order.id}`, 'success');
-        
-    }, 1000); // Simulate network delay
-}
-
-function initializeEventListeners() {
-    // Edit customer button
-    document.getElementById('editCustomer').addEventListener('click', function() {
-        showNotification('Edit customer functionality would open here', 'info');
-    });
-    
-    // Edit shipping button
-    document.getElementById('editShipping').addEventListener('click', function() {
-        showNotification('Edit shipping functionality would open here', 'info');
-    });
-    
-    // Update tracking button
-    document.getElementById('updateTracking').addEventListener('click', function() {
-        showNotification('Update tracking functionality would open here', 'info');
-    });
-    
-    // Print invoice
-    document.getElementById('printInvoice').addEventListener('click', function() {
-        const btn = this;
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparing...';
-        
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            showNotification('Invoice sent to printer', 'success');
+          }, 3);
         }, 1000);
-    });
-    
-    // Sync order
-    document.getElementById('syncOrder').addEventListener('click', function() {
-        const btn = this;
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing...';
-        btn.disabled = true;
-        
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-            showNotification('Order synced successfully with marketplace', 'success');
-        }, 2000);
-    });
-    
-    // Order actions
-    document.getElementById('updateStatusBtn').addEventListener('click', function() {
-        document.getElementById('statusModal').style.display = 'flex';
-    });
-    
-    document.getElementById('cancelOrderBtn').addEventListener('click', function() {
-        if (confirm('Are you sure you want to cancel this order?')) {
-            showNotification('Order cancellation initiated', 'warning');
-        }
-    });
-    
-    document.getElementById('refundOrderBtn').addEventListener('click', function() {
-        if (confirm('Are you sure you want to refund this order?')) {
-            showNotification('Refund process initiated', 'warning');
-        }
-    });
-    
-    document.getElementById('sendEmailBtn').addEventListener('click', function() {
-        showNotification('Email composer would open here', 'info');
-    });
-    
-    // View full history
-    document.getElementById('viewFullHistory').addEventListener('click', function() {
-        showNotification('Full sync history would open here', 'info');
-    });
-}
+      }
 
-function initializeModals() {
-    const statusModal = document.getElementById('statusModal');
-    const closeModal = document.querySelector('.close-modal');
-    const cancelBtn = document.getElementById('cancelStatusUpdate');
-    const confirmBtn = document.getElementById('confirmStatusUpdate');
-    
-    // Close modal
-    closeModal.addEventListener('click', () => {
-        statusModal.style.display = 'none';
-    });
-    
-    cancelBtn.addEventListener('click', () => {
-        statusModal.style.display = 'none';
-    });
-    
-    // Confirm status update
-    confirmBtn.addEventListener('click', () => {
-        const newStatus = document.getElementById('newStatusSelect').value;
-        const notes = document.getElementById('statusNotes').value;
-        
-        // Show loading
-        confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
-        confirmBtn.disabled = true;
-        
-        // Simulate API call
-        setTimeout(() => {
-            // Update UI
-            const statusBadge = document.getElementById('orderStatusBadge');
-            statusBadge.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
-            statusBadge.className = `status-badge status-${newStatus}`;
-            
-            // Close modal and reset
-            statusModal.style.display = 'none';
-            document.getElementById('statusNotes').value = '';
-            confirmBtn.innerHTML = 'Update Status';
-            confirmBtn.disabled = false;
-            
-            // Show success message
-            showNotification(`Order status updated to ${newStatus}`, 'success');
-        }, 1000);
-    });
-    
-    // Close modal when clicking outside
-    window.addEventListener('click', (event) => {
-        if (event.target === statusModal) {
-            statusModal.style.display = 'none';
+      document.querySelectorAll('.edit-section-btn').forEach(button => {
+        button.addEventListener('click', function () {
+          const section = this.getAttribute('data-section');
+          const displayElement = document.getElementById(`${section}Display`);
+          const editElement = document.getElementById(`${section}EditForm`);
+
+          if (displayElement && editElement) {
+            displayElement.style.display = 'none';
+            editElement.style.display = 'block';
+          }
+        });
+      });
+
+      document.querySelectorAll('.cancel-edit-btn').forEach(button => {
+        button.addEventListener('click', function () {
+          const section = this.getAttribute('data-section');
+          const displayElement = document.getElementById(`${section}Display`);
+          const editElement = document.getElementById(`${section}EditForm`);
+
+          if (displayElement && editElement) {
+            displayElement.style.display = 'block';
+            editElement.style.display = 'none';
+          }
+        });
+      });
+
+      document.querySelectorAll('.save-edit-btn').forEach(button => {
+        button.addEventListener('click', function () {
+          const section = this.getAttribute('data-section');
+          saveSectionChanges(section);
+        });
+      });
+
+      document.addEventListener('click', function (e) {
+        if (e.target.closest('.copy-tracking-btn')) {
+          const trackingNumber = document.getElementById('trackingNumberText').textContent;
+          navigator.clipboard.writeText(trackingNumber).then(() => {
+            showNotification('Tracking number copied!', 'success');
+          });
         }
+      });
+
+      const sameAsShippingCheckbox = document.getElementById('sameAsShipping');
+      if (sameAsShippingCheckbox) {
+        sameAsShippingCheckbox.addEventListener('change', function () {
+          const billingAddressField = document.getElementById('editBillingAddress');
+          if (this.checked) {
+            const shippingAddress = document.getElementById('editShippingAddress').value;
+            billingAddressField.value = shippingAddress;
+          }
+        });
+      }
+
+
+      // Add this function to sync changes back to main orders array
+      function syncChangesToMainOrders(orderId, updatedData) {
+        // Get the current orders from localStorage or initialize
+        let mainOrders = JSON.parse(localStorage.getItem('mainOrders')) || [...sampleOrders];
+
+        // Find the order index
+        const orderIndex = mainOrders.findIndex(o => o.id === orderId);
+
+        if (orderIndex !== -1) {
+          // Update the main order with relevant data
+          mainOrders[orderIndex] = {
+            ...mainOrders[orderIndex],
+            customer: updatedData.customerName || mainOrders[orderIndex].customer,
+            vendor: updatedData.vendorName || mainOrders[orderIndex].vendor,
+            status: updatedData.status || mainOrders[orderIndex].status,
+            shipping: updatedData.shippingStatus || mainOrders[orderIndex].shipping
+          };
+
+          // Save back to localStorage
+          localStorage.setItem('mainOrders', JSON.stringify(mainOrders));
+          console.log('Synced changes to main orders:', mainOrders[orderIndex]);
+        }
+      }
+
+      // Modify the saveSectionChanges function to call sync
+      function saveSectionChanges(section) {
+        const displayElement = document.getElementById(`${section}Display`);
+        const editElement = document.getElementById(`${section}EditForm`);
+        const orderId = urlParams.get('id');
+
+        switch (section) {
+          case 'customer':
+            const customerName = document.getElementById('editCustomerName').value;
+            const customerEmail = document.getElementById('editCustomerEmail').value;
+            const customerPhone = document.getElementById('editCustomerPhone').value;
+
+            document.getElementById('customerName').textContent = customerName;
+            document.getElementById('customerEmail').textContent = customerEmail;
+            document.getElementById('customerPhone').textContent = customerPhone;
+            break;
+
+          case 'shipping':
+            const shippingAddress = document.getElementById('editShippingAddress').value;
+            const shippingCity = document.getElementById('editShippingCity').value;
+            const shippingState = document.getElementById('editShippingState').value;
+            const shippingPincode = document.getElementById('editShippingPincode').value;
+            const shippingStatus = document.getElementById('editShippingStatus').value;
+
+            document.getElementById('shippingAddressText').textContent = shippingAddress;
+            document.getElementById('shippingCity').textContent = shippingCity;
+            document.getElementById('shippingState').textContent = shippingState;
+            document.getElementById('shippingPincode').textContent = shippingPincode;
+            document.getElementById('shippingStatus').textContent = shippingStatus;
+            break;
+
+          // ... other cases remain the same ...
+
+          case 'vendor':
+            const vendorName = document.getElementById('editVendorName').value;
+            const vendorType = document.getElementById('editVendorType').value;
+            const warehouseStatus = document.getElementById('editWarehouseStatus').value;
+            const vendorEarning = document.getElementById('editVendorEarning').value;
+            const payoutStatus = document.getElementById('editPayoutStatus').value;
+            const pickupStatus = document.getElementById('editPickupStatus').checked;
+            const payoutsStatus = document.getElementById('editPayoutsStatus').checked;
+
+            document.getElementById('vendorNameDisplay').textContent = vendorName;
+            document.getElementById('vendorTypeDisplay').textContent = vendorType.charAt(0).toUpperCase() + vendorType.slice(1);
+            document.getElementById('vendorEarningDisplay').textContent = vendorEarning;
+
+            const payoutStatusDisplay = document.getElementById('payoutStatusDisplay');
+            payoutStatusDisplay.textContent = payoutStatus;
+            payoutStatusDisplay.className = `status-${payoutStatus.toLowerCase()}`;
+
+            document.getElementById('warehouseDisplay').textContent = warehouseStatus;
+            document.getElementById('pickupBadge').style.display = pickupStatus ? 'inline-block' : 'none';
+            document.getElementById('payoutsBadge').style.display = payoutsStatus ? 'inline-block' : 'none';
+            break;
+
+          // ... other cases ...
+        }
+
+        showNotification(`${section.charAt(0).toUpperCase() + section.slice(1)} information updated successfully!`, 'success');
+
+        if (displayElement && editElement) {
+          displayElement.style.display = 'block';
+          editElement.style.display = 'none';
+        }
+
+        // Save to localStorage
+        saveToLocalStorage(orderId, section);
+
+        // Sync changes back to main orders
+        syncChangesBack(orderId);
+      }
+
+      // New function to sync changes back
+      function syncChangesBack(orderId) {
+        // Get all saved data
+        const savedOrders = JSON.parse(localStorage.getItem('orderDetails')) || {};
+        const updatedData = savedOrders[orderId];
+
+        if (updatedData) {
+          // Get main orders from localStorage or use sample
+          let mainOrders = JSON.parse(localStorage.getItem('mainOrders')) || [...sampleOrders];
+
+          // Find and update the order
+          const orderIndex = mainOrders.findIndex(o => o.id === orderId);
+          if (orderIndex !== -1) {
+            mainOrders[orderIndex] = {
+              ...mainOrders[orderIndex],
+              customer: updatedData.customerName || mainOrders[orderIndex].customer,
+              vendor: updatedData.vendorName || mainOrders[orderIndex].vendor,
+              status: updatedData.status || mainOrders[orderIndex].status,
+              shipping: updatedData.shippingStatus || mainOrders[orderIndex].shipping
+            };
+
+            // Save back
+            localStorage.setItem('mainOrders', JSON.stringify(mainOrders));
+          }
+        }
+      }
+
+      // Also update the saveToLocalStorage function to include all data
+      function saveToLocalStorage(orderId, section) {
+        let savedOrders = JSON.parse(localStorage.getItem('orderDetails')) || {};
+
+        if (!savedOrders[orderId]) {
+          savedOrders[orderId] = {};
+        }
+
+        // Save all current values, not just the section being edited
+        switch (section) {
+          case 'customer':
+            savedOrders[orderId].customerName = document.getElementById('editCustomerName').value;
+            savedOrders[orderId].customerEmail = document.getElementById('editCustomerEmail').value;
+            savedOrders[orderId].customerPhone = document.getElementById('editCustomerPhone').value;
+            break;
+          case 'shipping':
+            savedOrders[orderId].shippingAddress = document.getElementById('editShippingAddress').value;
+            savedOrders[orderId].shippingCity = document.getElementById('editShippingCity').value;
+            savedOrders[orderId].shippingState = document.getElementById('editShippingState').value;
+            savedOrders[orderId].shippingPincode = document.getElementById('editShippingPincode').value;
+            savedOrders[orderId].shippingStatus = document.getElementById('editShippingStatus').value;
+            savedOrders[orderId].status = document.getElementById('editShippingStatus').value; // Also update status
+            break;
+          case 'billing':
+            savedOrders[orderId].billingAddress = document.getElementById('editBillingAddress').value;
+            savedOrders[orderId].gstNumber = document.getElementById('editGstNumber').value;
+            savedOrders[orderId].invoiceNumber = document.getElementById('editInvoiceNumber').value;
+            break;
+          case 'vendor':
+            savedOrders[orderId].vendorName = document.getElementById('editVendorName').value;
+            savedOrders[orderId].vendorType = document.getElementById('editVendorType').value;
+            savedOrders[orderId].warehouseStatus = document.getElementById('editWarehouseStatus').value;
+            savedOrders[orderId].vendorEarning = document.getElementById('editVendorEarning').value;
+            savedOrders[orderId].payoutStatus = document.getElementById('editPayoutStatus').value;
+            savedOrders[orderId].pickupStatus = document.getElementById('editPickupStatus').checked;
+            savedOrders[orderId].payoutsStatus = document.getElementById('editPayoutsStatus').checked;
+            break;
+          case 'payment':
+            savedOrders[orderId].transactionId = document.getElementById('editTransactionId').value;
+            savedOrders[orderId].paymentStatus = document.getElementById('editPaymentStatus').value;
+            savedOrders[orderId].paymentGateway = document.getElementById('editPaymentGateway').value;
+            savedOrders[orderId].amountPaid = `₹${document.getElementById('editAmountPaid').value}`;
+            break;
+          case 'tracking':
+            savedOrders[orderId].trackingNumber = document.getElementById('editTrackingNumber').value;
+            savedOrders[orderId].courierService = document.getElementById('editCourierService').value;
+            savedOrders[orderId].shippingStatus = document.getElementById('editTrackingStatus').value;
+            break;
+        }
+
+        localStorage.setItem('orderDetails', JSON.stringify(savedOrders));
+        console.log('Saved to localStorage:', savedOrders[orderId]);
+      }
+      // Load saved data from localStorage on page load
+      function loadSavedData(orderId) {
+        const savedOrders = JSON.parse(localStorage.getItem('orderDetails')) || {};
+        const savedData = savedOrders[orderId];
+
+        if (savedData) {
+          console.log('Loading saved data:', savedData);
+          // Merge saved data with base data
+          const baseData = getOrderData(orderId) || {};
+          const mergedData = { ...baseData, ...savedData };
+
+          // Update display with saved data
+          displayOrderDetails(mergedData);
+        }
+      }
+
+      // Call loadSavedData after page loads
+      if (orderId) {
+        loadSavedData(orderId);
+      }
+
+      // Button event listeners
+      document.getElementById('printInvoice').addEventListener('click', function () {
+        showNotification('Invoice printing started...', 'info');
+        // In real app, implement actual print functionality
+        window.print();
+      });
+
+      document.getElementById('syncOrder').addEventListener('click', function () {
+        showNotification('Syncing order with marketplace...', 'info');
+        // Simulate sync delay
+        setTimeout(() => {
+          showNotification('Order synced successfully!', 'success');
+        }, 1500);
+      });
     });
-}

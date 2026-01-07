@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Details - Order Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/order-detail.css" />
+
+  <style>
+    /* CSS for Order Detail Page */
+    :root {
+      --primary: #4361ee;
+      --secondary: #3a0ca3;
+      --success: #4cc9f0;
+      --danger: #f72585;
+      --warning: #ffc107;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --gray: #6c757d;
+      --gray-light: #e9ecef;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fb;
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <main class="main-content">
+      <header class="main-header">
+        <div class="header-left">
+          <a href="order.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Orders
+          </a>
+          <div>
+            <h1>Order Details</h1>
+            <p id="orderHeaderInfo">Loading order information...</p>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="header-actions">
+            <button class="btn btn-primary" id="printInvoice">
+              <i class="fas fa-print"></i> Print Invoice
+            </button>
+            <button class="btn btn-success" id="syncOrder">
+              <i class="fas fa-sync-alt"></i> Re-sync Order
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div class="content-grid">
+        <div class="left-column">
+          <section class="info-section">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-user"></i>
+                Customer Details
+              </h3>
+              <button class="btn btn-light btn-sm edit-section-btn" data-section="customer">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+            </div>
+            <div class="section-body">
+              <div class="section-display" id="customerDisplay">
+                <p>
+                  <strong>Name:</strong>
+                  <span id="customerName">Loading...</span>
+                </p>
+                <p>
+                  <strong>Email:</strong>
+                  <span id="customerEmail">Loading...</span>
+                </p>
+                <p>
+                  <strong>Phone:</strong>
+                  <span id="customerPhone">Loading...</span>
+                </p>
+                <p>
+                  <strong>Customer ID:</strong>
+                  <span id="customerId">Loading...</span>
+                </p>
+              </div>
+
+              <div class="section-edit-form" id="customerEditForm" style="display: none;">
+                <div class="form-group">
+                  <label>Name</label>
+                  <input type="text" class="form-input" id="editCustomerName">
+                </div>
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" class="form-input" id="editCustomerEmail">
+                </div>
+                <div class="form-group">
+                  <label>Phone</label>
+                  <input type="tel" class="form-input" id="editCustomerPhone">
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-light cancel-edit-btn" data-section="customer">Cancel</button>
+                  <button class="btn btn-primary save-edit-btn" data-section="customer">Save Changes</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="info-section">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-shipping-fast"></i>
+                Shipping Details
+              </h3>
+              <button class="btn btn-light btn-sm edit-section-btn" data-section="shipping">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+            </div>
+            <div class="section-body">
+              <div class="section-display" id="shippingDisplay">
+                <p>
+                  <strong>Address:</strong>
+                  <span id="shippingAddressText">Loading...</span>
+                </p>
+                <p>
+                  <strong>City:</strong>
+                  <span id="shippingCity">Loading...</span>
+                </p>
+                <p>
+                  <strong>State:</strong>
+                  <span id="shippingState">Loading...</span>
+                </p>
+                <p>
+                  <strong>Pincode:</strong>
+                  <span id="shippingPincode">Loading...</span>
+                </p>
+                <p>
+                  <strong>Shipping Status:</strong>
+                  <span id="shippingStatus">Loading...</span>
+                </p>
+              </div>
+
+              <div class="section-edit-form" id="shippingEditForm" style="display: none;">
+                <div class="form-group">
+                  <label>Address</label>
+                  <textarea class="form-textarea" id="editShippingAddress" rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>City</label>
+                    <input type="text" class="form-input" id="editShippingCity">
+                  </div>
+                  <div class="form-group">
+                    <label>State</label>
+                    <input type="text" class="form-input" id="editShippingState">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Pincode</label>
+                    <input type="text" class="form-input" id="editShippingPincode">
+                  </div>
+                  <div class="form-group">
+                    <label>Shipping Status</label>
+                    <select class="form-select" id="editShippingStatus">
+                      <option value="pending">Pending</option>
+                      <option value="processing">Processing</option>
+                      <option value="shipped">Shipped</option>
+                      <option value="delivered">Delivered</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-light cancel-edit-btn" data-section="shipping">Cancel</button>
+                  <button class="btn btn-primary save-edit-btn" data-section="shipping">Save Changes</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="info-section">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-file-invoice-dollar"></i>
+                Billing Details
+              </h3>
+              <button class="btn btn-light btn-sm edit-section-btn" data-section="billing">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+            </div>
+            <div class="section-body">
+              <div class="section-display" id="billingDisplay">
+                <p>
+                  <strong>Billing Address:</strong>
+                  <span id="billingAddress">Loading...</span>
+                </p>
+                <p>
+                  <strong>GST Number:</strong>
+                  <span id="gstNumber">Loading...</span>
+                </p>
+                <p>
+                  <strong>Invoice Number:</strong>
+                  <span id="invoiceNumber">Loading...</span>
+                </p>
+              </div>
+
+              <div class="section-edit-form" id="billingEditForm" style="display: none;">
+                <div class="form-group">
+                  <label>Billing Address</label>
+                  <textarea class="form-textarea" id="editBillingAddress" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                  <label>GST Number</label>
+                  <input type="text" class="form-input" id="editGstNumber">
+                </div>
+                <div class="form-group">
+                  <label>Invoice Number</label>
+                  <input type="text" class="form-input" id="editInvoiceNumber">
+                </div>
+                <div class="form-checkbox">
+                  <input type="checkbox" id="sameAsShipping" checked>
+                  <label for="sameAsShipping">Same as shipping address</label>
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-light cancel-edit-btn" data-section="billing">Cancel</button>
+                  <button class="btn btn-primary save-edit-btn" data-section="billing">Save Changes</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="right-column">
+          <section class="info-section">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-boxes"></i>
+                Order Items by Vendor
+              </h3>
+              <button class="btn btn-light btn-sm edit-section-btn" data-section="vendor">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+            </div>
+            <div class="section-body">
+              <div class="section-display" id="vendorDisplay">
+                <div class="vendor-card">
+                  <div class="vendor-header">
+                    <div class="vendor-info">
+                      <h4 class="vendor-name" id="vendorNameDisplay">Loading...</h4>
+                      <span class="vendor-badge" id="vendorTypeDisplay">Vendor</span>
+                    </div>
+                    <div class="vendor-status">
+                      <span class="status-badge status-pickup" id="pickupBadge">Pick-Up</span>
+                      <span class="status-badge status-payout" id="payoutsBadge">Payouts</span>
+                    </div>
+                  </div>
+
+                  <div class="vendor-details">
+                    <div class="warehouse-info">
+                      <i class="fas fa-warehouse"></i>
+                      <span id="warehouseDisplay">Loading...</span>
+                    </div>
+
+                    <div class="vendor-earning">
+                      <i class="fas fa-money-bill-wave"></i>
+                      <span>vonoor earning: <strong id="vendorEarningDisplay">Loading...</strong></span>
+                    </div>
+
+                    <div class="payout-status">
+                      <i class="fas fa-wallet"></i>
+                      <span>Payout Status: <strong id="payoutStatusDisplay"
+                          class="status-unpaid">Loading...</strong></span>
+                    </div>
+                  </div>
+
+                  <div class="vendor-actions">
+                    <button class="btn btn-outline btn-sm">
+                      <i class="fas fa-envelope"></i> Contact Vendor
+                    </button>
+                    <button class="btn btn-outline btn-sm">
+                      <i class="fas fa-file-invoice"></i> View Invoice
+                    </button>
+                    <button class="btn btn-primary btn-sm">
+                      <i class="fas fa-credit-card"></i> Process Payout
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="section-edit-form" id="vendorEditForm" style="display: none;">
+                <div class="edit-vendor-container">
+                  <div class="edit-section">
+                    <h4>Vendor Information</h4>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>Vendor Name</label>
+                        <input type="text" class="form-input" id="editVendorName">
+                      </div>
+                      <div class="form-group">
+                        <label>Vendor Type</label>
+                        <select class="form-select" id="editVendorType">
+                          <option value="vendor">Vendor</option>
+                          <option value="supplier">Supplier</option>
+                          <option value="partner">Partner</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>Warehouse Status</label>
+                        <select class="form-select" id="editWarehouseStatus">
+                          <option value="No Warehouse">No Warehouse</option>
+                          <option value="Has Warehouse">Has Warehouse</option>
+                          <option value="Dropship">Dropship</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label>Commission/Earning</label>
+                        <input type="text" class="form-input" id="editVendorEarning">
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label>Payout Status</label>
+                        <select class="form-select" id="editPayoutStatus">
+                          <option value="UNPAID">UNPAID</option>
+                          <option value="PAID">PAID</option>
+                          <option value="PROCESSING">PROCESSING</option>
+                          <option value="FAILED">FAILED</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label>Vendor Status</label>
+                        <div class="status-options">
+                          <label class="status-option">
+                            <input type="checkbox" id="editPickupStatus"> Pick-Up
+                          </label>
+                          <label class="status-option">
+                            <input type="checkbox" id="editPayoutsStatus"> Payouts
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-actions">
+                    <button class="btn btn-light cancel-edit-btn" data-section="vendor">Cancel</button>
+                    <button class="btn btn-primary save-edit-btn" data-section="vendor">Save Changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="info-section">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-credit-card"></i>
+                Payment Details
+              </h3>
+              <button class="btn btn-light btn-sm edit-section-btn" data-section="payment">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+            </div>
+            <div class="section-body">
+              <div class="section-display" id="paymentDisplay">
+                <div class="detail-row">
+                  <span>Transaction ID:</span>
+                  <span id="transactionId">Loading...</span>
+                </div>
+                <div class="detail-row">
+                  <span>Payment Status:</span>
+                  <span id="paymentStatus">Loading...</span>
+                </div>
+                <div class="detail-row">
+                  <span>Payment Date:</span>
+                  <span id="paymentDate">Loading...</span>
+                </div>
+                <div class="detail-row">
+                  <span>Payment Gateway:</span>
+                  <span id="paymentGateway">Loading...</span>
+                </div>
+                <div class="detail-row total-row">
+                  <span>Amount Paid:</span>
+                  <span id="amountPaid">Loading...</span>
+                </div>
+              </div>
+
+              <div class="section-edit-form" id="paymentEditForm" style="display: none;">
+                <div class="form-group">
+                  <label>Transaction ID</label>
+                  <input type="text" class="form-input" id="editTransactionId">
+                </div>
+                <div class="form-group">
+                  <label>Payment Status</label>
+                  <select class="form-select" id="editPaymentStatus">
+                    <option value="pending">Pending</option>
+                    <option value="paid">Paid</option>
+                    <option value="failed">Failed</option>
+                    <option value="refunded">Refunded</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Payment Gateway</label>
+                  <select class="form-select" id="editPaymentGateway">
+                    <option value="Razorpay">Razorpay</option>
+                    <option value="Stripe">Stripe</option>
+                    <option value="PayPal">PayPal</option>
+                    <option value="Cash on Delivery">Cash on Delivery</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Amount Paid</label>
+                  <input type="text" class="form-input" id="editAmountPaid">
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-light cancel-edit-btn" data-section="payment">Cancel</button>
+                  <button class="btn btn-primary save-edit-btn" data-section="payment">Save Changes</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="info-section">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-map-marker-alt"></i>
+                Tracking Information
+              </h3>
+              <button class="btn btn-light btn-sm edit-section-btn" data-section="tracking">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+            </div>
+            <div class="section-body">
+              <div class="section-display" id="trackingDisplay">
+                <div class="tracking-number-display">
+                  <p>
+                    <strong>Tracking Number:</strong>
+                    <span id="trackingNumberText">Loading...</span>
+                    <button class="btn-icon copy-tracking-btn" title="Copy Tracking Number">
+                      <i class="fas fa-copy"></i>
+                    </button>
+                  </p>
+                  <p>
+                    <strong>Courier Service:</strong>
+                    <span id="courierService">Loading...</span>
+                  </p>
+                  <p>
+                    <strong>Last Updated:</strong>
+                    <span id="trackingLastUpdated">Loading...</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="section-edit-form" id="trackingEditForm" style="display: none;">
+                <div class="form-group">
+                  <label>Tracking Number</label>
+                  <input type="text" class="form-input" id="editTrackingNumber">
+                </div>
+                <div class="form-group">
+                  <label>Courier Service</label>
+                  <select class="form-select" id="editCourierService">
+                    <option value="BlueDart">BlueDart</option>
+                    <option value="DTDC">DTDC</option>
+                    <option value="Delhivery">Delhivery</option>
+                    <option value="FedEx">FedEx</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Tracking Status</label>
+                  <select class="form-select" id="editTrackingStatus">
+                    <option value="pending">Pending</option>
+                    <option value="processing">Processing</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                  </select>
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-light cancel-edit-btn" data-section="tracking">Cancel</button>
+                  <button class="btn btn-primary save-edit-btn" data-section="tracking">Save Changes</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/order-detail.js"></script>
+
+</body>
+
+</html>

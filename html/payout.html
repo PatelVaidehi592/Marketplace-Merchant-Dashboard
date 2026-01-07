@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payouts Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/payout.css" />
+
+ 
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-money-check-alt"></i> Payouts Dashboard</h1>
+      <div class="subtitle">
+        Manage vendor payouts, commissions, and financial analytics
+      </div>
+
+      <div class="view-toggle">
+        <button class="toggle-btn active" data-view="orders">
+          <i class="fas fa-shopping-cart"></i> Orders View
+        </button>
+        <button class="toggle-btn" data-view="vendors">
+          <i class="fas fa-users"></i> Vendors View
+        </button>
+      </div>
+
+      <div class="category-tabs">
+        <button class="tab active" data-category="in-process">
+          <i class="fas fa-cogs"></i> In-Process Orders
+        </button>
+        <button class="tab" data-category="payable">
+          <i class="fas fa-hand-holding-usd"></i> Payable
+        </button>
+        <button class="tab" data-category="unpaid">
+          <i class="fas fa-clock"></i> Unpaid Invoices
+        </button>
+        <button class="tab" data-category="paid">
+          <i class="fas fa-check-circle"></i> Paid Invoices
+        </button>
+      </div>
+    </header>
+
+    <div style="padding: 0 30px">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">
+            <i class="fas fa-hand-holding-usd"></i> Total Payable
+          </div>
+          <div class="stat-value" id="totalPayable">£0.00</div>
+          <div class="stat-change positive">
+            <i class="fas fa-arrow-up"></i>
+            <span id="payableChange">0%</span> from last month
+          </div>
+          <div class="stat-progress">
+            <div class="progress-bar" id="payableProgress" style="width: 0%"></div>
+          </div>
+          <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">
+            <i class="fas fa-clock"></i> Unpaid Invoices
+          </div>
+          <div class="stat-value" id="unpaidInvoices">£0.00</div>
+          <div class="stat-change negative">
+            <i class="fas fa-arrow-down"></i>
+            <span id="unpaidChange">0%</span> from last month
+          </div>
+          <div class="stat-progress">
+            <div class="progress-bar" id="unpaidProgress" style="width: 0%"></div>
+          </div>
+          <div class="stat-icon">
+            <i class="fas fa-exclamation-circle"></i>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">
+            <i class="fas fa-check-circle"></i> Paid Invoices
+          </div>
+          <div class="stat-value" id="paidInvoices">£0.00</div>
+          <div class="stat-change positive">
+            <i class="fas fa-arrow-up"></i>
+            <span id="paidChange">0%</span> from last month
+          </div>
+          <div class="stat-progress">
+            <div class="progress-bar" id="paidProgress" style="width: 0%"></div>
+          </div>
+          <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+        </div>
+      </div>
+
+      <div class="payout-distribution">
+        <div class="distribution-header">
+          <h3>Payout Distribution</h3>
+          <div class="time-filter">
+            <button class="time-btn active" data-period="monthly">
+              Monthly
+            </button>
+            <button class="time-btn" data-period="quarterly">
+              Quarterly
+            </button>
+            <button class="time-btn" data-period="yearly">Yearly</button>
+          </div>
+        </div>
+
+        <div class="distribution-percentages" id="distributionPercentages">
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-title">Data Overview</div>
+
+    <div class="table-container">
+      <div class="filters">
+        <div class="search-box">
+          <i class="fas fa-search search-icon"></i>
+          <input id="searchInput" placeholder="Search orders, vendors, payment methods..." />
+        </div>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="new">New Orders</button>
+          <button class="filter-btn" data-filter="fixed">% Fixed</button>
+          <button class="filter-btn" data-filter="conferred">
+            Conferred
+          </button>
+          <button class="filter-btn" id="refreshDataBtn">
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+        </div>
+      </div>
+
+      <table id="ordersTable">
+        <thead>
+          <tr>
+            <th class="sortable" data-sort="date">
+              Date <i class="fas fa-sort"></i>
+            </th>
+            <th class="sortable" data-sort="order">
+              Order ID <i class="fas fa-sort"></i>
+            </th>
+            <th class="sortable" data-sort="vendor">
+              Vendor Name <i class="fas fa-sort"></i>
+            </th>
+            <th>Product Details</th>
+            <th class="sortable" data-sort="status">
+              Order Status <i class="fas fa-sort"></i>
+            </th>
+            <th>Return Window</th>
+            <th class="sortable" data-sort="sales">
+              Sales <i class="fas fa-sort"></i>
+            </th>
+            <th class="sortable" data-sort="commission">
+              Commission <i class="fas fa-sort"></i>
+            </th>
+            <th class="sortable" data-sort="payout">
+              Payouts <i class="fas fa-sort"></i>
+            </th>
+            <th>Payment Method</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="ordersBody"></tbody>
+      </table>
+
+      <table id="vendorTable" style="display: none">
+        <thead>
+          <tr>
+            <th class="sortable" data-sort="vendor">
+              Vendor Name <i class="fas fa-sort"></i>
+            </th>
+            <th class="sortable" data-sort="orders">
+              Order Count <i class="fas fa-sort"></i>
+            </th>
+            <th class="sortable" data-sort="sales">
+              Sales <i class="fas fa-sort"></i>
+            </th>
+            <th class="sortable" data-sort="commission">
+              Commission <i class="fas fa-sort"></i>
+            </th>
+            <th class="sortable" data-sort="payout">
+              Payouts <i class="fas fa-sort"></i>
+            </th>
+            <th>Payment Method</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="vendorBody"></tbody>
+      </table>
+
+      <div class="footer-info">
+        <div>
+          Payouts Dashboard •
+          <span id="lastUpdatedText">Data updates in real-time</span> • Last
+          updated: <span id="lastUpdated">Today 10:30 AM</span>
+        </div>
+        <div class="pagination">
+          <button class="pagination-btn" id="prevPage">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <span>Page <span id="currentPage">1</span> of
+            <span id="totalPages">1</span></span>
+          <button class="pagination-btn" id="nextPage">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="modal" id="detailModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle">Details</div>
+        <button class="modal-close" id="closeModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-tabs">
+          <button class="modal-tab active" data-tab="vendor">
+            Vendor Details
+          </button>
+          <button class="modal-tab" data-tab="product">
+            Product Details
+          </button>
+          <button class="modal-tab" data-tab="payout">Payout Details</button>
+        </div>
+
+        <div id="vendorTab" class="modal-tab-content">
+          <!-- Vendor details will be populated here -->
+        </div>
+
+        <div id="productTab" class="modal-tab-content" style="display: none">
+          <!-- Product details will be populated here -->
+        </div>
+
+        <div id="payoutTab" class="modal-tab-content" style="display: none">
+          <!-- Payout details will be populated here -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-detail" id="closeModalBtn">Close</button>
+        <button class="btn btn-payable" id="processPaymentBtn">
+          Process Payment
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div class="notification" id="notification">
+    <i class="fas fa-check-circle"></i>
+    <span id="notificationText">Action completed successfully</span>
+  </div>
+
+
+  <script src="../js/payout.js"> </script>
+
+</body>
+
+</html>

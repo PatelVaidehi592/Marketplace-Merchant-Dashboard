@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pricing & Currency Settings</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/price-currency.css" />
+    <style>
+      
+
+    
+
+      .logo {
+        padding: 0 20px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo h2 {
+        color: #fff;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        /* margin-left: 260px; */
+        padding: 20px;
+        transition: var(--transition);
+      }
+
+      .main-content.expanded {
+        margin-left: 70px;
+      }
+
+      /* Header */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+        padding: 25px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #3b82f6, #10b981, #f59e0b);
+      }
+
+      .header-content {
+        flex: 1;
+      }
+
+      .page-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .page-title i {
+        color: var(--primary);
+        font-size: 1.8rem;
+      }
+
+      .page-subtitle {
+        color: var(--gray);
+        font-size: 1rem;
+        max-width: 600px;
+      }
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 15px;
+        background-color: var(--light);
+        border-radius: 30px;
+      }
+
+      .user-profile img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      /* Main Content Layout */
+      .content-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .main-content-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+      }
+
+      @media (max-width: 900px) {
+        .main-content-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Cards */
+      .card {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        padding: 25px;
+        margin-bottom: 25px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 1px solid #f1f5f9;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      .card-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #1e293b;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .card-title i {
+        color: var(--primary);
+        width: 24px;
+        text-align: center;
+      }
+
+      /* Buttons */
+      .btn {
+        padding: 12px 20px;
+        border-radius: var(--border-radius);
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: var(--transition);
+        font-size: 0.95rem;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: var(--secondary);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+      }
+
+      .btn-secondary {
+        background: var(--light);
+        color: var(--dark);
+        border: 1px solid var(--light-gray);
+      }
+
+      .btn-secondary:hover {
+        background: #e2e8f0;
+      }
+
+      .btn-success {
+        background: var(--success);
+        color: white;
+      }
+
+      .btn-success:hover {
+        background: #059669;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      }
+
+      .btn-warning {
+        background: var(--warning);
+        color: white;
+      }
+
+      .btn-warning:hover {
+        background: #d97706;
+      }
+
+      .btn-sm {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+      }
+
+      .btn-icon {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border-radius: 50%;
+      }
+
+      /* Forms */
+      .form-group {
+        margin-bottom: 22px;
+      }
+
+      .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--dark);
+        font-size: 0.95rem;
+      }
+
+      .form-label .hint {
+        color: var(--gray);
+        font-weight: 400;
+        font-size: 0.85rem;
+        margin-left: 8px;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid var(--light-gray);
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        transition: var(--transition);
+        background: white;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+      }
+
+      .select-wrapper {
+        position: relative;
+      }
+
+      .select-wrapper::after {
+        content: "\f078";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--gray);
+        pointer-events: none;
+      }
+
+      select.form-control {
+        appearance: none;
+        padding-right: 40px;
+      }
+
+      /* Range Slider */
+      .range-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top: 8px;
+      }
+
+      .range-value {
+        background: #f0f9ff;
+        padding: 8px 16px;
+        border-radius: 6px;
+        min-width: 70px;
+        text-align: center;
+        font-weight: 600;
+        color: var(--primary);
+        border: 1px solid #dbeafe;
+      }
+
+      input[type="range"] {
+        flex: 1;
+        height: 8px;
+        border-radius: 4px;
+        background: #e2e8f0;
+        outline: none;
+        -webkit-appearance: none;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--primary);
+        cursor: pointer;
+        border: 3px solid white;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Radio & Checkbox */
+      .radio-group {
+        display: flex;
+        gap: 20px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+
+      .radio-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        padding: 10px 16px;
+        border-radius: var(--border-radius);
+        border: 1px solid var(--light-gray);
+        transition: var(--transition);
+        background: white;
+      }
+
+      .radio-option:hover {
+        border-color: var(--primary);
+        background: #f0f9ff;
+      }
+
+      .radio-option input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--primary);
+      }
+
+      /* FX Display */
+      .current-fx {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        padding: 20px;
+        border-radius: var(--border-radius);
+        margin-bottom: 20px;
+        border: 1px solid #dbeafe;
+      }
+
+      .fx-info {
+        flex: 1;
+      }
+
+      .fx-currencies {
+        font-size: 1rem;
+        color: var(--dark);
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .fx-rate {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 5px 0;
+        font-family: "Inter", monospace;
+      }
+
+      .fx-updated {
+        color: var(--gray);
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .fx-updated i {
+        color: var(--success);
+      }
+
+      .fx-status {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+      }
+
+      /* Status Badges */
+      .status-badge {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+      }
+
+      .status-success {
+        background: #d1fae5;
+        color: #065f46;
+      }
+
+      .status-warning {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      .status-error {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      .status-info {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+
+      /* Toggle Switch */
+      .toggle-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+      }
+
+      .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+      }
+
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #cbd5e1;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+
+      .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
+        background: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .toggle-slider {
+        background: var(--primary);
+      }
+
+      input:checked + .toggle-slider:before {
+        transform: translateX(26px);
+      }
+
+      /* Manual Override */
+      .manual-override-form {
+        background: #f8fafc;
+        padding: 20px;
+        border-radius: var(--border-radius);
+        margin-top: 20px;
+        border: 1px solid var(--light-gray);
+      }
+
+      .form-row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .form-row .form-group {
+        flex: 1;
+        margin-bottom: 0;
+      }
+
+      .currency-selectors {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 10px 0;
+      }
+
+      .currency-selectors i {
+        color: var(--gray);
+      }
+
+      /* FX History */
+      .history-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        font-size: 0.9rem;
+      }
+
+      .history-table th {
+        text-align: left;
+        padding: 14px 16px;
+        background: #f8fafc;
+        font-weight: 600;
+        color: var(--dark);
+        border-bottom: 1px solid var(--light-gray);
+      }
+
+      .history-table td {
+        padding: 14px 16px;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      .history-table tr {
+        transition: background 0.2s;
+      }
+
+      .history-table tr:hover {
+        background: #f8fafc;
+      }
+
+      .history-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      /* Stats Cards */
+      .stats-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+
+      .stat-card {
+        background: white;
+        padding: 16px;
+        border-radius: var(--border-radius);
+        border: 1px solid var(--light-gray);
+        text-align: center;
+      }
+
+      .stat-value {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 5px 0;
+      }
+
+      .stat-label {
+        font-size: 0.85rem;
+        color: var(--gray);
+      }
+
+      /* Action Buttons */
+      .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid var(--light-gray);
+      }
+
+      /* Progress Bar */
+      .progress-bar {
+        height: 6px;
+        background: #e2e8f0;
+        border-radius: 3px;
+        overflow: hidden;
+        margin-top: 5px;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: var(--primary);
+        border-radius: 3px;
+        transition: width 0.5s;
+      }
+
+      /* Tooltip */
+      .tooltip {
+        position: relative;
+        display: inline-block;
+        margin-left: 8px;
+      }
+
+      .tooltip .tooltip-text {
+        visibility: hidden;
+        width: 200px;
+        background: #1e293b;
+        color: white;
+        text-align: center;
+        padding: 8px 12px;
+        border-radius: 6px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-size: 0.85rem;
+        font-weight: 400;
+      }
+
+      .tooltip:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      /* Footer */
+      .footer {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid var(--light-gray);
+        color: var(--gray);
+        font-size: 0.9rem;
+      }
+
+      /* Notification */
+      .notification {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        padding: 16px 20px;
+        border-radius: var(--border-radius);
+        background: var(--success);
+        color: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transform: translateY(100px);
+        opacity: 0;
+        transition: transform 0.3s, opacity 0.3s;
+        z-index: 1000;
+        max-width: 350px;
+      }
+
+      .notification.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .notification-error {
+        background: var(--danger);
+      }
+
+      .notification-warning {
+        background: var(--warning);
+      }
+
+      .notification-info {
+        background: var(--primary);
+      }
+
+      /* Responsive */
+      @media (max-width: 992px) {
+        .sidebar {
+          width: 70px;
+        }
+
+        .sidebar.expanded {
+          width: 260px;
+        }
+
+        .sidebar.expanded .logo h2 span,
+        .sidebar.expanded .logo h2:not(:first-child),
+        .sidebar.expanded .nav-links a span {
+          display: inline;
+        }
+
+        .sidebar.expanded .logo {
+          text-align: left;
+          padding: 0 20px 20px;
+        }
+
+        .sidebar.expanded .nav-links {
+          padding: 0 15px;
+        }
+
+        .sidebar.expanded .nav-links a {
+          justify-content: flex-start;
+          padding: 12px 15px;
+        }
+
+        .sidebar.expanded .nav-links i {
+          margin-right: 10px;
+          font-size: 16px;
+        }
+
+        .main-content {
+          margin-left: 70px;
+        }
+
+        .main-content.expanded {
+          margin-left: 260px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .form-row {
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .stats-container {
+          grid-template-columns: 1fr;
+        }
+
+        .current-fx {
+          flex-direction: column;
+          gap: 15px;
+          text-align: center;
+        }
+
+        .fx-status {
+          align-items: center;
+        }
+
+        header {
+          flex-direction: column;
+          gap: 20px;
+          text-align: center;
+        }
+
+        .action-buttons {
+          flex-direction: column;
+        }
+
+        .action-buttons .btn {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+
+      <!-- Main Content -->
+      <main class="main-content" id="mainContent">
+        <!-- Header -->
+
+        <div class="content-wrapper">
+          <div class="main-content-grid">
+            <!-- LEFT COLUMN -->
+            <div>
+              <!-- FX Provider Selection -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">
+                    <i class="fas fa-exchange-alt"></i>
+                    FX Provider Selection
+                  </h2>
+                  <div class="card-actions">
+                    <button class="btn btn-primary btn-sm" id="refreshRates">
+                      <i class="fas fa-sync-alt"></i> Refresh Rates
+                    </button>
+                  </div>
+                </div>
+
+                <div class="stats-container">
+                  <div class="stat-card">
+                    <div class="stat-label">Last Update</div>
+                    <div class="stat-value" id="lastUpdateTime">2 min</div>
+                  </div>
+                  <div class="stat-card">
+                    <div class="stat-label">Accuracy</div>
+                    <div class="stat-value">99.8%</div>
+                  </div>
+                  <div class="stat-card">
+                    <div class="stat-label">Latency</div>
+                    <div class="stat-value">45 ms</div>
+                  </div>
+                </div>
+
+                <div class="current-fx">
+                  <div class="fx-info">
+                    <div class="fx-currencies">
+                      <span class="status-badge status-info">USD</span>
+                      <i class="fas fa-arrow-right"></i>
+                      <span class="status-badge status-info">EUR</span>
+                    </div>
+                    <div class="fx-rate" id="currentRate">0.9234</div>
+                    <div class="fx-updated">
+                      <i class="fas fa-clock"></i>
+                      Updated: <span id="lastUpdated">Just now</span>
+                    </div>
+                    <div class="progress-bar">
+                      <div
+                        class="progress-fill"
+                        id="updateProgress"
+                        style="width: 100%"
+                      ></div>
+                    </div>
+                  </div>
+                  <div class="fx-status">
+                    <span class="status-badge status-success">
+                      <i class="fas fa-check-circle"></i> Live
+                    </span>
+                    <span class="status-badge status-info">
+                      <i class="fas fa-bolt"></i> Fast
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Markup Percentage -->
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div>
+              <!-- Rounding Rules -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">
+                    <i class="fas fa-ruler-combined"></i>
+                    Rounding Rules
+                  </h2>
+                  <button class="btn btn-secondary btn-sm" id="testRounding">
+                    <i class="fas fa-calculator"></i> Test
+                  </button>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Rounding Method</label>
+                  <div class="select-wrapper">
+                    <select class="form-control" id="roundingMethod">
+                      <option value="nearest">Nearest (Mathematical)</option>
+                      <option value="up" selected>Always Up (Ceiling)</option>
+                      <option value="down">Always Down (Floor)</option>
+                      <option value="bankers">Banker's Rounding</option>
+                      <option value="truncate">Truncate</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Round To Nearest</label>
+                  <div class="select-wrapper">
+                    <select class="form-control" id="roundTo">
+                      <option value="0.01">0.01 (1 cent)</option>
+                      <option value="0.05" selected>0.05 (5 cents)</option>
+                      <option value="0.10">0.10 (10 cents)</option>
+                      <option value="0.25">0.25 (25 cents)</option>
+                      <option value="0.50">0.50 (50 cents)</option>
+                      <option value="1.00">1.00 (1 unit)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="toggle-group">
+                  <div>
+                    <label class="form-label">Psychological Pricing</label>
+                    <div class="hint">
+                      End prices with .99, .95 for better perception
+                    </div>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="psychologicalPricing" checked />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+
+                <div class="toggle-group">
+                  <div>
+                    <label class="form-label">Currency Symbol Placement</label>
+                    <div class="hint">Show symbol before or after amount</div>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="symbolPlacement" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Manual FX Override -->
+
+              <!-- FX Update History -->
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+        </div>
+      </main>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+      <i class="fas fa-check-circle"></i>
+      <span id="notificationText">Settings saved successfully!</span>
+    </div>
+
+    <script>
+      // DOM Elements
+      const markupRange = document.getElementById("markupRange");
+      const markupValue = document.getElementById("markupValue");
+      const currentRate = document.getElementById("currentRate");
+      const lastUpdated = document.getElementById("lastUpdated");
+      const overrideToggle = document.getElementById("overrideToggle");
+      const overrideForm = document.getElementById("overrideForm");
+      const overrideDisabledMessage = document.getElementById(
+        "overrideDisabledMessage"
+      );
+      const applyOverrideBtn = document.getElementById("applyOverride");
+      const refreshRatesBtn = document.getElementById("refreshRates");
+      const saveBtn = document.getElementById("saveBtn");
+      const cancelBtn = document.getElementById("cancelBtn");
+      const resetBtn = document.getElementById("resetBtn");
+      const clearHistoryBtn = document.getElementById("clearHistory");
+      const exportHistoryBtn = document.getElementById("exportHistory");
+      const testRoundingBtn = document.getElementById("testRounding");
+      const notification = document.getElementById("notification");
+      const notificationText = document.getElementById("notificationText");
+      const historyTableBody = document.getElementById("historyTableBody");
+      const updateProgress = document.getElementById("updateProgress");
+      const lastUpdateTime = document.getElementById("lastUpdateTime");
+
+      // State
+      let isOverrideEnabled = false;
+      let currentFxRate = 0.9234;
+      let updateInterval;
+      let historyData = [
+        {
+          date: "2023-10-15 14:30:22",
+          action: "FX Rate Update",
+          details: "USD/EUR: 0.9234 → 0.9251",
+          status: "success",
+        },
+        {
+          date: "2023-10-15 13:15:08",
+          action: "Manual Override",
+          details: "USD/EUR set to 0.9234",
+          status: "warning",
+        },
+        {
+          date: "2023-10-15 10:45:33",
+          action: "Markup Change",
+          details: "Markup increased to 7.5%",
+          status: "success",
+        },
+        {
+          date: "2023-10-14 16:20:17",
+          action: "Provider Change",
+          details: "Switched to OANDA provider",
+          status: "success",
+        },
+        {
+          date: "2023-10-14 09:12:45",
+          action: "Rounding Rules",
+          details: 'Changed to "Always Up" method',
+          status: "success",
+        },
+        {
+          date: "2023-10-13 14:22:10",
+          action: "Auto Refresh",
+          details: "Rates updated automatically",
+          status: "success",
+        },
+        {
+          date: "2023-10-13 11:05:33",
+          action: "Manual Override",
+          details: "Manual override disabled",
+          status: "info",
+        },
+      ];
+
+      // Initialize
+      function init() {
+        updateMarkupValue();
+        renderHistoryTable();
+        updateLastUpdatedTime();
+        startUpdateTimer();
+        setupEventListeners();
+        initializeSidebar();
+
+        // Set initial override state
+        overrideToggle.addEventListener("change", toggleOverride);
+        overrideToggle.checked = false;
+      }
+
+      // Sidebar functionality
+      function initializeSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        const mainContent = document.getElementById("mainContent");
+        const toggleBtn = document.getElementById("toggleSidebar");
+
+        toggleBtn.addEventListener("click", function () {
+          sidebar.classList.toggle("collapsed");
+          sidebar.classList.toggle("expanded");
+          mainContent.classList.toggle("expanded");
+
+          // Update icon
+          const icon = toggleBtn.querySelector("i");
+          if (sidebar.classList.contains("collapsed")) {
+            icon.classList.remove("fa-bars");
+            icon.classList.add("fa-chevron-right");
+          } else {
+            icon.classList.remove("fa-chevron-right");
+            icon.classList.add("fa-bars");
+          }
+        });
+
+        // Set current active page
+        const navLinks = document.querySelectorAll(".nav-links a");
+        navLinks.forEach((link) => {
+          if (link.textContent.includes("Currency Settings")) {
+            link.classList.add("active");
+          } else {
+            link.classList.remove("active");
+          }
+        });
+      }
+
+      // Event Listeners
+      function setupEventListeners() {
+        markupRange.addEventListener("input", updateMarkupValue);
+        applyOverrideBtn.addEventListener("click", applyOverride);
+        refreshRatesBtn.addEventListener("click", refreshRates);
+        saveBtn.addEventListener("click", saveSettings);
+        cancelBtn.addEventListener("click", discardChanges);
+        resetBtn.addEventListener("click", resetToDefaults);
+        clearHistoryBtn.addEventListener("click", clearHistory);
+        exportHistoryBtn.addEventListener("click", exportHistory);
+        testRoundingBtn.addEventListener("click", testRounding);
+
+        // Real-time update simulation
+        setInterval(updateProgressBar, 1000);
+      }
+
+      // Update markup value display
+      function updateMarkupValue() {
+        const value = parseFloat(markupRange.value).toFixed(1);
+        markupValue.textContent = `${value}%`;
+
+        // Update status badge color based on value
+        const markupStatus = document.getElementById("markupStatus");
+        if (value < 5) {
+          markupStatus.className = "status-badge status-error";
+          markupStatus.textContent = "Low";
+        } else if (value > 20) {
+          markupStatus.className = "status-badge status-warning";
+          markupStatus.textContent = "High";
+        } else {
+          markupStatus.className = "status-badge status-success";
+          markupStatus.textContent = "Optimal";
+        }
+      }
+
+      // Toggle manual override
+      function toggleOverride() {
+        isOverrideEnabled = overrideToggle.checked;
+
+        if (isOverrideEnabled) {
+          overrideForm.style.display = "block";
+          overrideDisabledMessage.style.display = "none";
+
+          // Add to history
+          addHistoryEntry(
+            "Manual Override",
+            "Manual FX override enabled",
+            "warning"
+          );
+
+          showNotification("Manual FX override enabled", "info");
+        } else {
+          overrideForm.style.display = "none";
+          overrideDisabledMessage.style.display = "block";
+
+          // Add to history
+          addHistoryEntry(
+            "Manual Override",
+            "Manual FX override disabled",
+            "info"
+          );
+
+          showNotification("Manual FX override disabled");
+        }
+      }
+
+      // Apply manual override
+      function applyOverride() {
+        const baseCurrency = document.getElementById("overrideBase").value;
+        const targetCurrency = document.getElementById("overrideTarget").value;
+        const rate = parseFloat(
+          document.getElementById("overrideRate").value
+        ).toFixed(4);
+
+        if (!rate || rate <= 0) {
+          showNotification("Please enter a valid exchange rate", "error");
+          return;
+        }
+
+        // Update current rate display
+        currentFxRate = parseFloat(rate);
+        currentRate.textContent = rate;
+
+        // Add to history
+        addHistoryEntry(
+          "Manual Override",
+          `${baseCurrency}/${targetCurrency} set to ${rate}`,
+          "warning"
+        );
+
+        showNotification(`FX rate overridden to ${rate}`, "warning");
+
+        // Update last updated time
+        updateLastUpdatedTime();
+      }
+
+      // Refresh FX rates
+      function refreshRates() {
+        // Show loading state
+        refreshRatesBtn.innerHTML =
+          '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+        refreshRatesBtn.disabled = true;
+
+        // Reset progress bar
+        updateProgress.style.width = "0%";
+
+        // Simulate API call
+        setTimeout(() => {
+          // Generate a small random change to the rate
+          const change = (Math.random() - 0.5) * 0.01;
+          currentFxRate = Math.max(
+            0.85,
+            Math.min(0.99, currentFxRate + change)
+          );
+
+          // Update display
+          currentRate.textContent = currentFxRate.toFixed(4);
+
+          // Update last updated time
+          updateLastUpdatedTime();
+
+          // Update progress bar to 100%
+          updateProgress.style.width = "100%";
+
+          // Add to history
+          addHistoryEntry(
+            "FX Rate Update",
+            `USD/EUR: ${(currentFxRate - change).toFixed(
+              4
+            )} → ${currentFxRate.toFixed(4)}`,
+            "success"
+          );
+
+          // Reset button
+          refreshRatesBtn.innerHTML =
+            '<i class="fas fa-sync-alt"></i> Refresh Rates';
+          refreshRatesBtn.disabled = false;
+
+          showNotification("FX rates updated successfully");
+        }, 1500);
+      }
+
+      // Update last updated time
+      function updateLastUpdatedTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        });
+        lastUpdated.textContent = `Today at ${timeString}`;
+
+        // Update last update time stat
+        lastUpdateTime.textContent = "Just now";
+
+        // Reset the timer
+        startUpdateTimer();
+      }
+
+      // Start update timer
+      function startUpdateTimer() {
+        let seconds = 0;
+        clearInterval(updateInterval);
+
+        updateInterval = setInterval(() => {
+          seconds++;
+          if (seconds < 60) {
+            lastUpdateTime.textContent = `${seconds} sec`;
+          } else if (seconds < 3600) {
+            const minutes = Math.floor(seconds / 60);
+            lastUpdateTime.textContent = `${minutes} min`;
+          }
+        }, 1000);
+      }
+
+      // Update progress bar
+      function updateProgressBar() {
+        const currentWidth = parseInt(updateProgress.style.width);
+        if (currentWidth < 100) {
+          updateProgress.style.width = currentWidth + 0.5 + "%";
+        }
+      }
+
+      // Save all settings
+      function saveSettings() {
+        // Show saving state
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        saveBtn.disabled = true;
+
+        // Simulate API call
+        setTimeout(() => {
+          // Gather all settings
+          const settings = {
+            fxProvider: document.getElementById("fxProvider").value,
+            updateFrequency: document.querySelector(
+              'input[name="frequency"]:checked'
+            ).value,
+            markupPercentage: parseFloat(markupRange.value).toFixed(1),
+            markupApply: document.querySelector(
+              'input[name="markupApply"]:checked'
+            ).value,
+            roundingMethod: document.getElementById("roundingMethod").value,
+            roundTo: document.getElementById("roundTo").value,
+            psychologicalPricing: document.getElementById(
+              "psychologicalPricing"
+            ).checked,
+            tieredMarkup: document.getElementById("tieredMarkup").checked,
+            symbolPlacement: document.getElementById("symbolPlacement").checked,
+            manualOverrideEnabled: isOverrideEnabled,
+            manualOverrideRate: isOverrideEnabled
+              ? parseFloat(document.getElementById("overrideRate").value)
+              : null,
+          };
+
+          // In a real app, you would send settings to the server here
+          console.log("Saving settings:", settings);
+
+          // Add to history
+          addHistoryEntry(
+            "Settings Save",
+            "All pricing settings saved",
+            "success"
+          );
+
+          // Reset button
+          saveBtn.innerHTML = '<i class="fas fa-save"></i> Save All Settings';
+          saveBtn.disabled = false;
+
+          showNotification("All settings saved successfully");
+        }, 1200);
+      }
+
+      // Discard changes
+      function discardChanges() {
+        if (confirm("Are you sure you want to discard all changes?")) {
+          // Reset form to current state (in a real app, you'd fetch from server)
+          showNotification("Changes discarded", "error");
+
+          // Add to history
+          addHistoryEntry("Settings Change", "Changes discarded", "error");
+        }
+      }
+
+      // Reset to defaults
+      function resetToDefaults() {
+        if (confirm("Reset all settings to default values?")) {
+          // Reset form elements
+          document.getElementById("fxProvider").value = "oanda";
+          document.querySelector(
+            'input[name="frequency"][value="realtime"]'
+          ).checked = true;
+          markupRange.value = 7.5;
+          updateMarkupValue();
+          document.querySelector(
+            'input[name="markupApply"][value="all"]'
+          ).checked = true;
+          document.getElementById("roundingMethod").value = "up";
+          document.getElementById("roundTo").value = "0.05";
+          document.getElementById("psychologicalPricing").checked = true;
+          document.getElementById("tieredMarkup").checked = false;
+          document.getElementById("symbolPlacement").checked = false;
+
+          // Disable override if enabled
+          if (isOverrideEnabled) {
+            overrideToggle.checked = false;
+            toggleOverride();
+          }
+
+          // Add to history
+          addHistoryEntry(
+            "Settings Reset",
+            "All settings reset to defaults",
+            "warning"
+          );
+
+          showNotification("Settings reset to defaults", "warning");
+        }
+      }
+
+      // Clear history
+      function clearHistory() {
+        if (
+          historyData.length > 0 &&
+          confirm(
+            "Are you sure you want to clear the history? This action cannot be undone."
+          )
+        ) {
+          historyData = [];
+          renderHistoryTable();
+
+          // Add to history (this will be the only entry)
+          addHistoryEntry(
+            "History Clear",
+            "All history entries cleared",
+            "error"
+          );
+
+          showNotification("History cleared", "error");
+        }
+      }
+
+      // Export history
+      function exportHistory() {
+        // In a real app, this would generate a CSV or PDF
+        const timestamp = new Date().toISOString().split("T")[0];
+        showNotification(
+          `History exported (${historyData.length} entries)`,
+          "info"
+        );
+
+        // Add to history
+        addHistoryEntry("Export", "History data exported", "info");
+      }
+
+      // Test rounding rules
+      function testRounding() {
+        const testPrice = 123.4567;
+        const roundingMethod = document.getElementById("roundingMethod").value;
+        const roundTo = parseFloat(document.getElementById("roundTo").value);
+
+        let result;
+        switch (roundingMethod) {
+          case "up":
+            result = Math.ceil(testPrice / roundTo) * roundTo;
+            break;
+          case "down":
+            result = Math.floor(testPrice / roundTo) * roundTo;
+            break;
+          case "nearest":
+            result = Math.round(testPrice / roundTo) * roundTo;
+            break;
+          case "bankers":
+            // Simplified banker's rounding
+            const rounded = Math.round(testPrice / roundTo);
+            result = rounded * roundTo;
+            break;
+          default:
+            result = Math.trunc(testPrice / roundTo) * roundTo;
+        }
+
+        alert(
+          `Test Price: $${testPrice.toFixed(
+            4
+          )}\nRounding Method: ${roundingMethod}\nRound To: $${roundTo.toFixed(
+            2
+          )}\nResult: $${result.toFixed(2)}`
+        );
+
+        // Add to history
+        addHistoryEntry(
+          "Test Rounding",
+          `Tested ${roundingMethod} rounding on $${testPrice.toFixed(2)}`,
+          "info"
+        );
+      }
+
+      // Render history table
+      function renderHistoryTable() {
+        historyTableBody.innerHTML = "";
+
+        historyData.forEach((entry) => {
+          const row = document.createElement("tr");
+
+          // Determine status badge class
+          let statusClass = "status-success";
+          if (entry.status === "warning") statusClass = "status-warning";
+          if (entry.status === "error") statusClass = "status-error";
+          if (entry.status === "info") statusClass = "status-info";
+
+          row.innerHTML = `
+      <td>${entry.date}</td>
+      <td>${entry.action}</td>
+      <td>${entry.details}</td>
+      <td><span class="status-badge ${statusClass}">${
+            entry.status.charAt(0).toUpperCase() + entry.status.slice(1)
+          }</span></td>
+    `;
+
+          historyTableBody.appendChild(row);
+        });
+      }
+
+      // Add entry to history
+      function addHistoryEntry(action, details, status) {
+        const now = new Date();
+        const dateString = `${now.getFullYear()}-${String(
+          now.getMonth() + 1
+        ).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")} ${String(
+          now.getHours()
+        ).padStart(2, "0")}:${String(now.getMinutes()).padStart(
+          2,
+          "0"
+        )}:${String(now.getSeconds()).padStart(2, "0")}`;
+
+        // Add to beginning of array
+        historyData.unshift({
+          date: dateString,
+          action: action,
+          details: details,
+          status: status,
+        });
+
+        // Keep only last 50 entries
+        if (historyData.length > 50) {
+          historyData = historyData.slice(0, 50);
+        }
+
+        // Re-render table
+        renderHistoryTable();
+      }
+
+      // Show notification
+      function showNotification(message, type = "success") {
+        notificationText.textContent = message;
+
+        // Set notification type
+        notification.className = "notification";
+        if (type === "error") {
+          notification.classList.add("notification-error");
+        } else if (type === "warning") {
+          notification.classList.add("notification-warning");
+        } else if (type === "info") {
+          notification.classList.add("notification-info");
+        } else {
+          notification.classList.remove(
+            "notification-error",
+            "notification-warning",
+            "notification-info"
+          );
+        }
+
+        // Show notification
+        notification.classList.add("show");
+
+        // Hide after 3 seconds
+        setTimeout(() => {
+          notification.classList.remove("show");
+        }, 3000);
+      }
+
+      // Initialize the application
+      document.addEventListener("DOMContentLoaded", init);
+    </script>
+  </body>
+</html>

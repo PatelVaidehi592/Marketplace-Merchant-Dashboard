@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Sync - Vendor Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/all-sync.css" />
+
+
+</head>
+
+<body>
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">All Product Sync Settings</h1>
+      <a href="vendor-management.html " class="back-btn">
+        <i class="fas fa-arrow-left"></i> Back to Vendors
+      </a>
+    </div>
+
+    <!-- Vendor Info Card -->
+    <div class="vendor-info-card" id="vendorInfoCard">
+      <!-- Vendor info will be loaded by JavaScript -->
+    </div>
+
+    <!-- Product Sync Section -->
+    <div class="sync-settings-container">
+      <div class="sync-section">
+        <div class="sync-header">
+          <h3 class="sync-title">Product Sync Settings</h3>
+          <div class="sync-status">
+            <div class="sync-status-indicator" id="productSyncStatus"></div>
+            <span class="sync-status-text" id="productSyncStatusText">Last sync: 5 minutes ago</span>
+          </div>
+        </div>
+
+        <div class="sync-options">
+          <div class="sync-option">
+            <h4 class="sync-option-title">Sync Controls</h4>
+            <div class="sync-controls">
+              <div class="sync-toggle">
+                <span class="toggle-label">Inventory Sync</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="inventorySyncToggle" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="sync-toggle">
+                <span class="toggle-label">Price Sync</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="priceSyncToggle" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="sync-toggle">
+                <span class="toggle-label">Image Sync</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="imageSyncToggle" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="sync-toggle">
+                <span class="toggle-label">Description Sync</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="descriptionSyncToggle" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="sync-option">
+            <h4 class="sync-option-title">Advanced Settings</h4>
+            <div class="sync-controls">
+              <div class="sync-toggle">
+                <span class="toggle-label">Sync Product Variants</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="variantsSyncToggle" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="sync-toggle">
+                <span class="toggle-label">Sync Out-of-Stock Products</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="outOfStockSyncToggle" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="sync-toggle">
+                <span class="toggle-label">Auto-create Categories</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="categoriesSyncToggle" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="sync-toggle">
+                <span class="toggle-label">Sync Product Reviews</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="reviewsSyncToggle" />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sync-actions">
+          <button class="sync-now-btn" id="productSyncNow">
+            <i class="fas fa-sync-alt"></i> Sync Products Now
+          </button>
+          <button class="save-settings-btn" id="saveProductSettings">
+            <i class="fas fa-save"></i> Save Settings
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="../js/all-sync.js"></script>
+
+</body>
+
+</html>

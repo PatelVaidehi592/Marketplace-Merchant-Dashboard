@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Dashboard - Multi-Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+      <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/sync-product-channel.css" />
+
+   </head>
+
+<body>
+    <div class="container">
+        <!-- Header with Platform Selection -->
+        <div class="header">
+            <div class="header-left">
+                <h1><i class="fas fa-cube"></i> Product Dashboard</h1>
+                <div class="header-subtitle">Manage products across multiple platforms</div>
+            </div>
+
+            <div class="platform-selector">
+                <div class="platform-btn active" data-platform="shopify">
+                    <i class="fab fa-shopify"></i> Shopify
+                </div>
+                <div class="platform-btn" data-platform="wix">
+                    <i class="fas fa-store"></i> Wix
+                </div>
+                <div class="platform-btn" data-platform="woocommerce">
+                    <i class="fab fa-wordpress"></i> WooCommerce
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Bar with Controls -->
+        <div class="top-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search products, variants, SKUs...">
+            </div>
+
+            <div class="action-buttons-container">
+                <!-- FIXED: Filter Dropdown -->
+                <div class="filter-dropdown-container">
+                    <div class="action-btn" id="filtersBtn">
+                        <i class="fas fa-sliders-h"></i>
+                        <span>Filters</span>
+                        <div class="active-filters-badge" id="activeFiltersBadge" style="display: none;">0</div>
+                    </div>
+
+                    <div class="filter-dropdown-menu" id="filterDropdown">
+                        <!-- PRODUCT STATUS -->
+                        <div class="filter-option main-filter has-submenu" data-filter="status">
+                            <span class="filter-option-text">Product Status</span>
+                            <i class="fas fa-chevron-right filter-chevron"></i>
+
+                            <div class="filter-submenu">
+                                <div class="filter-submenu-option" data-filter="status" data-value="all">
+                                    All Status
+                                </div>
+                                <div class="filter-submenu-option" data-filter="status" data-value="active">
+                                    Active
+                                </div>
+                                <div class="filter-submenu-option" data-filter="status" data-value="pending">
+                                    Pending
+                                </div>
+                                <div class="filter-submenu-option" data-filter="status" data-value="private">
+                                    Private
+                                </div>
+                                <div class="filter-submenu-option" data-filter="status" data-value="rejected">
+                                    Rejected
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MAPPING STATUS -->
+                        <div class="filter-option main-filter has-submenu" data-filter="mapping">
+                            <span class="filter-option-text">Mapping Status</span>
+                            <i class="fas fa-chevron-right filter-chevron"></i>
+
+                            <div class="filter-submenu">
+                                <div class="filter-submenu-option" data-filter="mapping" data-value="all">
+                                    All
+                                </div>
+                                <div class="filter-submenu-option" data-filter="mapping" data-value="mapped">
+                                    Mapped
+                                </div>
+                                <div class="filter-submenu-option" data-filter="mapping" data-value="unmapped">
+                                    Unmapped
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- STOCK STATUS -->
+                        <div class="filter-option main-filter has-submenu" data-filter="stock">
+                            <span class="filter-option-text">Stock Status</span>
+                            <i class="fas fa-chevron-right filter-chevron"></i>
+
+                            <div class="filter-submenu">
+                                <div class="filter-submenu-option" data-filter="stock" data-value="all">
+                                    All Stock
+                                </div>
+                                <div class="filter-submenu-option" data-filter="stock" data-value="in-stock">
+                                    In Stock
+                                </div>
+                                <div class="filter-submenu-option" data-filter="stock" data-value="out-of-stock">
+                                    Out of Stock
+                                </div>
+                                <div class="filter-submenu-option" data-filter="stock" data-value="low-stock">
+                                    Low Stock
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bulk Actions with Dropdown -->
+                <div class="bulk-actions-container">
+                    <div class="action-btn" id="bulkActionsBtn">
+                        <i class="fas fa-tasks"></i>
+                        <span>Bulk Actions</span>
+                        <i class="fas fa-chevron-down" style="font-size: 12px;"></i>
+                    </div>
+
+                    <div class="bulk-dropdown" id="bulkDropdown">
+                        <div class="bulk-group">
+                            <div class="bulk-group-header">Product Status</div>
+                            <div class="bulk-option" data-action="set-active">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Set Active</span>
+                            </div>
+                            <div class="bulk-option" data-action="set-pending">
+                                <i class="fas fa-clock"></i>
+                                <span>Set Pending</span>
+                            </div>
+                            <div class="bulk-option" data-action="set-private">
+                                <i class="fas fa-lock"></i>
+                                <span>Set Private</span>
+                            </div>
+                            <div class="bulk-option" data-action="set-rejected">
+                                <i class="fas fa-times-circle"></i>
+                                <span>Set Rejected</span>
+                            </div>
+                        </div>
+
+                        <div class="bulk-group">
+                            <div class="bulk-group-header">Danger Zone</div>
+                            <div class="bulk-option delete" data-action="delete">
+                                <i class="fas fa-trash"></i>
+                                <span>Delete Selected</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-btn" id="refreshBtn">
+                    <i class="fas fa-redo-alt"></i>
+                    <span>Refresh</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Filters Display -->
+        <div class="active-filters-container" id="activeFiltersContainer">
+            <!-- Active filters will appear here -->
+        </div>
+
+        <!-- Main Product Table -->
+        <div class="table-container">
+            <table class="product-table">
+                <thead class="table-header">
+                    <tr>
+                        <th style="width: 50px;">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="select-all">
+                            </div>
+                        </th>
+                        <th>Product</th>
+                        <th>Details</th>
+                        <th>Status</th>
+                        <th>Stock</th>
+                        <th>Mapping</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="productTableBody">
+                    <!-- Products will be dynamically inserted here -->
+                </tbody>
+            </table>
+            <div id="noProductsMessage" class="no-products" style="display: none;">
+                <i class="fas fa-box-open"></i>
+                <h3>No products found</h3>
+                <p>Try adjusting your search or filter criteria</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Upload Modal -->
+    <div class="image-upload-modal" id="imageUploadModal">
+        <div class="image-upload-content">
+            <div class="image-upload-header">
+                <h3><i class="fas fa-image"></i> Upload Variant Image</h3>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+
+            <div class="image-preview-container" id="imagePreviewContainer">
+                <div class="upload-placeholder" id="uploadPlaceholder">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Click to upload or drag and drop</p>
+                    <p style="font-size: 13px; margin-top: 8px; color: #94a3b8;">PNG, JPG, GIF up to 5MB</p>
+                </div>
+                <img src="" alt="Preview" class="image-preview" id="imagePreview">
+            </div>
+
+            <input type="file" id="imageUploadInput" accept="image/*" style="display: none;">
+
+            <div class="upload-actions">
+                <button class="upload-btn secondary" id="cancelUpload">Cancel</button>
+                <button class="upload-btn primary" id="uploadImage">Upload Image</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Operation completed successfully!</span>
+    </div>
+
+
+    <script src="../js/sync-product-channel.js"></script>
+
+</body>
+
+</html>

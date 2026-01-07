@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Details</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/product-info.css" />
+ 
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-left">
+        <h1>Product Details</h1>
+        <p>View and manage product information</p>
+      </div>
+      <div class="header-right">
+        <a href="product-list.html" class="btn btn-secondary">
+          <i class="fas fa-arrow-left"></i> Back to Products
+        </a>
+        <div class="user-profile">
+          <img src="https://ui-avatars.com/api/?name=Admin+User&background=4361ee&color=fff" alt="Admin User" />
+          <div>
+            <h4>Admin User</h4>
+            <p>Super Admin</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+    </div>
+
+    <div id="productDetail" style="display: none">
+      <div class="product-detail-container">
+        <div class="product-image-section">
+          <div class="main-image-container">
+            <img id="mainImage" class="main-image" alt="Product Image" />
+            <div id="imagePlaceholder" class="image-placeholder">
+              <i class="fas fa-box-open"></i>
+            </div>
+          </div>
+          <div class="thumbnail-container">
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&h=200&fit=crop"
+              class="thumbnail active" onclick="changeMainImage(this.src)" alt="Thumbnail 1" />
+            <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=200&h=200&fit=crop"
+              class="thumbnail" onclick="changeMainImage(this.src)" alt="Thumbnail 2" />
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=200&fit=crop"
+              class="thumbnail" onclick="changeMainImage(this.src)" alt="Thumbnail 3" />
+            <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=200&h=200&fit=crop" class="thumbnail"
+              onclick="changeMainImage(this.src)" alt="Thumbnail 4" />
+          </div>
+        </div>
+
+        <div class="product-info-section">
+          <div class="product-header">
+            <div class="product-title">
+              <h1 id="productName">Smart Watch Pro X3</h1>
+              <div class="product-meta">
+                <span id="productSku" class="product-sku">SKU: SW-1001</span>
+                <span id="productStatus" class="badge active">Active</span>
+                <span id="productFeatured" class="badge featured" style="display: none">
+                  <i class="fas fa-star"></i> Featured
+                </span>
+              </div>
+            </div>
+            <div class="product-actions">
+              <button class="btn btn-warning" onclick="editProduct()">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+            </div>
+          </div>
+
+          <div class="price-section">
+            <div class="current-price">
+              <span id="originalPrice" class="original-price" style="display: none">$299.99</span>
+              $<span id="productPrice">285.80</span>
+            </div>
+            <div id="discountBadge" class="discount-badge" style="display: none">
+              Save 15%
+            </div>
+          </div>
+
+          <div class="details-grid">
+            <div class="detail-item">
+              <span class="detail-label">Vendor</span>
+              <span id="productVendor" class="detail-value">Amazon</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Category</span>
+              <span id="productCategory" class="detail-value">Electronics</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Stock</span>
+              <span id="productStock" class="detail-value">
+                <span class="stock-status stock-in">
+                  <i class="fas fa-box"></i> 45 in stock
+                </span>
+              </span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Platforms</span>
+              <div id="productPlatforms" class="platform-tags">
+                <span class="platform-tag">Web</span>
+                <span class="platform-tag">Android</span>
+                <span class="platform-tag">iOS</span>
+              </div>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Date Added</span>
+              <span id="productDate" class="detail-value">2024-03-15</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Last Updated</span>
+              <span id="productUpdated" class="detail-value">2024-03-20</span>
+            </div>
+          </div>
+
+          <div class="description-section">
+            <h3>Product Description</h3>
+            <div id="productDescription" class="description-content">
+              Advanced smartwatch with heart rate monitoring, GPS tracking,
+              sleep analysis, and 7-day battery life. Water-resistant up to 50
+              meters, compatible with both Android and iOS devices.
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button class="btn btn-primary" onclick="toggleStatus('active')">
+              <i class="fas fa-check-circle"></i> Set Active
+            </button>
+            <button class="btn btn-secondary" onclick="toggleStatus('private')">
+              <i class="fas fa-eye-slash"></i> Set Private
+            </button>
+            <button class="btn btn-success" onclick="toggleFeatured()">
+              <i class="fas fa-star"></i> Toggle Featured
+            </button>
+            <button class="btn btn-danger" onclick="deleteProduct()">
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="activity-section">
+        <h3>Activity Timeline</h3>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-date">Today, 10:30 AM</div>
+            <div class="timeline-content">Product viewed by 15 users</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">Yesterday, 3:45 PM</div>
+            <div class="timeline-content">
+              Price updated from $299.99 to $285.80
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">March 18, 2024</div>
+            <div class="timeline-content">Marked as Featured product</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">March 15, 2024</div>
+            <div class="timeline-content">Product added to the system</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <script src="../js/product-info.js"></script>
+
+</body>
+
+</html>

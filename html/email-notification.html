@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Email & Notification Settings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/email.css" />
+</head>
+
+<body>
+  <!-- MAIN SETTINGS PAGE -->
+  <div id="main-page">
+    <div class="header">
+      <h1>Email & Notification Settings</h1>
+      <p>Manage email preferences, templates, and test email functionality</p>
+    </div>
+
+    <div class="container">
+      <!-- LEFT COLUMN: NOTIFICATION TOGGLES -->
+      <div class="card">
+        <div class="section-header">
+          <h2>📩 Email Notifications</h2>
+          <div class="section-actions">
+            <button class="btn-secondary" id="enableAll">Enable All</button>
+            <button class="btn-secondary" id="disableAll">Disable All</button>
+          </div>
+        </div>
+
+        <div class="settings-list">
+          <div class="setting">
+            <div class="setting-info">
+              <strong>Order Confirmation</strong>
+              <p>Send email when a customer places an order</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="orderConfirm" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="setting">
+            <div class="setting-info">
+              <strong>Shipment Updates</strong>
+              <p>Notify customers about shipment progress and delivery</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="shipmentUpdate" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="setting">
+            <div class="setting-info">
+              <strong>Promotional Emails</strong>
+              <p>Send promotional offers and newsletters to subscribers</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="promotional" />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="setting">
+            <div class="setting-info">
+              <strong>Account Notifications</strong>
+              <p>Send emails for account changes and security alerts</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="accountAlerts" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: TEMPLATES LIST -->
+      <div class="card">
+        <h2>✉️ Email Templates</h2>
+        <p style="color: var(--muted); margin-bottom: 20px; font-size: 14px">
+          Edit and customize your email templates
+        </p>
+
+        <div class="templates-list">
+          <div class="template">
+            <div>
+              <strong>Order Confirmation</strong>
+              <p style="color: var(--muted); font-size: 14px; margin-top: 4px">
+                Sent immediately after purchase
+              </p>
+            </div>
+            <button class="edit-template" data-template="order-confirmation">
+              Edit Template
+            </button>
+          </div>
+
+          <div class="template">
+            <div>
+              <strong>Shipment Update</strong>
+              <p style="color: var(--muted); font-size: 14px; margin-top: 4px">
+                Shipping notifications and tracking
+              </p>
+            </div>
+            <button class="edit-template" data-template="shipment-update">
+              Edit Template
+            </button>
+          </div>
+
+          <div class="template">
+            <div>
+              <strong>Welcome Email</strong>
+              <p style="color: var(--muted); font-size: 14px; margin-top: 4px">
+                New customer onboarding
+              </p>
+            </div>
+            <button class="edit-template" data-template="welcome-email">
+              Edit Template
+            </button>
+          </div>
+
+          <div class="template">
+            <div>
+              <strong>Password Reset</strong>
+              <p style="color: var(--muted); font-size: 14px; margin-top: 4px">
+                Account recovery emails
+              </p>
+            </div>
+            <button class="edit-template" data-template="password-reset">
+              Edit Template
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEST EMAIL SECTION -->
+    <div class="container" style="grid-template-columns: 1fr">
+      <div class="card">
+        <h2>🧪 Send Test Email</h2>
+        <p style="color: var(--muted); margin-bottom: 20px; font-size: 14px">
+          Preview how your emails will look to recipients
+        </p>
+
+        <div class="form-group">
+          <label for="testEmail">Recipient Email</label>
+          <input type="email" id="testEmail" placeholder="recipient@example.com" />
+        </div>
+
+        <div class="form-group">
+          <label for="testSubject">Email Subject</label>
+          <input type="text" id="testSubject" placeholder="Test email subject" />
+        </div>
+
+        <div class="form-group">
+          <label for="testMessage">Email Message</label>
+          <textarea id="testMessage" placeholder="Write your test email content here..."></textarea>
+        </div>
+
+        <div class="actions">
+          <button class="btn-secondary" id="clearForm">Clear Form</button>
+          <button class="btn-primary" id="sendTest">
+            <span>📧</span>
+            Send Test Email
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDITOR PAGE (hidden by default) -->
+  <div id="editor-page" class="editor-page">
+    <div class="header">
+      <h1 id="current-template-title">Template Editor</h1>
+      <p>Edit and customize your email template</p>
+    </div>
+
+    <div class="editor-container">
+      <div class="card">
+        <div class="actions" style="border-top: none; padding-top: 0; margin-top: 0; justify-content: flex-start;">
+          <button class="btn-secondary" id="back-to-templates">
+            <span>←</span>
+            Back to Templates
+          </button>
+          <div style="flex: 1;"></div>
+          <button class="btn-outline" id="preview-template">Preview</button>
+          <button class="btn-primary" id="save-template">
+            <span>💾</span>
+            Save Template
+          </button>
+        </div>
+
+        <div class="editor-tabs">
+          <button class="editor-tab active" data-tab="edit">Edit</button>
+          <button class="editor-tab" data-tab="preview">Preview</button>
+          <button class="editor-tab" data-tab="code">HTML Code</button>
+        </div>
+
+        <!-- EDIT TAB -->
+        <div class="editor-tab-content active" data-tab-content="edit">
+          <div class="template-variables">
+            <h4>Available Variables</h4>
+            <div class="variable-tags" id="variable-tags">
+              <!-- Variables will be inserted here by JavaScript -->
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="template-subject">Email Subject</label>
+            <input type="text" id="template-subject" placeholder="Email subject..." value="" />
+          </div>
+
+          <div class="form-group">
+            <label for="template-content">Email Content</label>
+            <textarea class="editor-textarea" id="template-content" placeholder="Email content..." rows="10"></textarea>
+          </div>
+        </div>
+
+        <!-- PREVIEW TAB -->
+        <div class="editor-tab-content" data-tab-content="preview">
+          <div class="template-preview" id="template-preview">
+            <p class="placeholder">Preview will appear here...</p>
+          </div>
+        </div>
+
+        <!-- CODE TAB -->
+        <div class="editor-tab-content" data-tab-content="code">
+          <div class="form-group">
+            <label for="template-html">HTML Code</label>
+            <textarea class="editor-textarea" id="template-html" placeholder="HTML code..." rows="15"></textarea>
+          </div>
+          <p style="color: var(--muted); font-size: 13px; margin-top: -15px">
+            <strong>Note:</strong> You can use &lt;style&gt; tags or inline CSS. Both will work in preview.
+          </p>
+        </div>
+
+        <div class="actions">
+          <button class="btn-secondary" id="back-to-templates-bottom">
+            <span>←</span>
+            Back to Templates
+          </button>
+          <div style="flex: 1;"></div>
+          <button class="btn-outline" id="reset-template">Reset to Default</button>
+          <button class="btn-primary" id="save-and-close">
+            <span>💾</span>
+            Save & Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast">
+    <div class="toast-icon">✅</div>
+    <div class="toast-message" id="toastMessage">
+      Settings saved successfully!
+    </div>
+  </div>
+
+  <script src="../js/email-notification.js"></script>
+</body>
+
+</html>
