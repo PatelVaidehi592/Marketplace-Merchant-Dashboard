@@ -6,10 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Return Orders - Order Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
     <link rel="stylesheet" href="../css/style.css" />
     <link rel="stylesheet" href="../css/return-order.css" />
-
 </head>
 
 <body>
@@ -29,6 +27,19 @@
                 </button>
             </div>
         </header>
+
+        <!-- Batch Actions (Hidden by default) -->
+        <div class="batch-actions" id="batchActions">
+            <div class="selected-count" id="selectedCount">0 items selected</div>
+            <div class="batch-buttons">
+                <button class="batch-btn batch-btn-primary" id="batchExport">
+                    <i class="fas fa-download"></i> Export Selected
+                </button>
+                <button class="batch-btn batch-btn-light" id="clearSelection">
+                    <i class="fas fa-times-circle"></i> Clear Selection
+                </button>
+            </div>
+        </div>
 
         <!-- Stats Cards -->
         <div class="stats-container">
@@ -106,6 +117,20 @@
                         <i class="fas fa-filter"></i> Apply Filter
                     </button>
                 </div>
+                <div class="filter-group bulk-action-group">
+                    <label>&nbsp;</label>
+                    <button class="bulk-action-btn" id="bulkActionBtn">
+                        <i class="fas fa-bolt"></i> Bulk Actions
+                    </button>
+                    <div class="bulk-action-dropdown" id="bulkActionDropdown">
+                        <button class="bulk-action-item approve" id="bulkApprove">
+                            <i class="fas fa-check"></i> Approve Selected
+                        </button>
+                        <button class="bulk-action-item reject" id="bulkReject">
+                            <i class="fas fa-times"></i> Reject Selected
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -115,6 +140,10 @@
                 <table class="returns-table" id="returnsTable">
                     <thead>
                         <tr>
+                            <th class="checkbox-cell">
+                                <input type="checkbox" id="selectAll" class="table-checkbox" 
+                                       onclick="toggleSelectAll(this)">
+                            </th>
                             <th>Return ID</th>
                             <th>Order ID</th>
                             <th>Product</th>
@@ -132,132 +161,10 @@
                 </table>
             </div>
         </div>
-
-        <!-- Return Detail Modal -->
-        <div class="modal-overlay" id="returnModal">
-            <div class="modal">
-                <div class="modal-header">
-                    <h3>Return Details - <span id="modalReturnId"></span></h3>
-                    <button class="close-modal" id="closeModal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <!-- Progress Bar -->
-                    <div class="return-progress">
-                        <div class="progress-steps" id="progressSteps">
-                            <!-- Progress steps will be dynamically added -->
-                        </div>
-                    </div>
-
-                    <!-- Detail Sections -->
-                    <div class="detail-grid">
-                        <!-- Basic Info -->
-                        <div class="detail-section">
-                            <h4><i class="fas fa-info-circle"></i> Basic Info</h4>
-                            <div class="detail-row">
-                                <strong>Return ID:</strong>
-                                <span id="detailReturnId"></span>
-                            </div>
-                            <div class="detail-row">
-                                <strong>Order ID:</strong>
-                                <span id="detailOrderId"></span>
-                            </div>
-                            <div class="detail-row">
-                                <strong>Product Name:</strong>
-                                <span id="detailProduct"></span>
-                            </div>
-                            <div class="detail-row">
-                                <strong>Quantity:</strong>
-                                <span id="detailQuantity"></span>
-                            </div>
-                            <div class="detail-row">
-                                <strong>Return Date:</strong>
-                                <span id="detailReturnDate"></span>
-                            </div>
-                        </div>
-
-                        <!-- Return Info -->
-                        <div class="detail-section">
-                            <h4><i class="fas fa-exchange-alt"></i> Return Info</h4>
-                            <div class="detail-row">
-                                <strong>Return Reason:</strong>
-                                <span id="detailReason"></span>
-                            </div>
-                            <div class="detail-row">
-                                <strong>Return Status:</strong>
-                                <span id="detailStatus"></span>
-                            </div>
-                            <div class="detail-row">
-                                <strong>Customer Comments:</strong>
-                                <span id="detailComments"></span>
-                            </div>
-                        </div>
-
-                        <!-- Refund Info -->
-                        <div class="detail-section">
-                            <h4><i class="fas fa-credit-card"></i> Refund Info</h4>
-                            <div class="detail-row">
-                                <strong>Refund Method:</strong>
-                                <span id="detailRefundMethod"></span>
-                            </div>
-                            <div class="detail-row">
-                                <strong>Refund Amount:</strong>
-                                <span id="detailRefundAmount"></span>
-                            </div>
-                            <div class="detail-row">
-                                <strong>Refund Status:</strong>
-                                <span id="detailRefundStatus"></span>
-                            </div>
-                            <div class="detail-row">
-                                <strong>Refund Date:</strong>
-                                <span id="detailRefundDate"></span>
-                            </div>
-                        </div>
-
-                        <!-- Pickup Info -->
-                        <div class="detail-section">
-                            <h4><i class="fas fa-truck"></i> Pickup Info</h4>
-                            <div class="detail-row">
-                                <strong>Pickup Address:</strong>
-                                <span id="detailPickupAddress"></span>
-                            </div>
-                            <div class="detail-row">
-                                <strong>Pickup Date:</strong>
-                                <span id="detailPickupDate"></span>
-                            </div>
-                            <div class="detail-row">
-                                <strong>Pickup Status:</strong>
-                                <span id="detailPickupStatus"></span>
-                            </div>
-                            <div class="detail-row">
-                                <strong>Courier Service:</strong>
-                                <span id="detailCourier"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Timeline -->
-                    <div class="timeline">
-                        <h4><i class="fas fa-history"></i> Return Timeline</h4>
-                        <div id="timelineContent">
-                            <!-- Timeline items will be added here -->
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-light" id="closeDetail">Close</button>
-                    <button class="btn btn-success" id="processReturn" style="display: none;">
-                        <i class="fas fa-check"></i> Process Next Step
-                    </button>
-                    <button class="btn btn-danger" id="rejectReturn" style="display: none;">
-                        <i class="fas fa-times"></i> Reject Return
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <script src="../js/return-order.js"></script>
 
+    <script src="../js/return-order.js"></script>
 </body>
 
 </html>

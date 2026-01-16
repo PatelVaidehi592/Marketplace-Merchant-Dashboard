@@ -39,6 +39,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    overflow: none;
+    /* scrollbar-width: thin;
+    scrollbar-color: #9ca3af #f1f1f1; */
+     scrollbar-width: none;
   }
 
   body {
@@ -47,7 +51,7 @@
     color: #1f2937;
     line-height: 1.5;
     min-height: 100vh;
-    padding: 20px;
+    /* padding: 20px; */
   }
 
   .page-wrapper {

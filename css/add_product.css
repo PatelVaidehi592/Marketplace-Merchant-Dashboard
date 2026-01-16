@@ -53,8 +53,8 @@
   }
 
   .page-wrapper {
-    max-width: 1000px;
-    margin: 0 auto;
+    max-width: 1200px;
+    margin: 0 30px;
     background: #fff;
     border-radius: var(--radius);
     padding: 32px 36px 40px;

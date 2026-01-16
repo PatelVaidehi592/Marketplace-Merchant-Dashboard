@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Categories</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fa;
+      color: #333;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e1e5eb;
+    }
+
+    h1 {
+      color: #2c3e50;
+      font-size: 28px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #2980b9;
+    }
+
+    .btn-secondary {
+      background-color: #95a5a6;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: #7f8c8d;
+    }
+
+    .btn-danger {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #c0392b;
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    @media (min-width: 992px) {
+      .main-content {
+        grid-template-columns: 1fr 2fr;
+      }
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-bottom: 1px solid #eaeaea;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-size: 20px;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    .card-body {
+      padding: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background-color: #f8f9fa;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      color: #2c3e50;
+      border-bottom: 2px solid #eaeaea;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    th:hover {
+      background-color: #f0f2f5;
+    }
+
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    .category-name {
+      font-weight: 500;
+      color: #34495e;
+    }
+
+    .products-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      background-color: #ecf0f1;
+      border-radius: 50%;
+      font-weight: 600;
+      color: #7f8c8d;
+    }
+
+    .commission {
+      color: #27ae60;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .action-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #7f8c8d;
+      font-size: 16px;
+      transition: color 0.3s ease;
+    }
+
+    .edit-btn:hover {
+      color: #3498db;
+    }
+
+    .delete-btn:hover {
+      color: #e74c3c;
+    }
+
+    .add-category-form {
+      padding: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 15px;
+      transition: border 0.3s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #3498db;
+      outline: none;
+    }
+
+    .commission-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .commission-input {
+      display: flex;
+      align-items: center;
+    }
+
+    .commission-input input {
+      flex: 1;
+    }
+
+    .commission-input span {
+      margin-left: 10px;
+      font-weight: 600;
+      color: #7f8c8d;
+      min-width: 30px;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #95a5a6;
+    }
+
+    .empty-state i {
+      font-size: 50px;
+      margin-bottom: 15px;
+      color: #bdc3c7;
+    }
+
+    .stats-bar {
+      display: flex;
+      justify-content: space-between;
+      background-color: #2c3e50;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #95a5a6;
+      font-size: 14px;
+      padding-top: 20px;
+      border-top: 1px solid #eaeaea;
+    }
+
+    /* Sorting styles */
+    .sort-indicator {
+      margin-left: 8px;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    .sort-controls {
+      display: flex;
+      gap: 5px;
+      margin-left: 8px;
+    }
+
+    .sort-btn {
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #7f8c8d;
+      transition: all 0.2s ease;
+    }
+
+    .sort-btn:hover {
+      background-color: #f0f2f5;
+      color: #3498db;
+    }
+
+    .sort-btn.active {
+      background-color: #3498db;
+      color: white;
+      border-color: #3498db;
+    }
+
+    .table-header-container {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      justify-content: space-between;
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .search-box {
+      padding: 8px 15px;
+      width: 200px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+    }
+
+    .sorting-active {
+      background-color: #e8f4fc;
+    }
+
+    .sorting-active th {
+      background-color: #e8f4fc;
+    }
+
+    /* Alert styles */
+    .alert {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 6px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 350px;
+      animation: slideIn 0.3s ease;
+      color: white;
+    }
+
+    .alert-success {
+      background-color: #2ecc71;
+    }
+
+    .alert-danger {
+      background-color: #e74c3c;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .header-actions {
+        width: 100%;
+      }
+
+      .header-actions .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .stats-bar {
+        gap: 20px;
+      }
+
+      .commission-inputs {
+        grid-template-columns: 1fr;
+      }
+
+      .table-header-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+
+      .search-box {
+        width: 100%;
+      }
+    }
+    @media (max-width: 500px) {
+      .header-actions {
+        flex-direction: column;
+      }
+
+      .stats-bar {
+        flex-direction: column;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-tags"></i> Manage Categories</h1>
+      <div class="header-actions">
+        <button class="btn btn-secondary" onclick="window.location.href='Dashboard.html'">
+          <i class="fas fa-arrow-left"></i> Back to All Products
+        </button>
+        <button class="btn btn-secondary" id="exportBtn">
+          <i class="fas fa-download"></i> Export
+        </button>
+        <button class="btn btn-primary" id="showAddForm">
+          <i class="fas fa-plus"></i> Add Category
+        </button>
+      </div>
+    </header>
+
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-value" id="totalCategories">7</div>
+        <div class="stat-label">Total Categories</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="totalProducts">11</div>
+        <div class="stat-label">Total Products</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="avgCommission">13.00%</div>
+        <div class="stat-label">Avg Commission</div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="add-category-section">
+        <div class="card">
+          <!-- <div class="card-header">
+            <h2 class="card-title">Add New Category</h2>
+          </div> -->
+          <div class="card-body">
+            <form id="addCategoryForm" class="add-category-form">
+              <div class="form-group">
+                <label for="categoryName">Category Name</label>
+                <input type="text" id="categoryName" placeholder="Enter category name" required>
+              </div>
+
+              <div class="form-group">
+                <label for="commissionRate">Commission Rate</label>
+                <div class="commission-inputs">
+                  <div class="commission-input">
+                    <input type="number" id="commissionRate" min="0" max="100" step="0.01" value="13.00" required>
+                    <span>%</span>
+                  </div>
+                  <div class="commission-input">
+                    <input type="number" id="fixedCommission" min="0" step="0.01" value="0.00" required>
+                    <span>£</span>
+                  </div>
+                </div>
+                <small style="color: #7f8c8d; margin-top: 5px; display: block;">Format: Percentage + Fixed
+                  Amount</small>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-secondary" id="cancelForm">
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary" id="submitCategoryBtn">
+                  <i class="fas fa-save"></i> Save Category
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="categories-list-section">
+        <div class="card">
+          <div class="card-header">
+            <div class="table-header-container">
+              <h2 class="card-title">Category List</h2>
+              <div class="table-actions">
+                <input type="text" id="searchInput" class="search-box" placeholder="Search categories...">
+                <div class="sort-controls">
+                  <button class="sort-btn" id="sortAscBtn" title="Sort A-Z">
+                    <i class="fas fa-arrow-up"></i>
+                  </button>
+                  <button class="sort-btn" id="sortDescBtn" title="Sort Z-A">
+                    <i class="fas fa-arrow-down"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <table id="categoriesTable">
+              <thead>
+                <tr id="tableHeader">
+                  <th data-sort="name">
+                    Category Name
+                    <span class="sort-indicator" id="nameSortIndicator"></span>
+                  </th>
+                  <th data-sort="products">
+                    Products
+                    <span class="sort-indicator" id="productsSortIndicator"></span>
+                  </th>
+                  <th data-sort="commission">
+                    Commission
+                    <span class="sort-indicator" id="commissionSortIndicator"></span>
+                  </th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="categoriesTableBody">
+                <!-- Categories will be populated by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p id="footerText">Category Management System &copy; 2023 | Total Categories: 7 | Total Products: 11</p>
+    </footer>
+  </div>
+
+  <script>
+    // Sample data from your requirements
+    let categories = [
+      { id: 1, name: "Automatikulir", productsCount: 3, commissionRate: "13.00", fixedCommission: "0.00" },
+      { id: 2, name: "Watch Strap", productsCount: 0, commissionRate: "13.00", fixedCommission: "0.00" },
+      { id: 3, name: "Watch Strap", productsCount: 4, commissionRate: "13.00", fixedCommission: "0.00" },
+      { id: 4, name: "Magento Development Service", productsCount: 1, commissionRate: "13.00", fixedCommission: "0.00" },
+      { id: 5, name: "Necklace", productsCount: 0, commissionRate: "13.00", fixedCommission: "0.00" },
+      { id: 6, name: "bracelet", productsCount: 2, commissionRate: "13.00", fixedCommission: "0.00" },
+      { id: 7, name: "watch band", productsCount: 1, commissionRate: "13.00", fixedCommission: "0.00" }
+    ];
+
+    // DOM Elements
+    const categoriesTableBody = document.querySelector('#categoriesTableBody');
+    const addCategoryForm = document.getElementById('addCategoryForm');
+    const categoryNameInput = document.getElementById('categoryName');
+    const commissionRateInput = document.getElementById('commissionRate');
+    const fixedCommissionInput = document.getElementById('fixedCommission');
+    const cancelFormButton = document.getElementById('cancelForm');
+    const showAddFormButton = document.getElementById('showAddForm');
+    const searchInput = document.getElementById('searchInput');
+    const sortAscBtn = document.getElementById('sortAscBtn');
+    const sortDescBtn = document.getElementById('sortDescBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const tableHeader = document.getElementById('tableHeader');
+    const totalCategoriesEl = document.getElementById('totalCategories');
+    const totalProductsEl = document.getElementById('totalProducts');
+    const avgCommissionEl = document.getElementById('avgCommission');
+    const footerText = document.getElementById('footerText');
+    const submitCategoryBtn = document.getElementById('submitCategoryBtn');
+
+    // Sorting state
+    let currentSort = {
+      field: 'name',
+      direction: 'asc'
+    };
+    let editingId = null;
+    let filteredCategories = [];
+
+    // Function to render categories table
+    function renderCategoriesTable(categoriesToRender = categories) {
+      categoriesTableBody.innerHTML = '';
+
+      if (categoriesToRender.length === 0) {
+        categoriesTableBody.innerHTML = `
+          <tr>
+            <td colspan="4">
+              <div class="empty-state">
+                <i class="fas fa-tags"></i>
+                <h3>No categories found</h3>
+                <p>Add your first category using the form above</p>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      categoriesToRender.forEach(category => {
+        const row = document.createElement('tr');
+        const commissionText = `Global: ${category.commissionRate}% + £${category.fixedCommission} Fixed`;
+
+        row.innerHTML = `
+          <td class="category-name">${category.name}</td>
+          <td><span class="products-count">${category.productsCount}</span></td>
+          <td class="commission">${commissionText}</td>
+          <td>
+            <div class="actions">
+              <button class="action-btn edit-btn" data-id="${category.id}" title="Edit">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="action-btn delete-btn" data-id="${category.id}" title="Delete">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        `;
+
+        categoriesTableBody.appendChild(row);
+      });
+
+      // Add event listeners to action buttons
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+          const id = parseInt(this.getAttribute('data-id'));
+          editCategory(id);
+        });
+      });
+
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+          const id = parseInt(this.getAttribute('data-id'));
+          deleteCategory(id);
+        });
+      });
+    }
+
+    // Function to sort categories
+    function sortCategories(categoriesToSort = categories) {
+      return [...categoriesToSort].sort((a, b) => {
+        let valueA, valueB;
+
+        switch (currentSort.field) {
+          case 'name':
+            valueA = a.name.toLowerCase();
+            valueB = b.name.toLowerCase();
+            break;
+          case 'products':
+            valueA = a.productsCount;
+            valueB = b.productsCount;
+            break;
+          case 'commission':
+            valueA = parseFloat(a.commissionRate);
+            valueB = parseFloat(b.commissionRate);
+            break;
+          default:
+            valueA = a.name.toLowerCase();
+            valueB = b.name.toLowerCase();
+        }
+
+        if (currentSort.direction === 'asc') {
+          return valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
+        } else {
+          return valueA < valueB ? 1 : valueA > valueB ? -1 : 0;
+        }
+      });
+    }
+
+    // Function to update sort indicators
+    function updateSortIndicators() {
+      // Reset all indicators
+      document.querySelectorAll('.sort-indicator').forEach(indicator => {
+        indicator.innerHTML = '';
+      });
+
+      // Reset all sort buttons
+      sortAscBtn.classList.remove('active');
+      sortDescBtn.classList.remove('active');
+
+      // Set active sort button
+      if (currentSort.direction === 'asc') {
+        sortAscBtn.classList.add('active');
+      } else {
+        sortDescBtn.classList.add('active');
+      }
+
+      // Set indicator for current sort field
+      const indicatorId = `${currentSort.field}SortIndicator`;
+      const indicator = document.getElementById(indicatorId);
+      if (indicator) {
+        indicator.innerHTML = currentSort.direction === 'asc' ? '↑' : '↓';
+      }
+    }
+
+    // Function to add a new category
+    function addCategory(name, commissionRate, fixedCommission) {
+      const newId = categories.length > 0 ? Math.max(...categories.map(c => c.id)) + 1 : 1;
+
+      const newCategory = {
+        id: newId,
+        name: name,
+        productsCount: 0,
+        commissionRate: commissionRate,
+        fixedCommission: fixedCommission
+      };
+
+      categories.push(newCategory);
+      applySortAndRender();
+      updateStats();
+
+      showAlert('Category added successfully!', 'success');
+    }
+
+    function editCategory(id) {
+      const category = categories.find(c => c.id === id);
+
+      if (!category) return;
+
+      categoryNameInput.value = category.name;
+      commissionRateInput.value = category.commissionRate;
+      fixedCommissionInput.value = category.fixedCommission;
+
+      editingId = id;
+
+      submitCategoryBtn.innerHTML = '<i class="fas fa-save"></i> Update Category';
+      document.querySelector('.add-category-section').scrollIntoView({ behavior: 'smooth' });
+      categoryNameInput.focus();
+    }
+
+    function updateCategory(id, name, commissionRate, fixedCommission) {
+      const categoryIndex = categories.findIndex(c => c.id === id);
+
+      if (categoryIndex === -1) return;
+
+      categories[categoryIndex].name = name;
+      categories[categoryIndex].commissionRate = commissionRate;
+      categories[categoryIndex].fixedCommission = fixedCommission;
+
+      applySortAndRender();
+      updateStats();
+
+      showAlert('Category updated successfully!', 'success');
+    }
+
+    function deleteCategory(id) {
+      const category = categories.find(c => c.id === id);
+
+      if (!category) return;
+
+      if (category.productsCount > 0) {
+        if (!confirm(`This category has ${category.productsCount} product(s). Are you sure you want to delete it?`)) {
+          return;
+        }
+      } else {
+        if (!confirm(`Are you sure you want to delete "${category.name}"?`)) {
+          return;
+        }
+      }
+
+      const categoryIndex = categories.findIndex(c => c.id === id);
+      categories.splice(categoryIndex, 1);
+
+      applySortAndRender();
+      updateStats();
+
+      showAlert('Category deleted successfully!', 'danger');
+
+      if (editingId === id) {
+        resetForm();
+      }
+    }
+
+    function resetForm() {
+      addCategoryForm.reset();
+      editingId = null;
+      commissionRateInput.value = "13.00";
+      fixedCommissionInput.value = "0.00";
+
+      submitCategoryBtn.innerHTML = '<i class="fas fa-save"></i> Save Category';
+    }
+
+    function updateStats() {
+      const totalCategories = categories.length;
+      const totalProducts = categories.reduce((sum, category) => sum + category.productsCount, 0);
+
+      const avgCommission = categories.length > 0
+        ? (categories.reduce((sum, cat) => sum + parseFloat(cat.commissionRate), 0) / categories.length).toFixed(2)
+        : "0.00";
+
+      totalCategoriesEl.textContent = totalCategories;
+      totalProductsEl.textContent = totalProducts;
+      avgCommissionEl.textContent = `${avgCommission}%`;
+      footerText.textContent = `Category Management System © 2023 | Total Categories: ${totalCategories} | Total Products: ${totalProducts}`;
+    }
+
+    function showAlert(message, type) {
+      const existingAlert = document.querySelector('.alert');
+      if (existingAlert) {
+        existingAlert.remove();
+      }
+
+      const alert = document.createElement('div');
+      alert.className = `alert alert-${type}`;
+      alert.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+        <span>${message}</span>
+      `;
+
+      document.body.appendChild(alert);
+
+      setTimeout(() => {
+        alert.remove();
+      }, 3000);
+    }
+
+    function searchCategories() {
+      const searchTerm = searchInput.value.toLowerCase().trim();
+
+      if (searchTerm === '') {
+        filteredCategories = [];
+        applySortAndRender();
+        return;
+      }
+
+      filteredCategories = categories.filter(category =>
+        category.name.toLowerCase().includes(searchTerm)
+      );
+
+      applySortAndRender(filteredCategories);
+    }
+
+    function exportData() {
+      const dataStr = JSON.stringify(categories, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'categories_export.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      showAlert('Data exported successfully!', 'success');
+    }
+
+    function applySortAndRender(categoriesToRender = null) {
+      const categoriesToSort = categoriesToRender || categories;
+      const sortedCategories = sortCategories(categoriesToSort);
+      renderCategoriesTable(sortedCategories);
+      updateSortIndicators();
+    }
+
+    addCategoryForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const name = categoryNameInput.value.trim();
+      const commissionRate = parseFloat(commissionRateInput.value).toFixed(2);
+      const fixedCommission = parseFloat(fixedCommissionInput.value).toFixed(2);
+
+      if (!name) {
+        showAlert('Please enter a category name', 'danger');
+        return;
+      }
+
+      const duplicate = categories.find(c =>
+        c.name.toLowerCase() === name.toLowerCase() && c.id !== editingId
+      );
+
+      if (duplicate) {
+        showAlert(`Category "${name}" already exists!`, 'danger');
+        return;
+      }
+
+      if (editingId) {
+        updateCategory(editingId, name, commissionRate, fixedCommission);
+      } else {
+        addCategory(name, commissionRate, fixedCommission);
+      }
+
+      resetForm();
+    });
+
+    cancelFormButton.addEventListener('click', resetForm);
+
+    showAddFormButton.addEventListener('click', function () {
+      resetForm();
+      document.querySelector('.add-category-section').scrollIntoView({ behavior: 'smooth' });
+      categoryNameInput.focus();
+    });
+
+    sortAscBtn.addEventListener('click', function () {
+      currentSort.direction = 'asc';
+      applySortAndRender(filteredCategories.length > 0 ? filteredCategories : null);
+    });
+
+    sortDescBtn.addEventListener('click', function () {
+      currentSort.direction = 'desc';
+      applySortAndRender(filteredCategories.length > 0 ? filteredCategories : null);
+    });
+
+    tableHeader.querySelectorAll('th[data-sort]').forEach(th => {
+      th.addEventListener('click', function () {
+        const field = this.getAttribute('data-sort');
+
+        if (currentSort.field === field) {
+          currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+          currentSort.field = field;
+          currentSort.direction = 'asc';
+        }
+
+        applySortAndRender(filteredCategories.length > 0 ? filteredCategories : null);
+      });
+    });
+
+    searchInput.addEventListener('input', searchCategories);
+
+    exportBtn.addEventListener('click', exportData);
+
+    document.addEventListener('DOMContentLoaded', function () {
+      applySortAndRender();
+      updateStats();
+
+    });
+  </script>
+</body>
+
+</html>

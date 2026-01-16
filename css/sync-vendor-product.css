@@ -602,11 +602,11 @@
       }
 
       .sync-actions {
-        flex-direction: column;
+        flex-wrap: nowrap !important;
       }
 
       .sync-actions button {
-        width: 100%;
+        /* width: 100%; */
       }
 
       .logs-table {

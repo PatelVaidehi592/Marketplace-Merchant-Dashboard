@@ -6,9 +6,9 @@
   <title>Admin Dashboard</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  
+
   <link rel="stylesheet" href="../css/style.css" />
- 
+
   <link rel="stylesheet" href="../css/sidebar.css">
   <style>
     :root {
@@ -26,6 +26,32 @@
       padding: 0;
       box-sizing: border-box;
       font-family: "Segoe UI", sans-serif;
+    }
+
+    .nav-links a {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: rgba(67, 97, 238, 0.25);
+      color: var(--primary);
+      /* Remove left: red - it's invalid CSS */
+    }
+
+    /* Add left side color indicator */
+    .nav-links a:hover::before,
+    .nav-links a.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 60%;
+      background-color: var(--primary);
+      border-radius: 0 4px 4px 0;
     }
 
     body {
@@ -65,7 +91,7 @@
         </a>
         <ul class="dropdown-menu">
           <li><a href="vendor-management.html">Vendor List</a></li>
-          <li><a href="vendor-details.html">Vendor Detail</a></li>
+          <!-- <li><a href="vendor-details.html">Vendor Detail</a></li> -->
           <li>
             <a href="all-sync.html">Vendor Sync Settings</a>
           </li>
@@ -81,9 +107,10 @@
         </a>
         <ul class="dropdown-menu">
           <li><a href="product-list.html">Product List</a></li>
-          <li><a href="product-detail.html">Product Detail</a></li>
+          <!-- <li><a href="product-detail.html">Product Detail</a></li> -->
           <li><a href="add_product.html">Add Product</a></li>
           <li><a href="approve-product.html">Approve Product</a></li>
+          <li><a href="product-categories.html">Product Categories</a></li>
         </ul>
       </li>
 
@@ -121,7 +148,7 @@
         </a>
         <ul class="dropdown-menu">
           <li>
-            <a href="new.html">sync-product-new</a>
+            <a href="sync-product-channel.html">sync-product-new</a>
           </li>
         </ul>
       </li>

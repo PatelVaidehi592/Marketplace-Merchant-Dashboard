@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Return Order Details - Order Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/return-order-details.css" />
+ 
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="main-header">
+      <div class="header-left">
+        <h1>Return Order Details</h1>
+        <p>Return ID: <span id="pageReturnId">RET-1001</span></p>
+      </div>
+      <div class="header-actions">
+        <a href="Return Orders.html" class="btn btn-light">
+          <i class="fas fa-arrow-left"></i> Back to Returns
+        </a>
+        <button class="btn btn-primary" onclick="printPage()">
+          <i class="fas fa-print"></i> Print
+        </button>
+      </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="return-progress">
+      <h3>Return Status</h3>
+      <div class="progress-steps" id="progressSteps">
+        <!-- Progress steps will be dynamically added -->
+      </div>
+    </div>
+
+    <!-- Detail Sections -->
+    <div class="detail-grid">
+      <!-- Basic Info -->
+      <div class="detail-section">
+        <h4><i class="fas fa-info-circle"></i> Basic Info</h4>
+        <div class="detail-row">
+          <strong>Return ID:</strong>
+          <span id="detailReturnId">RET-1001</span>
+        </div>
+        <div class="detail-row">
+          <strong>Order ID:</strong>
+          <span id="detailOrderId">ORD-1001</span>
+        </div>
+        <div class="detail-row">
+          <strong>Product Name:</strong>
+          <span id="detailProduct">Smartphone X</span>
+        </div>
+        <div class="detail-row">
+          <strong>Quantity:</strong>
+          <span id="detailQuantity">1</span>
+        </div>
+        <div class="detail-row">
+          <strong>Return Date:</strong>
+          <span id="detailReturnDate">Jan 10, 2024</span>
+        </div>
+        <div class="detail-row">
+          <strong>Return Status:</strong>
+          <span class="status-badge" id="detailStatusBadge">Requested</span>
+        </div>
+      </div>
+
+      <!-- Customer Info -->
+      <div class="detail-section">
+        <h4><i class="fas fa-user"></i> Customer Info</h4>
+        <div class="detail-row">
+          <strong>Customer Name:</strong>
+          <span id="detailCustomerName">John Smith</span>
+        </div>
+        <div class="detail-row">
+          <strong>Email:</strong>
+          <span id="detailCustomerEmail">john.smith@email.com</span>
+        </div>
+        <div class="detail-row">
+          <strong>Phone:</strong>
+          <span id="detailCustomerPhone">+1 (555) 123-4567</span>
+        </div>
+      </div>
+
+      <!-- Return Info -->
+      <div class="detail-section">
+        <h4><i class="fas fa-exchange-alt"></i> Return Info</h4>
+        <div class="detail-row">
+          <strong>Return Reason:</strong>
+          <span id="detailReason">Damaged Product</span>
+        </div>
+        <div class="detail-row">
+          <strong>Customer Comments:</strong>
+          <span id="detailComments">The screen arrived cracked</span>
+        </div>
+        <div class="detail-row">
+          <strong>Resolution Type:</strong>
+          <span id="detailResolutionType">Refund</span>
+        </div>
+      </div>
+
+   
+      <div class="detail-section">
+        <h4><i class="fas fa-truck"></i> Pickup Info</h4>
+        <div class="detail-row">
+          <strong>Pickup Address:</strong>
+          <span id="detailPickupAddress">123 Main Street, Apt 4B, New York</span>
+        </div>
+        <div class="detail-row">
+          <strong>Pickup Date:</strong>
+          <span id="detailPickupDate">Not scheduled</span>
+        </div>
+        <div class="detail-row">
+          <strong>Pickup Status:</strong>
+          <span id="detailPickupStatus">Pending</span>
+        </div>
+        <div class="detail-row">
+          <strong>Courier Service:</strong>
+          <span id="detailCourier">Not assigned</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h4><i class="fas fa-box"></i> Product Info</h4>
+        <div class="detail-row">
+          <strong>Product SKU:</strong>
+          <span id="detailProductSKU">SPX-2024-BLK</span>
+        </div>
+        <div class="detail-row">
+          <strong>Original Price:</strong>
+          <span id="detailOriginalPrice">$899.99</span>
+        </div>
+        <div class="detail-row">
+          <strong>Return Condition:</strong>
+          <span id="detailReturnCondition">Damaged</span>
+        </div>
+        <div class="detail-row">
+          <strong>Restocking Fee:</strong>
+          <span id="detailRestockingFee">$0.00</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <h4><i class="fas fa-history"></i> Return Timeline</h4>
+      <div id="timelineContent">
+      </div>
+    </div>
+
+    <div class="action-buttons" id="actionButtons">
+     
+    </div>
+  </div>
+
+      <script src="../js/return-order-details.js"></script>
+
+</body>
+
+</html>

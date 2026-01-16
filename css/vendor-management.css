@@ -1,15 +1,17 @@
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  /* padding: 20px; */
+}
 
-    .container {
-      width: 100%;
-      margin: 0 auto;
-
-    }
 
     /* Main Content */
     .main-content {
       flex: 1;
       padding: 20px;
-      width: 100%
+      width: 100%;
+      overflow: scroll;
     }
 
     header {
@@ -411,6 +413,7 @@
 
     .table-actions {
       display: flex;
+      flex-wrap: wrap;
       gap: 8px;
       align-items: center;
       position: relative;
@@ -880,79 +883,535 @@
       background-color: var(--warning);
     }
 
-    /* Responsive */
-    @media (max-width: 1200px) {
-      .filter-grid {
+    /* Responsive Styles for Vendor Management Dashboard */
+
+/* Large devices (desktops, less than 1200px) */
+@media (max-width: 1200px) {
+    .container {
+        max-width: 100%;
+        padding: 20px;
+    }
+    
+    .filter-grid {
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      }
     }
-
-    @media (max-width: 992px) {
-      .page-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-      }
-
-      .filter-grid {
-        grid-template-columns: 1fr 1fr;
-      }
+    
+    .vendors-table {
+        min-width: 900px;
     }
+}
 
-    @media (max-width: 768px) {
-      .header-right {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .filters-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-
-      .filter-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .pagination {
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      .table-actions {
-        flex-direction: column;
-      }
-
-      .action-dropdown {
-        position: fixed;
-        top: auto;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        border-radius: var(--border-radius) var(--border-radius) 0 0;
-        width: 100%;
-        max-height: 300px;
-        overflow-y: auto;
-      }
-    }
-
-    @media (max-width: 576px) {
-      .container {
-        padding: 10px;
-      }
-
-      header {
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 992px) {
+    .container {
         padding: 15px;
-      }
-
-      .vendors-table-container {
-        margin: 0 -10px;
         border-radius: 0;
-      }
-
-      .modal-content {
-        width: 95%;
-        margin: 10px;
-      }
     }
+    
+    .main-content {
+        padding: 15px;
+    }
+    
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .header-left h1 {
+        font-size: 22px;
+    }
+    
+    .header-left p {
+        font-size: 13px;
+    }
+    
+    .header-right {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .user-profile {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .page-title {
+        font-size: 24px;
+    }
+    
+    .add-vendor-btn {
+        /* width: 100%; */
+        justify-content: center;
+    }
+    
+    .filters-section {
+        padding: 20px 15px;
+        margin-bottom: 20px;
+    }
+    
+    .filters-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .filter-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    
+    .vendors-table-container {
+        margin: 0 -15px;
+        border-radius: 0;
+        overflow-x: auto;
+    }
+    
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .vendors-table {
+        min-width: 1000px;
+    }
+    
+    .pagination {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+        padding: 20px 15px;
+    }
+    
+    .pagination-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .modal-content {
+        width: 95%;
+        max-width: 600px;
+        margin: 20px;
+    }
+}
+
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .main-content {
+        padding: 10px;
+    }
+    
+    header {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .header-left h1 {
+        font-size: 20px;
+    }
+    
+    .user-profile {
+        padding: 8px 12px;
+    }
+    
+    .user-profile div h4 {
+        font-size: 14px;
+    }
+    
+    .user-profile div p {
+        font-size: 12px;
+    }
+    
+    .page-title {
+        font-size: 22px;
+    }
+    
+    .filters-section {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .filter-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .filter-group:last-child {
+        margin-top: 10px;
+    }
+    
+    .bulk-actions-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .bulk-actions-dropdown.show {
+        position: fixed;
+        top: auto !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 12px 12px 0 0;
+        max-height: 70vh;
+        overflow-y: auto;
+        animation: slideUp 0.3s ease;
+    }
+    
+    @keyframes slideUp {
+        from {
+            transform: translateY(100%);
+        }
+        to {
+            transform: translateY(0);
+        }
+    }
+    
+    .vendors-table-container {
+        margin: 0 -10px;
+    }
+    
+    .vendors-table th,
+    .vendors-table td {
+        padding: 12px 10px;
+        font-size: 13px;
+    }
+    
+    .vendor-avatar {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+    }
+    
+    .vendor-name {
+        font-size: 14px;
+    }
+    
+    .vendor-email {
+        font-size: 11px;
+    }
+    
+    .platform-badge,
+    .status-badge {
+        min-width: 80px;
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+    
+    .table-actions {
+        flex-wrap: nowrap;
+        gap: 5px;
+    }
+    
+    .sync-action-btn {
+        padding: 4px 8px;
+        font-size: 12px;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .action-btn {
+        width: 100%;
+        justify-content: center;
+        border-radius: 8px;
+    }
+    
+    .pagination {
+        padding: 15px;
+    }
+    
+    .pagination-info {
+        font-size: 13px;
+    }
+    
+    .pagination-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    
+    .page-number {
+        width: 32px;
+        height: 32px;
+        font-size: 13px;
+    }
+    
+    .modal-content {
+        width: 100%;
+        margin: 10px;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .modal-body {
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .modal-btn {
+        width: 100%;
+    }
+    
+    .action-dropdown.show {
+        position: fixed;
+        top: auto !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        border-radius: 12px 12px 0 0;
+        max-height: 50vh;
+        overflow-y: auto;
+        animation: slideUp 0.3s ease;
+    }
+    
+    .action-dropdown-item {
+        padding: 15px 20px;
+    }
+    
+    .toast {
+        left: 10px;
+        right: 10px;
+        width: calc(100% - 20px);
+        max-width: none;
+        justify-content: center;
+        text-align: center;
+    }
+    
+    /* Hide some columns on mobile */
+    .vendors-table th:nth-child(5), /* Country column */
+    .vendors-table td:nth-child(5),
+    .vendors-table th:nth-child(6), /* Products column */
+    .vendors-table td:nth-child(6) {
+        display: none;
+    }
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 576px) {
+    .container {
+        padding: 5px;
+    }
+    
+    .main-content {
+        padding: 5px;
+    }
+    
+    header {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+    
+    .header-left h1 {
+        font-size: 18px;
+    }
+    
+    .user-profile {
+        padding: 6px 10px;
+    }
+    
+    .user-profile img {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .page-title {
+        font-size: 20px;
+    }
+    
+    .add-vendor-btn {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+    
+    .filters-section {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+    
+    .filters-title {
+        font-size: 16px;
+    }
+    
+    .clear-filters {
+        font-size: 13px;
+    }
+    
+    .filter-select,
+    .search-input {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+    
+    .vendors-table th {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+    
+    .vendors-table td {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+    
+    .vendor-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .vendor-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 13px;
+    }
+    
+    .checkbox-cell {
+        width: 35px;
+    }
+    
+    .custom-checkbox {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .pagination-controls {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+    
+    .pagination-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .page-numbers {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .modal-header {
+        padding: 15px;
+    }
+    
+    .modal-title {
+        font-size: 18px;
+    }
+    
+    .modal-body {
+        padding: 15px;
+    }
+    
+    .modal-footer {
+        padding: 15px;
+    }
+    
+    .edit-form-group {
+        margin-bottom: 15px;
+    }
+    
+    .edit-form-label {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+    
+    .edit-form-input,
+    .edit-form-select {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+    
+    /* Hide more columns on very small screens */
+    .vendors-table th:nth-child(7), /* Last Sync column */
+    .vendors-table td:nth-child(7) {
+        display: none;
+    }
+}
+
+/* Very small devices (less than 400px) */
+@media (max-width: 400px) {
+    .user-profile {
+        flex-direction: column;
+        text-align: center;
+        gap: 5px;
+    }
+    
+    .user-profile div h4,
+    .user-profile div p {
+        display: none;
+    }
+    
+    .platform-badge,
+    .status-badge {
+        min-width: 70px;
+        font-size: 10px;
+        padding: 3px 6px;
+    }
+    
+    .table-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    /* Only show essential columns on extra small screens */
+    .vendors-table th:nth-child(1), /* Checkbox */
+    .vendors-table td:nth-child(1),
+    .vendors-table th:nth-child(4), /* Status */
+    .vendors-table td:nth-child(4),
+    .vendors-table th:nth-child(8), /* Actions */
+    .vendors-table td:nth-child(8) {
+        display: table-cell;
+    }
+    
+    .vendors-table th:nth-child(2), /* Vendor */
+    .vendors-table td:nth-child(2),
+    .vendors-table th:nth-child(3), /* Platform */
+    .vendors-table td:nth-child(3) {
+        display: none;
+    }
+}
+
+/* Tablet Landscape (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .header-right {
+        flex-direction: row;
+    }
+    
+    .filter-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .vendors-table {
+        min-width: 800px;
+    }
+    
+    .table-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    
+    .sync-action-btn {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+}

@@ -5,22 +5,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Payouts Dashboard</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-
-  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="../css/payout.css" />
-
- 
 </head>
 
 <body>
   <div class="container">
+    <!-- Top Navigation -->
+    <div class="top-nav">
+      <div class="logo">
+        <h2><i class="fas fa-store"></i> VendorHub</h2>
+        <p>Multi-Vendor Platform</p>
+      </div>
+      <div class="nav-tabs">
+        <a href="order.html" class="nav-tab">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Order Management</span>
+        </a>
+        <a href="payout.html" class="nav-tab active">
+          <i class="fas fa-money-check-alt"></i>
+          <span>Payouts Dashboard</span>
+        </a>
+      </div>
+    </div>
+
     <header>
       <h1><i class="fas fa-money-check-alt"></i> Payouts Dashboard</h1>
-      <div class="subtitle">
-        Manage vendor payouts, commissions, and financial analytics
-      </div>
+      <div class="subtitle">Manage vendor payouts, commissions, and financial analytics</div>
 
       <div class="view-toggle">
         <button class="toggle-btn active" data-view="orders">
@@ -30,184 +41,161 @@
           <i class="fas fa-users"></i> Vendors View
         </button>
       </div>
-
-      <div class="category-tabs">
-        <button class="tab active" data-category="in-process">
-          <i class="fas fa-cogs"></i> In-Process Orders
-        </button>
-        <button class="tab" data-category="payable">
-          <i class="fas fa-hand-holding-usd"></i> Payable
-        </button>
-        <button class="tab" data-category="unpaid">
-          <i class="fas fa-clock"></i> Unpaid Invoices
-        </button>
-        <button class="tab" data-category="paid">
-          <i class="fas fa-check-circle"></i> Paid Invoices
-        </button>
-      </div>
     </header>
 
-    <div style="padding: 0 30px">
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Stats Row -->
       <div class="stats-row">
         <div class="stat-card">
-          <div class="stat-label">
-            <i class="fas fa-hand-holding-usd"></i> Total Payable
-          </div>
-          <div class="stat-value" id="totalPayable">£0.00</div>
-          <div class="stat-change positive">
-            <i class="fas fa-arrow-up"></i>
-            <span id="payableChange">0%</span> from last month
-          </div>
+          <div class="stat-label"><i class="fas fa-check-circle"></i> Done Orders</div>
+          <div class="stat-value" id="doneOrders">£0.00</div>
+          <div class="stat-change positive"><i class="fas fa-arrow-up"></i> <span id="doneChange">0%</span> from last month</div>
           <div class="stat-progress">
-            <div class="progress-bar" id="payableProgress" style="width: 0%"></div>
-          </div>
-          <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">
-            <i class="fas fa-clock"></i> Unpaid Invoices
-          </div>
-          <div class="stat-value" id="unpaidInvoices">£0.00</div>
-          <div class="stat-change negative">
-            <i class="fas fa-arrow-down"></i>
-            <span id="unpaidChange">0%</span> from last month
-          </div>
-          <div class="stat-progress">
-            <div class="progress-bar" id="unpaidProgress" style="width: 0%"></div>
-          </div>
-          <div class="stat-icon">
-            <i class="fas fa-exclamation-circle"></i>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">
-            <i class="fas fa-check-circle"></i> Paid Invoices
-          </div>
-          <div class="stat-value" id="paidInvoices">£0.00</div>
-          <div class="stat-change positive">
-            <i class="fas fa-arrow-up"></i>
-            <span id="paidChange">0%</span> from last month
-          </div>
-          <div class="stat-progress">
-            <div class="progress-bar" id="paidProgress" style="width: 0%"></div>
+            <div class="progress-bar" id="doneProgress" style="width:0%"></div>
           </div>
           <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
         </div>
+        <div class="stat-card">
+          <div class="stat-label"><i class="fas fa-clock"></i> Pending Orders</div>
+          <div class="stat-value" id="pendingOrders">£0.00</div>
+          <div class="stat-change negative"><i class="fas fa-arrow-down"></i> <span id="pendingChange">0%</span> from last month</div>
+          <div class="stat-progress">
+            <div class="progress-bar" id="pendingProgress" style="width:0%"></div>
+          </div>
+          <div class="stat-icon"><i class="fas fa-clock"></i></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><i class="fas fa-times-circle"></i> Cancel Orders</div>
+          <div class="stat-value" id="cancelOrders">£0.00</div>
+          <div class="stat-change negative"><i class="fas fa-arrow-down"></i> <span id="cancelChange">0%</span> from last month</div>
+          <div class="stat-progress">
+            <div class="progress-bar" id="cancelProgress" style="width:0%"></div>
+          </div>
+          <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
+        </div>
       </div>
 
+      <!-- Payout Distribution -->
       <div class="payout-distribution">
         <div class="distribution-header">
-          <h3>Payout Distribution</h3>
+          <h3>Order Status Distribution</h3>
           <div class="time-filter">
-            <button class="time-btn active" data-period="monthly">
-              Monthly
-            </button>
-            <button class="time-btn" data-period="quarterly">
-              Quarterly
-            </button>
+            <button class="time-btn active" data-period="monthly">Monthly</button>
+            <button class="time-btn" data-period="quarterly">Quarterly</button>
             <button class="time-btn" data-period="yearly">Yearly</button>
           </div>
         </div>
 
         <div class="distribution-percentages" id="distributionPercentages">
-        </div>
-      </div>
-    </div>
-
-    <div class="divider-title">Data Overview</div>
-
-    <div class="table-container">
-      <div class="filters">
-        <div class="search-box">
-          <i class="fas fa-search search-icon"></i>
-          <input id="searchInput" placeholder="Search orders, vendors, payment methods..." />
-        </div>
-        <div class="filter-buttons">
-          <button class="filter-btn active" data-filter="all">All</button>
-          <button class="filter-btn" data-filter="new">New Orders</button>
-          <button class="filter-btn" data-filter="fixed">% Fixed</button>
-          <button class="filter-btn" data-filter="conferred">
-            Conferred
-          </button>
-          <button class="filter-btn" id="refreshDataBtn">
-            <i class="fas fa-sync-alt"></i> Refresh
-          </button>
+          <!-- Dynamic percentages will be generated here -->
         </div>
       </div>
 
-      <table id="ordersTable">
-        <thead>
-          <tr>
-            <th class="sortable" data-sort="date">
-              Date <i class="fas fa-sort"></i>
-            </th>
-            <th class="sortable" data-sort="order">
-              Order ID <i class="fas fa-sort"></i>
-            </th>
-            <th class="sortable" data-sort="vendor">
-              Vendor Name <i class="fas fa-sort"></i>
-            </th>
-            <th>Product Details</th>
-            <th class="sortable" data-sort="status">
-              Order Status <i class="fas fa-sort"></i>
-            </th>
-            <th>Return Window</th>
-            <th class="sortable" data-sort="sales">
-              Sales <i class="fas fa-sort"></i>
-            </th>
-            <th class="sortable" data-sort="commission">
-              Commission <i class="fas fa-sort"></i>
-            </th>
-            <th class="sortable" data-sort="payout">
-              Payouts <i class="fas fa-sort"></i>
-            </th>
-            <th>Payment Method</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="ordersBody"></tbody>
-      </table>
+      <div class="divider-title">Data Overview</div>
 
-      <table id="vendorTable" style="display: none">
-        <thead>
-          <tr>
-            <th class="sortable" data-sort="vendor">
-              Vendor Name <i class="fas fa-sort"></i>
-            </th>
-            <th class="sortable" data-sort="orders">
-              Order Count <i class="fas fa-sort"></i>
-            </th>
-            <th class="sortable" data-sort="sales">
-              Sales <i class="fas fa-sort"></i>
-            </th>
-            <th class="sortable" data-sort="commission">
-              Commission <i class="fas fa-sort"></i>
-            </th>
-            <th class="sortable" data-sort="payout">
-              Payouts <i class="fas fa-sort"></i>
-            </th>
-            <th>Payment Method</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="vendorBody"></tbody>
-      </table>
+      <!-- Bulk Actions Bar -->
+      <div class="bulk-actions-bar" id="bulkActionsBar">
+        <div class="selected-count" id="selectedCount">0 items selected</div>
 
-      <div class="footer-info">
-        <div>
-          Payouts Dashboard •
-          <span id="lastUpdatedText">Data updates in real-time</span> • Last
-          updated: <span id="lastUpdated">Today 10:30 AM</span>
+        <div class="dropdown">
+          <button class="bulk-action-btn" onclick="toggleBulkDropdown(this, event)">
+            <i class="fas fa-layer-group"></i> Bulk Actions
+            <i class="fas fa-chevron-down"></i>
+          </button>
+
+          <div class="dropdown-menu">
+            <button class="dropdown-item" onclick="bulkAction('done')">
+              <i class="fas fa-check"></i> Mark as Done
+            </button>
+            <button class="dropdown-item" onclick="bulkAction('pending')">
+              <i class="fas fa-clock"></i> Mark as Pending
+            </button>
+            <button class="dropdown-item" onclick="bulkAction('cancel')">
+              <i class="fas fa-times"></i> Mark as Cancel
+            </button>
+            <button class="dropdown-item" onclick="bulkSyncOrders()">
+              <i class="fas fa-sync"></i> Sync Orders
+            </button>
+            <button class="dropdown-item" onclick="clearSelection()">
+              <i class="fas fa-trash"></i> Clear Selection
+            </button>
+          </div>
         </div>
-        <div class="pagination">
-          <button class="pagination-btn" id="prevPage">
-            <i class="fas fa-chevron-left"></i>
-          </button>
-          <span>Page <span id="currentPage">1</span> of
-            <span id="totalPages">1</span></span>
-          <button class="pagination-btn" id="nextPage">
-            <i class="fas fa-chevron-right"></i>
-          </button>
+      </div>
+
+      <div class="table-container">
+        <div class="filters">
+          <div class="search-box">
+            <i class="fas fa-search search-icon"></i>
+            <input id="searchInput" placeholder="Search orders, vendors, payment methods..." />
+          </div>
+          <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="done">Done</button>
+            <button class="filter-btn" data-filter="pending">Pending</button>
+            <button class="filter-btn" data-filter="cancel">Cancel</button>
+            <a href="order.html" class="btn btn-order">
+              <i class="fas fa-shopping-cart"></i> Go to Orders
+            </a>
+            <button class="filter-btn" id="refreshDataBtn">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+          </div>
+        </div>
+
+        <!-- Table wrapper -->
+        <div class="table-wrapper">
+          <!-- Orders Table -->
+          <table id="ordersTable">
+            <thead>
+              <tr>
+                <th class="checkbox-cell">
+                  <input type="checkbox" class="select-all-checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)">
+                </th>
+                <th class="sortable" data-sort="date">Date <i class="fas fa-sort"></i></th>
+                <th class="sortable" data-sort="order">Order ID <i class="fas fa-sort"></i></th>
+                <th class="sortable" data-sort="vendor">Vendor Name <i class="fas fa-sort"></i></th>
+                <th>Product Details</th>
+                <th class="sortable" data-sort="status">Order Status <i class="fas fa-sort"></i></th>
+                <th class="sortable" data-sort="sales">Sales <i class="fas fa-sort"></i></th>
+                <th class="sortable" data-sort="commission">Commission <i class="fas fa-sort"></i></th>
+                <th class="sortable" data-sort="payout">Payouts <i class="fas fa-sort"></i></th>
+                <th>Payment Method</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ordersBody"></tbody>
+          </table>
+
+          <!-- Vendor Table (Initially Hidden) -->
+          <table id="vendorTable" style="display:none">
+            <thead>
+              <tr>
+                <th class="checkbox-cell">
+                  <input type="checkbox" class="select-all-checkbox" id="selectAllVendorCheckbox" onchange="toggleSelectAllVendors(this)">
+                </th>
+                <th class="sortable" data-sort="vendor">Vendor Name <i class="fas fa-sort"></i></th>
+                <th class="sortable" data-sort="orders">Order Count <i class="fas fa-sort"></i></th>
+                <th class="sortable" data-sort="sales">Sales <i class="fas fa-sort"></i></th>
+                <th class="sortable" data-sort="commission">Commission <i class="fas fa-sort"></i></th>
+                <th class="sortable" data-sort="payout">Payouts <i class="fas fa-sort"></i></th>
+                <th>Payment Method</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="vendorBody"></tbody>
+          </table>
+        </div>
+
+        <div class="footer-info">
+          <div>Payouts Dashboard • <span id="lastUpdatedText">Data updates in real-time</span> • Last updated: <span
+              id="lastUpdated">Today 10:30 AM</span></div>
+          <div class="pagination">
+            <button class="pagination-btn" id="prevPage"><i class="fas fa-chevron-left"></i></button>
+            <span>Page <span id="currentPage">1</span> of <span id="totalPages">1</span></span>
+            <button class="pagination-btn" id="nextPage"><i class="fas fa-chevron-right"></i></button>
+          </div>
         </div>
       </div>
     </div>
@@ -222,12 +210,8 @@
       </div>
       <div class="modal-body">
         <div class="modal-tabs">
-          <button class="modal-tab active" data-tab="vendor">
-            Vendor Details
-          </button>
-          <button class="modal-tab" data-tab="product">
-            Product Details
-          </button>
+          <button class="modal-tab active" data-tab="vendor">Vendor Details</button>
+          <button class="modal-tab" data-tab="product">Product Details</button>
           <button class="modal-tab" data-tab="payout">Payout Details</button>
         </div>
 
@@ -235,19 +219,17 @@
           <!-- Vendor details will be populated here -->
         </div>
 
-        <div id="productTab" class="modal-tab-content" style="display: none">
+        <div id="productTab" class="modal-tab-content" style="display:none">
           <!-- Product details will be populated here -->
         </div>
 
-        <div id="payoutTab" class="modal-tab-content" style="display: none">
+        <div id="payoutTab" class="modal-tab-content" style="display:none">
           <!-- Payout details will be populated here -->
         </div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-detail" id="closeModalBtn">Close</button>
-        <button class="btn btn-payable" id="processPaymentBtn">
-          Process Payment
-        </button>
+        <button class="btn btn-payable" id="processPaymentBtn">Process Payment</button>
       </div>
     </div>
   </div>
@@ -258,9 +240,6 @@
     <span id="notificationText">Action completed successfully</span>
   </div>
 
-
-  <script src="../js/payout.js"> </script>
-
+  <script src="../js/payout.js"></script>
 </body>
-
 </html>
