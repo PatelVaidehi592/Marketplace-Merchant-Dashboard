@@ -821,11 +821,12 @@
 
     /* Responsive */
     @media (max-width: 1200px) {
+
       .dashboard-row,
       .combined-row {
         grid-template-columns: 1fr;
       }
-      
+
       .charts-row {
         grid-template-columns: 1fr;
       }
@@ -839,7 +840,7 @@
       .summary-grid {
         grid-template-columns: repeat(3, 1fr);
       }
-      
+
       .combined-row {
         grid-template-columns: 1fr;
       }
@@ -867,7 +868,7 @@
       .products-grid {
         grid-template-columns: repeat(2, 1fr);
       }
-      
+
       .payment-method-item {
         flex-direction: column;
         text-align: center;
@@ -935,8 +936,8 @@
 
       <!-- Current Date Display -->
       <div class="date-display">
-        <h2 id="currentDate">Today, January 16, 2026</h2>
-        <p>Showing real-time data for today's activities</p>
+        <h2 id="currentmonth"></h2>
+        <p>Showing real-time data for monthly activities</p>
       </div>
 
       <!-- Sales Summary Section -->
@@ -1133,7 +1134,7 @@
         <!-- Sales Trends Chart -->
         <div class="chart-container">
           <div class="section-title">
-            <h3>Today's Sales Trend</h3>
+            <h3>Monthly Sales Trend</h3>
             <a href="#">View Details <i class="fas fa-arrow-right"></i></a>
           </div>
           <div class="chart-wrapper">
@@ -1144,7 +1145,7 @@
         <!-- Order Trends Chart -->
         <div class="chart-container">
           <div class="section-title">
-            <h3>Today's Order Trend</h3>
+            <h3>Monthly Order Trend</h3>
             <a href="#">View Details <i class="fas fa-arrow-right"></i></a>
           </div>
           <div class="chart-wrapper">
@@ -1183,7 +1184,7 @@
         <!-- Top Products Section -->
         <div class="top-products-section">
           <div class="section-title">
-            <h3>Today's Top Selling Products</h3>
+            <h3>Monthly Top Selling Products</h3>
             <a href="#">View All <i class="fas fa-arrow-right"></i></a>
           </div>
           <div class="products-grid" id="productsGrid">
@@ -1322,7 +1323,7 @@
         <!-- Top Vendors Section -->
         <div class="top-vendors-section">
           <div class="section-title">
-            <h3>Today's Top Vendors</h3>
+            <h3>Monthly Top Vendors</h3>
             <a href="#" id="vendorsLink">View All <i class="fas fa-arrow-right"></i></a>
           </div>
           <ul class="vendors-list" id="vendorsList">
@@ -1741,8 +1742,15 @@
         chartView.classList.add('active');
         drawPieChart();
       });
+      const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
 
-      // Drill down button functionality
+      const now = new Date();
+      const monthYear = `${monthNames[now.getMonth()]} ${now.getFullYear()}`;
+
+      document.getElementById("currentmonth").textContent = monthYear;
       const drillBtn = document.getElementById('drillBtn');
       drillBtn.addEventListener('click', function () {
         alert('Drilling down to Billing Cycle view.\n\nThis would show detailed breakdown by billing frequency (monthly, quarterly, annually) in a real application.');
@@ -1770,7 +1778,6 @@
 
         let startAngle = 0;
 
-        // Draw pie slices
         paymentMethods.forEach(method => {
           const sliceAngle = (method.percentage / 100) * 2 * Math.PI;
 
